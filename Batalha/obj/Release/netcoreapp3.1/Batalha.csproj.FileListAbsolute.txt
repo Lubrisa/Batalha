@@ -1,0 +1,14 @@
+C:\Users\luigi.cfranca\OneDrive - SENAC - SP\Curso de Game Dev\Códigos\Batalha\bin\Release\netcoreapp3.1\Batalha.exe
+C:\Users\luigi.cfranca\OneDrive - SENAC - SP\Curso de Game Dev\Códigos\Batalha\bin\Release\netcoreapp3.1\Batalha.deps.json
+C:\Users\luigi.cfranca\OneDrive - SENAC - SP\Curso de Game Dev\Códigos\Batalha\bin\Release\netcoreapp3.1\Batalha.runtimeconfig.json
+C:\Users\luigi.cfranca\OneDrive - SENAC - SP\Curso de Game Dev\Códigos\Batalha\bin\Release\netcoreapp3.1\Batalha.runtimeconfig.dev.json
+C:\Users\luigi.cfranca\OneDrive - SENAC - SP\Curso de Game Dev\Códigos\Batalha\bin\Release\netcoreapp3.1\Batalha.dll
+C:\Users\luigi.cfranca\OneDrive - SENAC - SP\Curso de Game Dev\Códigos\Batalha\bin\Release\netcoreapp3.1\Batalha.pdb
+C:\Users\luigi.cfranca\OneDrive - SENAC - SP\Curso de Game Dev\Códigos\Batalha\obj\Release\netcoreapp3.1\Batalha.csproj.AssemblyReference.cache
+C:\Users\luigi.cfranca\OneDrive - SENAC - SP\Curso de Game Dev\Códigos\Batalha\obj\Release\netcoreapp3.1\Batalha.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\luigi.cfranca\OneDrive - SENAC - SP\Curso de Game Dev\Códigos\Batalha\obj\Release\netcoreapp3.1\Batalha.AssemblyInfoInputs.cache
+C:\Users\luigi.cfranca\OneDrive - SENAC - SP\Curso de Game Dev\Códigos\Batalha\obj\Release\netcoreapp3.1\Batalha.AssemblyInfo.cs
+C:\Users\luigi.cfranca\OneDrive - SENAC - SP\Curso de Game Dev\Códigos\Batalha\obj\Release\netcoreapp3.1\Batalha.csproj.CoreCompileInputs.cache
+C:\Users\luigi.cfranca\OneDrive - SENAC - SP\Curso de Game Dev\Códigos\Batalha\obj\Release\netcoreapp3.1\Batalha.dll
+C:\Users\luigi.cfranca\OneDrive - SENAC - SP\Curso de Game Dev\Códigos\Batalha\obj\Release\netcoreapp3.1\Batalha.pdb
+C:\Users\luigi.cfranca\OneDrive - SENAC - SP\Curso de Game Dev\Códigos\Batalha\obj\Release\netcoreapp3.1\Batalha.genruntimeconfig.cache
