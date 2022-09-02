@@ -1,0 +1,14 @@
+C:\Users\leonardo.smartins6\source\repos\BatalhaMultiplayer\BatalhaMultiplayer\bin\Debug\netcoreapp3.1\BatalhaMultiplayer.exe
+C:\Users\leonardo.smartins6\source\repos\BatalhaMultiplayer\BatalhaMultiplayer\bin\Debug\netcoreapp3.1\BatalhaMultiplayer.deps.json
+C:\Users\leonardo.smartins6\source\repos\BatalhaMultiplayer\BatalhaMultiplayer\bin\Debug\netcoreapp3.1\BatalhaMultiplayer.runtimeconfig.json
+C:\Users\leonardo.smartins6\source\repos\BatalhaMultiplayer\BatalhaMultiplayer\bin\Debug\netcoreapp3.1\BatalhaMultiplayer.runtimeconfig.dev.json
+C:\Users\leonardo.smartins6\source\repos\BatalhaMultiplayer\BatalhaMultiplayer\bin\Debug\netcoreapp3.1\BatalhaMultiplayer.dll
+C:\Users\leonardo.smartins6\source\repos\BatalhaMultiplayer\BatalhaMultiplayer\bin\Debug\netcoreapp3.1\BatalhaMultiplayer.pdb
+C:\Users\leonardo.smartins6\source\repos\BatalhaMultiplayer\BatalhaMultiplayer\obj\Debug\netcoreapp3.1\BatalhaMultiplayer.csproj.AssemblyReference.cache
+C:\Users\leonardo.smartins6\source\repos\BatalhaMultiplayer\BatalhaMultiplayer\obj\Debug\netcoreapp3.1\BatalhaMultiplayer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\leonardo.smartins6\source\repos\BatalhaMultiplayer\BatalhaMultiplayer\obj\Debug\netcoreapp3.1\BatalhaMultiplayer.AssemblyInfoInputs.cache
+C:\Users\leonardo.smartins6\source\repos\BatalhaMultiplayer\BatalhaMultiplayer\obj\Debug\netcoreapp3.1\BatalhaMultiplayer.AssemblyInfo.cs
+C:\Users\leonardo.smartins6\source\repos\BatalhaMultiplayer\BatalhaMultiplayer\obj\Debug\netcoreapp3.1\BatalhaMultiplayer.csproj.CoreCompileInputs.cache
+C:\Users\leonardo.smartins6\source\repos\BatalhaMultiplayer\BatalhaMultiplayer\obj\Debug\netcoreapp3.1\BatalhaMultiplayer.dll
+C:\Users\leonardo.smartins6\source\repos\BatalhaMultiplayer\BatalhaMultiplayer\obj\Debug\netcoreapp3.1\BatalhaMultiplayer.pdb
+C:\Users\leonardo.smartins6\source\repos\BatalhaMultiplayer\BatalhaMultiplayer\obj\Debug\netcoreapp3.1\BatalhaMultiplayer.genruntimeconfig.cache
