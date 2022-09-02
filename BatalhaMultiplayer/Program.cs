@@ -639,49 +639,52 @@ namespace Batalha2
 
         static void EndGame()
         {
+            if (Simgleplayer == true)
+            {
 
-            Random rPlayer = new Random();
-            int Boss = rPlayer.Next(20);
+                Random rPlayer = new Random();
+                int Boss = rPlayer.Next(20);
 
-            while (Mana_Boss < 10 && Boss <= 10)
-            {
-                Boss = rPlayer.Next(20);
-            }
+                while (Mana_Boss < 10 && Boss <= 10)
+                {
+                    Boss = rPlayer.Next(20);
+                }
 
-            if (Boss == 0 && Mana_Boss >= 10)
-            {
-                Paralizado_1 = true;
-                Mana_Boss -= 10;
-                Console.WriteLine("Seu inimigo começa a sussurrar palavras estranhas. Você se sente congelado");
+                if (Boss == 0 && Mana_Boss >= 10)
+                {
+                    Paralizado_1 = true;
+                    Mana_Boss -= 10;
+                    Console.WriteLine("Seu inimigo começa a sussurrar palavras estranhas. Você se sente congelado");
+                }
+                else if (Boss >= 1 && Boss <= 5 && Mana_Boss >= 10)
+                {
+                    Mana_Boss -= 10;
+                    Console.WriteLine("Seu inimigo canaliza uma torrente de energia negativa na sua direção, mas erra");
+                }
+                else if (Boss >= 6 && Boss <= 10 && Mana_Boss >= 10)
+                {
+                    Vida_Player_1 -= 20;
+                    Mana_Boss -= 10;
+                    Console.WriteLine("Seu inimigo canaliza uma torrente de energia negativa na sua direção. Você perde 20 de vida");
+                }
+                else if (Boss >= 11 && Boss <= 14)
+                {
+                    Console.WriteLine("Seu inimigo tenta te acertar com um ataque, mas erra.");
+                }
+                else if (Boss >= 15 && Boss <= 18)
+                {
+                    Vida_Player_1 -= 15;
+                    Console.WriteLine("Seu inimigo te acerta com um ataque. Você perde 15 de vida.");
+                }
+                else
+                {
+                    Vida_Player_1 -= 30;
+                    Console.WriteLine("Seu inimigo te acerta em cheio. Você perde 30 de vida.");
+                }
+                Console.WriteLine("\nPressione Enter para continuar");
+                Console.ReadLine();
+                Console.Clear();
             }
-            else if (Boss >= 1 && Boss <= 5 && Mana_Boss >= 10)
-            {
-                Mana_Boss -= 10;
-                Console.WriteLine("Seu inimigo canaliza uma torrente de energia negativa na sua direção, mas erra");
-            }
-            else if (Boss >= 6 && Boss <= 10 && Mana_Boss >= 10)
-            {
-                Vida_Player_1 -= 20;
-                Mana_Boss -= 10;
-                Console.WriteLine("Seu inimigo canaliza uma torrente de energia negativa na sua direção. Você perde 20 de vida");
-            }
-            else if (Boss >= 11 && Boss <= 14)
-            {
-                Console.WriteLine("Seu inimigo tenta te acertar com um ataque, mas erra.");
-            }
-            else if (Boss >= 15 && Boss <= 18)
-            {
-                Vida_Player_1 -= 15;
-                Console.WriteLine("Seu inimigo te acerta com um ataque. Você perde 15 de vida.");
-            }
-            else
-            {
-                Vida_Player_1 -= 30;
-                Console.WriteLine("Seu inimigo te acerta em cheio. Você perde 30 de vida.");
-            }
-            Console.WriteLine("\nPressione Enter para continuar");
-            Console.ReadLine();
-            Console.Clear();
 
             if (Vida_Player_2 > 0 && Vida_Player_1 <= 0)
             {
