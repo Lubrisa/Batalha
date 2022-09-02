@@ -6,8 +6,9 @@ namespace Batalha2
     class Program
     {
         // Jogador 1
+        static int forca_1;
         static int Vida_Player_1 = 100;
-        static int Mana_Player_1 = 20;
+        static int Mana_Player_1 = 10 + (20 - (forca_1 * 2));
         static bool Paralizado_1 = false;
         static int Poção_de_Cura_1 = 5;
         static int Poção_de_Mana_1 = 3;
@@ -15,8 +16,9 @@ namespace Batalha2
         static int Poções_1 = Poção_Estranha_1 + Poção_de_Mana_1 + Poção_de_Cura_1;
 
         // Jogador 2
+        static int forca_2;
         static int Vida_Player_2 = 100;
-        static int Mana_Player_2 = 20;
+        static int Mana_Player_2 = 10 + (20 - (forca_1*2));
         static bool Paralizado_2 = false;
         static int Poção_de_Cura_2 = 5;
         static int Poção_de_Mana_2 = 3;
@@ -53,28 +55,79 @@ namespace Batalha2
             //opções
             Console.WriteLine("1. Sigleplayer");
             Console.WriteLine("2. Multiplayer");
+
+            string Op_0 = Console.ReadLine();
+            Console.WriteLine("");
+            if (Op_0 == "1")
+            {
+                Simgleplayer = true;
+            }
+            if (Op_0 == "2")
+            {
+                Simgleplayer = false;
+            }
             Console.WriteLine("Aperte ENTER para continuar");
+            Console.ReadLine();
 
             if (Simgleplayer==true)
             {
-                Console.WriteLine("Escolha Sua força");
-                Console.WriteLine("1. Força");
+                Console.WriteLine("Jogador 1: escolha sua força");
+                Console.Write("Força (1 - 10): ");
+                forca_1 = int.Parse(Console.ReadLine());
+                //Travas
+                if (forca_1<=0)
+                {
+                    forca_1 = 1;
+                }
+                if (forca_1 >= 10)
+                {
+                    forca_1 = 10;
+                }
+                Console.WriteLine("Sua força é: " + forca_1);
+                Console.WriteLine("Sua mana é: " + Mana_Player_1);
 
-                Console.WriteLine("Aperte ENTER para continuar");
+                Console.WriteLine("Aperte ENTER para começar luta");
+                Console.ReadLine();
             }
 
             if (Simgleplayer ==false)
             {
-                Console.WriteLine("Escolha Sua força");
-                Console.WriteLine("1. Força");
-                Console.WriteLine("Aperte ENTER para continuar");
+                Console.WriteLine("Jogador 1: escolha sua força");
+                Console.Write("Força (1 - 10): ");
+                forca_1 = int.Parse(Console.ReadLine());
+                //Travas
+                if (forca_1 <= 0)
+                {
+                    forca_1 = 1;
+                }
+                if (forca_1 >= 10)
+                {
+                    forca_1 = 10;
+                }
+                Console.WriteLine("Sua força é: " + forca_1);
+                Console.WriteLine("Sua mana é: " + Mana_Player_1);
 
-                Console.WriteLine("Escolha Sua força");
-                Console.WriteLine("1. Força");
                 Console.WriteLine("Aperte ENTER para continuar");
+                Console.ReadLine();
+
+                Console.WriteLine("Jogador 2: escolha sua força");
+                Console.Write("Força (1 - 10): ");
+                forca_2 = int.Parse(Console.ReadLine());
+                //Travas
+                if (forca_2 <= 0)
+                {
+                    forca_2 = 1;
+                }
+                if (forca_2 >= 10)
+                {
+                    forca_2 = 10;
+                }
+
+                Console.WriteLine("Sua força é: " + forca_2);
+                Console.WriteLine("Sua mana é: " + Mana_Player_2);
+                Console.WriteLine("Aperte ENTER para começar luta");
+                Console.ReadLine();
             }
-            Console.WriteLine("1. Força");
-            Console.WriteLine("");
         }
         static void batalha()
         {
@@ -140,7 +193,7 @@ namespace Batalha2
 
                 if (Ataque <= 2 && Paralizado_1 == false)
                 {
-                    Vida_Player_2 -= 10;
+                    Vida_Player_2 -= 10 + forca_1;
                     Console.WriteLine("Você acerta! O inimigo perde 10 de vida");
                     EndGame();
                 }
@@ -151,7 +204,7 @@ namespace Batalha2
                 }
                 else if (Ataque == 5 && Paralizado_1 == false)
                 {
-                    Vida_Player_2 -= 20;
+                    Vida_Player_2 -= 20 + forca_1;
                     Console.WriteLine("Você acerta em cheio! O inimigo perde 20 de vida");
                     EndGame();
                 }
@@ -371,7 +424,7 @@ namespace Batalha2
 
                 if (Ataque <= 2 && Paralizado_2 == false)
                 {
-                    Vida_Player_1 -= 10;
+                    Vida_Player_1 -= 10 + forca_2;
                     Console.WriteLine("Você acerta! O inimigo perde 10 de vida");
                     EndGame();
                 }
@@ -382,7 +435,7 @@ namespace Batalha2
                 }
                 else if (Ataque == 5 && Paralizado_2 == false)
                 {
-                    Vida_Player_1 -= 20;
+                    Vida_Player_1 -= 20 + forca_2;
                     Console.WriteLine("Você acerta em cheio! O inimigo perde 20 de vida");
                     EndGame();
                 }
