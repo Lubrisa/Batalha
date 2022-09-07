@@ -1,36 +1,31 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
+using System.Runtime.InteropServices;
 using System.Threading;
+using System.Xml;
 
 namespace Batalha2
 {
     class Program
     {
+        //Atributos de player (para definir o player atual) e de escolha de opções
         static int player = 1;
         static string op = null;
-        // Jogador 1
-        static int forca_1;
-        static int Vida_Player_1 = 100;
-        static int Mana_Player_1 = 10;
-        static bool Paralizado_1 = false;
-        static int Poção_de_Cura_1 = 5;
-        static int Poção_de_Mana_1 = 3;
-        static int Poção_Estranha_1 = 1;
-        static int Poções_1 = Poção_Estranha_1 + Poção_de_Mana_1 + Poção_de_Cura_1;
 
-        // Jogador 2
-        static int forca_2;
-        static int Vida_Player_2 = 100;
-        static int Mana_Player_2 = 10;
-        static bool Paralizado_2 = false;
-        static int Poção_de_Cura_2 = 5;
-        static int Poção_de_Mana_2 = 3;
-        static int Poção_Estranha_2 = 1;
-        static int Poções_2 = Poção_Estranha_2 + Poção_de_Mana_2 + Poção_de_Cura_2;
+        // Atributos do Jogador 1
+        static int forca_1, Vida_Player_1 = 100, Mana_Player_1 = 10, Poção_de_Cura_1 = 0, Poção_de_Mana_1 = 0, Poção_Estranha_1 = 0, Poções_1 = Poção_Estranha_1 + Poção_de_Mana_1 + Poção_de_Cura_1, queimadura_1 = 0, armadura_1 = 0, manto_1 = 0, espada_1 = 0;
+        static bool Paralizado_1 = false, runas_1;
+        static string[,] magias_p1 = new string[4,2];
 
-        // Singleplayer
+
+        // Atributos do Jogador 2
+        static int forca_2, Vida_Player_2 = 100, Mana_Player_2 = 10, Poção_de_Cura_2 = 0, Poção_de_Mana_2 = 0, Poção_Estranha_2 = 0, Poções_2 = Poção_Estranha_2 + Poção_de_Mana_2 + Poção_de_Cura_2, queimadura_2 = 0, armadura_2 = 0, manto_2 = 0, espada_2 = 0;
+        static bool Paralizado_2 = false, runas_2;
+        static string[,] magias_p2 = new string[4,2];
+
+        // Atributos para o Modo Singleplayer
         static bool Singleplayer = false;
-        static int Vida_Boss = 100;
-        static int Mana_Boss = 20;
+        static int Vida_Boss = 100, Mana_Boss = 20;
 
         static void Main()
         {
@@ -49,8 +44,10 @@ Para selecionar uma opção digite o apenas número dela
 
 Se você entendeu, pressione ENTER");
 
+            //Trava
             Console.ReadLine();
             Console.Clear();
+
             //Escolher entre SinglePlayer e MultiPlayer
             EscolherPartida();
             if (Singleplayer == false)
@@ -64,38 +61,67 @@ Se você entendeu, pressione ENTER");
         }
 
 
+        static void DesenharLogo()
+        {
+            Thread.Sleep(200);
+            Console.WriteLine(@"                                                                                   ██████████                       ████ 
+                                                                                  ░░███░░░░███                     ░░███ ");
+            Thread.Sleep(200);
+            Console.WriteLine(@"                                                                                   ░███   ░░███ █████ ████  ██████  ░███ 
+                                                                                   ░███    ░███░░███ ░███  ███░░███ ░███ ");
+            Thread.Sleep(200);
+            Console.WriteLine(@"                                                                                   ░███    ░███ ░███ ░███ ░███████  ░███ 
+                                                                                   ░███    ███  ░███ ░███ ░███░░░   ░███ ");
+            Thread.Sleep(200);
+            Console.WriteLine(@"                                                                                   ██████████   ░░████████░░██████  █████
+                                                                                  ░░░░░░░░░░     ░░░░░░░░  ░░░░░░  ░░░░░ ");
+        }
+
+
         static void EscolherPartida()
         {
-
+            //Estético
             Console.WriteLine(@"
 
 ░▀█▀░█▀█░▀█▀░█▀▀░▀█▀░█▀█░█▀▄░░░▀▀█░█▀█░█▀▀░█▀█
 ░░█░░█░█░░█░░█░░░░█░░█▀█░█▀▄░░░░░█░█░█░█░█░█░█
 ░▀▀▀░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░▀░▀░░░▀▀░░▀▀▀░▀▀▀░▀▀▀
            ");
-            //opções
+
+            //Opções
             Console.WriteLine("1. SinglePlayer");
             Console.WriteLine("2. MultiPlayer");
-            //entrar escolha
+
+            //Entrar Escolha
             Console.Write("\nEscolha o modo em que você irá jogar: ");
-            string Op_0 = Console.ReadLine();
-            //verificação da escolha
-            if (Op_0 == "1")
+            op = Console.ReadLine();
+
+            //Verificação da Escolha
+
+            //Para SinglePlayer
+            if (op == "1")
             {
                 Singleplayer = true;
                 Console.WriteLine("\nVocê escolheu o modo SinglePlayer");
             }
-            else if (Op_0 == "2")
+            //Para MultiPlayer
+            else if (op == "2")
             {
                 Singleplayer = false;
                 Console.WriteLine("\nVocê escolheu o modo MultiPlayer");
             }
 
+            //Trava
             Console.WriteLine("\nAperte ENTER para continuar");
             Console.ReadLine();
             Console.Clear();
 
+            //Envia para a Loja (Comprar os Equipamentos)
+            Loja();
+            //Envia para o "Menu" de Atributos (Escolher os valores de força e 
             EscolherAtributos();
+            EscolherMagias();
+
             if (Singleplayer == true)
             {
                 BatalhaSingleplayer();
@@ -104,6 +130,364 @@ Se você entendeu, pressione ENTER");
             {
                 BatalhaMultiplayer();
             }
+        }
+
+
+        static void Loja()
+        {
+            int saldo_1 = 100;
+            int saldo_2 = 100;
+
+
+            Console.WriteLine("Bem vindo a loja player 1! Aqui você poderá comprar itens que te ajudarão durante sua batalha");
+
+            while (saldo_1 > 0 && op != "8")
+            {
+                OpsLoja();
+
+                Console.WriteLine($"\nSeu saldo: {saldo_1}\n\nO que você gostaria de comprar?");
+                Console.Write("Digite sua escolha: ");
+
+                op = Console.ReadLine();
+                int quantidade = 0;
+                Console.WriteLine("");
+
+                if (op == "1")
+                {
+                    Console.WriteLine("Quantas unidades você gostaria de comprar?");
+                    quantidade = int.Parse(Console.ReadLine());
+
+
+                    while ((saldo_1 - quantidade * 10) < 0)
+                    {
+                        Console.WriteLine("Opa! Você não tem dinheiro para bancar isso, sinto muito, mas você vai precisar comprar menos");
+                        quantidade = int.Parse(Console.ReadLine());
+                    }
+
+
+                    saldo_1 -= 10 * quantidade;
+                    Poção_de_Cura_1 += quantidade;
+                    Console.WriteLine($"Você comprou {quantidade} poções de cura e gastou {10 * quantidade} pila");
+                    Console.WriteLine("\n Digite ENTER para continuar");
+                    Console.ReadLine();
+                }
+
+                if (op == "2")
+                {
+                    Console.WriteLine("Quantas unidades você gostaria de comprar?");
+                    quantidade = int.Parse(Console.ReadLine());
+
+
+                    while ((saldo_1 - quantidade * 15) < 0)
+                    {
+                        Console.WriteLine("Opa! Você não tem dinheiro para bancar isso, sinto muito, mas você vai precisar comprar menos");
+                        quantidade = int.Parse(Console.ReadLine());
+                    }
+
+
+                    saldo_1 -= 15 * quantidade;
+                    Poção_de_Mana_1 += quantidade;
+                    Console.WriteLine($"Você comprou {quantidade} poções de mana e gastou {15 * quantidade} pila");
+                    Console.WriteLine("\n Digite ENTER para continuar");
+                    Console.ReadLine();
+                }
+
+                if (op == "3")
+                {
+                    Console.WriteLine("Quantas unidades você gostaria de comprar?");
+                    quantidade = int.Parse(Console.ReadLine());
+
+
+                    while ((saldo_1 - quantidade * 1) < 0)
+                    {
+                        Console.WriteLine("Opa! Você não tem dinheiro para bancar isso, sinto muito, mas você vai precisar comprar menos");
+                        quantidade = int.Parse(Console.ReadLine());
+                    }
+
+
+                    saldo_1 -= quantidade * 1;
+                    Poção_Estranha_1 += quantidade;
+                    Console.WriteLine($"Você comprou {quantidade} poções estranhas e gastou {1 * quantidade} pila");
+                    Console.WriteLine("\n Digite ENTER para continuar");
+                    Console.ReadLine();
+                }
+
+                if (op == "4")
+                {
+                    if (saldo_1 < 30)
+                    {
+                        Console.WriteLine("Opa! Você não tem dinheiro para bancar isso, sinto muito, mas você vai precisar comprar outra coisa");
+                        Console.WriteLine("\n Digite ENTER para continuar");
+                        Console.ReadLine();
+                    }
+                    else
+                    {
+                        armadura_1 = 10;
+                        saldo_1 -= 30;
+                        Console.WriteLine("Você gastou 30 pila e conseguiu uma armadura de malha capaz de te proteger de ataques corpo-a-corpo");
+                        Console.WriteLine("\n Digite ENTER para continuar");
+                        Console.ReadLine();
+                    }
+                }
+
+                if (op == "5")
+                {
+                    if (saldo_1 < 40)
+                    {
+                        Console.WriteLine("Opa! Você não tem dinheiro para bancar isso, sinto muito, mas você vai precisar comprar outra coisa");
+                        Console.WriteLine("\n Digite ENTER para continuar");
+                        Console.ReadLine();
+                    }
+                    else
+                    {
+                        armadura_1 = 5;
+                        saldo_1 -= 40;
+                        Console.WriteLine("Você gastou 40 pila e comprou robes capazes de te proteger de efeitos mágicos");
+                        Console.WriteLine("\n Digite ENTER para continuar");
+                        Console.ReadLine();
+                    }
+                }
+
+                if (op == "6")
+                {
+                    if (saldo_1 < 30)
+                    {
+                        Console.WriteLine("Opa! Você não tem dinheiro para bancar isso, sinto muito, mas você vai precisar comprar outra coisa");
+                        Console.WriteLine("\n Digite ENTER para continuar");
+                        Console.ReadLine();
+                    }
+                    else
+                    {
+                        espada_1 = 10;
+                        saldo_1 -= 30;
+                        Console.WriteLine("Você gastou 30 pila e conseguiu uma espada melhor");
+                        Console.WriteLine("\n Digite ENTER para continuar");
+                        Console.ReadLine();
+                    }
+                }
+
+                if (op == "7")
+                {
+                    if (saldo_1 < 40)
+                    {
+                        Console.WriteLine("Opa! Você não tem dinheiro para bancar isso, sinto muito, mas você vai precisar comprar outra coisa");
+                        Console.WriteLine("\n Digite ENTER para continuar");
+                        Console.ReadLine();
+                    }
+                    else
+                    {
+                        runas_1 = true;
+                        saldo_1 -= 40;
+                        Console.WriteLine("Você gastou 40 pila e comprou runas que emitem uma forte energia mágica");
+                        Console.WriteLine("\n Digite ENTER para continuar");
+                        Console.ReadLine();
+                    }
+                }
+                Console.Clear();
+            }
+            Console.WriteLine("Obrigado pela preferência! Volte sempre");
+            Console.WriteLine("\n\nDigite ENTER para continuar");
+            Console.ReadLine();
+            op = null;
+
+            if (Singleplayer == false)
+            {
+                player = 2;
+                Console.Clear();
+            }
+
+            if (player == 2)
+            {
+
+                Console.WriteLine("Bem vindo a loja player 2! Aqui você poderá comprar itens que te ajudarão durante sua batalha");
+
+                while (saldo_2 > 0 && op != "8")
+                {
+                    OpsLoja();
+
+                    Console.WriteLine($"\nSeu saldo: {saldo_2}");
+
+                    op = Console.ReadLine();
+                    int quantidade = 0;
+                    Console.WriteLine("");
+
+                    if (op == "1")
+                    {
+                        Console.WriteLine("Quantas unidades você gostaria de comprar?");
+                        quantidade = int.Parse(Console.ReadLine());
+
+                        while ((saldo_2 - quantidade * 10) < 0)
+                        {
+                            Console.WriteLine("Opa! Você não tem dinheiro para bancar isso, sinto muito, mas você vai precisar comprar menos");
+                            quantidade = int.Parse(Console.ReadLine());
+                        }
+
+
+                        saldo_2 -= 10 * quantidade;
+                        Poção_de_Cura_2 += quantidade;
+                        Console.WriteLine($"Você comprou {quantidade} poções de cura e gastou {10 * quantidade} pila");
+                        Console.WriteLine("\n Digite ENTER para continuar");
+                        Console.ReadLine();
+                    }
+
+                    if (op == "2")
+                    {
+                        Console.WriteLine("Quantas unidades você gostaria de comprar?");
+                        quantidade = int.Parse(Console.ReadLine());
+
+
+                        while ((saldo_2 - quantidade * 15) < 0)
+                        {
+                            Console.WriteLine("Opa! Você não tem dinheiro para bancar isso, sinto muito, mas você vai precisar comprar menos");
+                            quantidade = int.Parse(Console.ReadLine());
+                        }
+
+
+                        saldo_2 -= 15 * quantidade;
+                        Poção_de_Mana_2 += quantidade;
+                        Console.WriteLine($"Você comprou {quantidade} poções de mana e gastou {15 * quantidade} pila");
+                        Console.WriteLine("\n Digite ENTER para continuar");
+                        Console.ReadLine();
+                    }
+
+                    if (op == "3")
+                    {
+                        Console.WriteLine("Quantas unidades você gostaria de comprar?");
+                        quantidade = int.Parse(Console.ReadLine());
+
+
+                        while ((saldo_2 - quantidade * 1) < 0)
+                        {
+                            Console.WriteLine("Opa! Você não tem dinheiro para bancar isso, sinto muito, mas você vai precisar comprar menos");
+                            quantidade = int.Parse(Console.ReadLine());
+                        }
+
+
+                        saldo_2 -= quantidade * 1;
+                        Poção_Estranha_2 += quantidade;
+                        Console.WriteLine($"Você comprou {quantidade} poções estranhas e gastou {1 * quantidade} pila");
+                        Console.WriteLine("\n Digite ENTER para continuar");
+                        Console.ReadLine();
+                    }
+
+                    if (op == "4" && armadura_2 == 0)
+                    {
+                        if (saldo_2 < 30)
+                        {
+                            Console.WriteLine("Opa! Você não tem dinheiro para bancar isso, sinto muito, mas você vai precisar comprar outra coisa");
+                            Console.WriteLine("\n Digite ENTER para continuar");
+                            Console.ReadLine();
+                        }
+                        else
+                        {
+                            armadura_2 = 10;
+                            saldo_2 -= 30;
+                            Console.WriteLine("Você gastou 30 pila e conseguiu uma armadura de malha capaz de te proteger de ataques corpo-a-corpo");
+                            Console.WriteLine("\n Digite ENTER para continuar");
+                            Console.ReadLine();
+                        }
+                    }
+
+                    if (op == "5" && manto_2 == 0)
+                    {
+                        if (saldo_2 < 40)
+                        {
+                            manto_2 = 5;
+                            Console.WriteLine("Opa! Você não tem dinheiro para bancar isso, sinto muito, mas você vai precisar comprar outra coisa");
+                            Console.WriteLine("\n Digite ENTER para continuar");
+                            Console.ReadLine();
+                        }
+                        else
+                        {
+                            manto_2 = 10;
+                            saldo_2 -= 40;
+                            Console.WriteLine("Você gastou 40 pila e comprou robes capazes de te proteger de efeitos mágicos");
+                            Console.WriteLine("\n Digite ENTER para continuar");
+                            Console.ReadLine();
+                        }
+
+                    }
+
+                    if (op == "6")
+                    {
+                        if (saldo_2 < 30)
+                        {
+                            Console.WriteLine("Opa! Você não tem dinheiro para bancar isso, sinto muito, mas você vai precisar comprar outra coisa");
+                            Console.WriteLine("\n Digite ENTER para continuar");
+                            Console.ReadLine();
+                        }
+                        else
+                        {
+                            espada_2 = 10;
+                            saldo_2 -= 30;
+                            Console.WriteLine("Você gastou 30 pila e conseguiu uma espada melhor");
+                            Console.WriteLine("\n Digite ENTER para continuar");
+                            Console.ReadLine();
+                        }
+
+                    }
+
+                    if (op == "7")
+                    {
+                        if (saldo_2 < 40)
+                        {
+                            Console.WriteLine("Opa! Você não tem dinheiro para bancar isso, sinto muito, mas você vai precisar comprar outra coisa");
+                            Console.WriteLine("\n Digite ENTER para continuar");
+                            Console.ReadLine();
+                        }
+                        else
+                        {
+                            runas_2 = true;
+                            saldo_2 -= 40;
+                            Console.WriteLine("Você gastou 40 pila e comprou runas que emitem uma forte energia mágica");
+                            Console.WriteLine("\n Digite ENTER para continuar");
+                            Console.ReadLine();
+                        }
+
+                    }
+                    Console.Clear();
+                }
+            }
+
+            if (Singleplayer == false)
+            {
+                Console.WriteLine("Pressione ENTER para começar a seleção de atributos");
+                Console.ReadLine();
+            }
+            Console.Clear();
+        }
+
+
+        static void OpsLoja()
+        {
+            Console.WriteLine(@"
+Sumário
+Consumíveis: Cada unidade é perdida após o uso
+Armaduras: Afetam sua resistência contra efeitos de certo tipo, só é possível carregar uma por vez
+Equipamentos: Afetam suas ações de ataque e magias
+
+
+1. Poção de Cura: Restaura sua saúde. Item consumível, recupera 20 de vida, custa 10 pila 
+2. Poção de Mana: Recupera parte da sua energia mágica. Item consumível, recupera 5 de mana, custa 15 pila
+3. Poção Estranha: Um líquido preto estranho que se contorce dentro do frasco, não fazemos ideia do que pode fazer. Item consumível, ???????????, custa 1 pila");
+            if (player == 1 && armadura_1 < 0 || (player == 2 && armadura_2 < 0))
+            {
+                Console.WriteLine("4. Armadura de Cota de Malha: Uma armadura feita de argolas de ferro, eficiente contra ataques corpo-a-corpo. Armadura, reduz 10 de dano de todo ataque físico, custa 30 pila");
+            }
+            if (player == 1 && manto_1 < 0 || (player == 2 && manto_2 < 0))
+            {
+                Console.WriteLine("5. Manto Arcano: Uma roupa marcada com diversos símbolos místicos, eficiente contra efeitos mágicos. Armadura, reduz todo dano mágico em 5, custa 40 pila");
+            }
+            if (player == 1 && espada_1 < 0 || (player == 2 && espada_2 < 0))
+            {
+                Console.WriteLine("6. Espada Balanceada: Uma espada feita por um ferreiro extremamente habilidoso, feita para golpes certeiros. Equipamento, aumenta seu dano físico em 10, custa 30 pila");
+            }
+            if (player == 1 && runas_1 == false || (player == 2 && runas_2 == false))
+            {
+                Console.WriteLine("7. Runas Arcanas: Uma bolsa com runas capazes de amplificar suas magias, mas de uma forma misteriosa. Equipamento, amplifica o efeito de suas magias, custa 40 pila");
+            }
+
+            Console.WriteLine("8. Sair da loja");
         }
 
 
@@ -128,7 +512,6 @@ Se você entendeu, pressione ENTER");
                 Console.WriteLine("\nAperte ENTER para começar a luta");
                 Console.ReadLine();
                 Console.Clear();
-                BatalhaSingleplayer();
             }
 
             //escolhendo atributos MultiPlayer
@@ -176,12 +559,80 @@ Se você entendeu, pressione ENTER");
                 Console.ReadLine();
                 Console.Clear();
             }
-            BatalhaMultiplayer();
+        }
+
+
+        static void EscolherMagias()
+        {
+            string[,] op_magias = new string[9, 2];
+            op_magias[0, 0] = "1"; op_magias[0, 1] = "Bola de Fogo";
+            op_magias[1, 0] = "2"; op_magias[1, 1] = "Relâmpago";
+            op_magias[2, 0] = "3"; op_magias[2, 1] = "Curar Ferimentos";
+            op_magias[3, 0] = "4"; op_magias[3, 1] = "Despedaçar";
+            op_magias[4, 0] = "5"; op_magias[4, 1] = "Confusão";
+            op_magias[5, 0] = "6"; op_magias[5, 1] = "Purificar";
+            op_magias[6, 0] = "7"; op_magias[6, 1] = "Raio do Enfraquecimento";
+            op_magias[7, 0] = "8"; op_magias[7, 1] = "Rogar Maldição";
+            op_magias[8, 0] = "9"; op_magias[8, 1] = "Campo de Força";
+
+
+            Console.WriteLine("As magias são poderes invocados a partir da energia arcana, você pode escolher 3 para levar a batalha\n");
+
+            Console.WriteLine(@"1. Bola de Fogo: 
+2. Relâmpago
+3. Curar Ferimentos
+4. Despedaçar
+5. Confusão
+6. Purificar
+7. Raio do Enfraquecimento
+8. Rogar Maldição
+9. Campo de Força
+");
+
+            Console.WriteLine("Jogador 1, escolha suas magias");
+            for (int x = 3; x > 0; x--)
+            {
+                int y = int.Parse(Console.ReadLine());
+                magias_p1[x, 1] = op_magias[y-1, 1];
+                magias_p1[x, 0] = Convert.ToString(x) + ". ";
+                Console.WriteLine($"A magia escolhida foi: {magias_p1[x, 1]}");
+            }
+            Console.WriteLine("\nDigite ENTER para continuar");
+            Console.ReadLine();
+            Console.Clear();
+
+            if (Singleplayer == false)
+            {
+                Console.WriteLine("As magias são poderes invocados a partir da energia arcana, você pode escolher 3 para levar a batalha\n");
+
+                Console.WriteLine(@"1. Bola de Fogo: 
+2. Relâmpago
+3. Curar Ferimentos
+4. Despedaçar
+5. Confusão
+6. Purificar
+7. Raio do Enfraquecimento
+8. Rogar Maldição
+9. Campo de Força
+");
+
+                Console.WriteLine("Jogador 2, escolha suas magias");
+                for (int x = 3; x > 0; x--)
+                {
+                    int y = int.Parse(Console.ReadLine());
+                    magias_p2[x, 1] = op_magias[y - 1, 1];
+                    Console.WriteLine($"A magia escolhida foi: {magias_p1[x, 1]}");
+                }
+                Console.WriteLine("\nDigite ENTER para continuar");
+                Console.ReadLine();
+                Console.Clear();
+            }
         }
 
 
         static void BatalhaMultiplayer()
         {
+            player = 1;
             while (Vida_Player_1 > 0 && Vida_Player_2 > 0)
             {
                 if (player == 1)
@@ -195,6 +646,12 @@ Se você entendeu, pressione ENTER");
                     {
                         Paralizado_1 = false;
                     }
+                    if (queimadura_1 > 0)
+                    {
+                        Console.WriteLine("As chamas consomem seu corpo lentamente, fazendo você receber 2 de dano");
+                        Vida_Player_1 -= 2;
+                        queimadura_1--;
+                    }
                     EndGame();
                     player = 2;
                 }
@@ -207,14 +664,20 @@ Se você entendeu, pressione ENTER");
                 {
                     Paralizado_2 = false;
                 }
+                if (queimadura_2 > 0)
+                {
+                    Console.WriteLine("As chamas consomem seu corpo lentamente, fazendo você receber 2 de dano");
+                    Vida_Player_2 -= 2;
+                    queimadura_2--;
+                }
                 EndGame();
                 player = 1;
-                Console.WriteLine("\n Pressione ENTER para continuar");
+                Console.WriteLine("\nPressione ENTER para continuar");
                 Console.ReadLine();
                 Console.Clear();
             }
         }
-
+        
 
         static void BatalhaSingleplayer()
         {
@@ -228,6 +691,21 @@ Se você entendeu, pressione ENTER");
                 else
                 {
                     Paralizado_1 = false;
+                }
+                EndGame();
+                if (Paralizado_2 == false)
+                {
+                    Boss();
+                }
+                else
+                {
+                    Console.WriteLine("Você vê seu adversário estático");
+                    Paralizado_2 = false;
+                }
+                if (queimadura_2 > 0)
+                {
+                    Console.WriteLine("Você vê seu adversário ardendo em chamas, ele perde 5 de vida");
+                    Vida_Boss -= 5;
                 }
                 EndGame();
             }
@@ -304,13 +782,13 @@ Se você entendeu, pressione ENTER");
             }
 
             //Opcões de Magias
-            if (op == "2")
+            else if (op == "2")
             {
                 Magia();
             }
 
             //Opções de Itens
-            if (op == "3")
+            else if (op == "3")
             {
                 Item();
             }
@@ -326,8 +804,16 @@ Se você entendeu, pressione ENTER");
             {
                 if (Ataque <= 2)
                 {
-                    Vida_Player_2 -= 10 + forca_1;
-                    Console.WriteLine($"Você acerta! O inimigo perde {10 + forca_1} de vida");
+                    if (espada_1 > 0)
+                    {
+                        Vida_Player_2 -= 25 + forca_1 - armadura_2;
+                        Console.WriteLine($"Você acerta! O inimigo perde {25 + forca_1 - armadura_2} de vida");
+                    }
+                    else
+                    {
+                        Vida_Player_2 -= 15 + forca_1 - armadura_2;
+                        Console.WriteLine($"Você acerta! O inimigo perde {15 + forca_1 - armadura_2} de vida");
+                    }
                 }
                 else if (Ataque >= 3)
                 {
@@ -336,8 +822,17 @@ Se você entendeu, pressione ENTER");
                 }
                 else if (Ataque == 5)
                 {
-                    Vida_Player_2 -= 20 + forca_1;
-                    Console.WriteLine($"Você acerta em cheio! O inimigo perde {20 + forca_1} de vida");
+                    if (espada_1 > 0)
+                    {
+                        Vida_Player_2 -= 40 + forca_1 - armadura_2;
+                        Console.WriteLine($"Você acerta em cheio! O inimigo perde {40 + forca_1 - armadura_2} de vida");
+                    }
+                    else
+                    {
+                        Vida_Player_2 -= 30 + forca_1 - armadura_2;
+                        Console.WriteLine($"Você acerta em cheio! O inimigo perde {30 + forca_1 - armadura_2} de vida");
+                    }
+                   
                 }
             }
 
@@ -345,8 +840,17 @@ Se você entendeu, pressione ENTER");
             {
                 if (Ataque <= 2)
                 {
-                    Vida_Player_1 -= 10 + forca_2;
-                    Console.WriteLine($"Você acerta! O inimigo perde {10 + forca_2} de vida");
+                    if (espada_2 > 0)
+                    {
+                        Vida_Player_1 -= 25 + forca_2 - armadura_1;
+                        Console.WriteLine($"Você acerta! O inimigo perde {25 + forca_2 - armadura_1} de vida");
+                    }
+                    else
+                    {
+                        Vida_Player_1 -= 15 + forca_2 - armadura_1;
+                        Console.WriteLine($"Você acerta! O inimigo perde {15 + forca_2 - armadura_1} de vida");
+                    }
+                    
                 }
                 else if (Ataque >= 3)
                 {
@@ -354,8 +858,16 @@ Se você entendeu, pressione ENTER");
                 }
                 else if (Ataque == 5)
                 {
-                    Vida_Player_1 -= 20 + forca_2;
-                    Console.WriteLine($"Você acerta em cheio! O inimigo perde {20 + forca_2} de vida");
+                    if (espada_2 > 0)
+                    {
+                        Vida_Player_1 -= 40 + forca_2 - armadura_1;
+                        Console.WriteLine($"Você acerta em cheio! O inimigo perde {40 + forca_2 - armadura_1} de vida");
+                    }
+                    else
+                    {
+                        Vida_Player_1 -= 30 + forca_2 - armadura_1;
+                        Console.WriteLine($"Você acerta em cheio! O inimigo perde {30 + forca_2 - armadura_1} de vida");
+                    }
                 }
             }
 
@@ -363,8 +875,16 @@ Se você entendeu, pressione ENTER");
             {
                 if (Ataque <= 2)
                 {
-                    Vida_Boss -= 10 + forca_1;
-                    Console.WriteLine($"Você acerta! O inimigo perde {10 + forca_1} de vida");
+                    if (espada_1 > 0)
+                    {
+                        Vida_Boss -= 25 + forca_1;
+                        Console.WriteLine($"Você acerta! O inimigo perde {25 + forca_1} de vida");
+                    }
+                    else
+                    {
+                        Vida_Boss -= 15 + forca_1;
+                        Console.WriteLine($"Você acerta! O inimigo perde {15 + forca_1} de vida");
+                    }
                 }
                 else if (Ataque >= 3)
                 {
@@ -372,8 +892,16 @@ Se você entendeu, pressione ENTER");
                 }
                 else if (Ataque == 5)
                 {
-                    Vida_Boss -= 20 + forca_1;
-                    Console.WriteLine($"Você acerta em cheio! O inimigo perde {20 + forca_1} de vida");
+                    if (espada_1  > 0)
+                    {
+                        Vida_Boss -= 40 + forca_1;
+                        Console.WriteLine($"Você acerta em cheio! O inimigo perde {40 + forca_1} de vida");
+                    }
+                    else
+                    {
+                        Vida_Boss -= 30 + forca_1;
+                        Console.WriteLine($"Você acerta em cheio! O inimigo perde {30 + forca_1} de vida");
+                    }
                 }
             }
         }
@@ -381,28 +909,32 @@ Se você entendeu, pressione ENTER");
 
         static void Magia()
         {
+            //opções
+            Random rPlayer2 = new Random();
+            int Magias = rPlayer2.Next(6);
+
             if (player == 1)
             {
-                if (op == "2" && Mana_Player_1 >= 5)
+                Console.WriteLine($"{magias_p1[1, 0] + magias_p1[1, 1]}");
+                Console.WriteLine($"{magias_p1[2, 0] + magias_p1[2, 1]}");
+                Console.WriteLine($"{magias_p1[3, 0] + magias_p1[3, 1]}");
+            }
+            else if (player == 2)
+            {
+                Console.WriteLine($"{"1." + magias_p2[1, 1]}");
+                Console.WriteLine($"{"2." + magias_p2[2, 1]}");
+                Console.WriteLine($"{"3. " + magias_p2[3, 1]}");
+            }
+            Console.WriteLine("4. Voltar");
+            Console.WriteLine("");
+
+            op = Console.ReadLine();
+            Console.WriteLine("");
+
+            if (player == 1)
+            {
+                if (Mana_Player_1 >= 5)
                 {
-                    //opções
-                    Random rPlayer2 = new Random();
-                    int Magias = rPlayer2.Next(6);
-
-                    Console.WriteLine("1. Bola de Fogo");
-                    Console.WriteLine("Um projétil incandescente que explode no impacto. Custa 10 de mana.");
-                    Console.WriteLine("");
-                    Console.WriteLine("2. Relâmpago");
-                    Console.WriteLine("Um raio concentrado que sai da ponta dos seus dedos na direção em que você estiver apontando. Custa 5 de mana");
-                    Console.WriteLine("");
-                    Console.WriteLine("3. Curar Ferimentos");
-                    Console.WriteLine("Um poder que restaura sua energia vital ao absorver a energia da própria terra. custa 5 de mana e recupera 20 de vida");
-                    Console.WriteLine("");
-                    Console.WriteLine("4. Voltar");
-                    Console.WriteLine("");
-
-                    op = Console.ReadLine();
-                    Console.WriteLine("");
 
                     if (op == "4")
                     {
@@ -410,7 +942,7 @@ Se você entendeu, pressione ENTER");
                     }
                     if (player == 1 && Singleplayer == false)
                     {
-                        if (op == "1")
+                        if (magias_p1[Convert.ToInt32 (op), 1].Contains("Bola de Fogo"))
                         {
                             if (Mana_Player_1 < 10)
                             {
@@ -419,24 +951,29 @@ Se você entendeu, pressione ENTER");
                             }
                             else if (Magias == 0 && Mana_Player_1 >= 10)
                             {
-                                Vida_Player_2 -= 10;
+                                Vida_Player_2 -= 10 - manto_2;
                                 Mana_Player_1 -= 10;
-                                Console.WriteLine("Você erra, mas a explosão ainda acerta seu inimigo. O inimigo perde 10 de vida");
+                                Console.WriteLine($"Você erra, mas a explosão ainda acerta seu inimigo. O inimigo perde {10 - manto_2} de vida");
                             }
                             else if (Magias >= 1 && Magias <= 4 && Mana_Player_1 >= 10)
                             {
-                                Vida_Player_2 -= 25;
+                                Vida_Player_2 -= 20 - manto_2;
                                 Mana_Player_1 -= 10;
-                                Console.WriteLine("Você acerta sua Bola de Fogo. O inimigo perde 25 de vida");
+                                Console.WriteLine($"Você acerta sua Bola de Fogo. O inimigo perde {20 - manto_2} de vida");
                             }
                             else if (Magias == 5 && Mana_Player_1 >= 10)
                             {
-                                Vida_Player_2 -= 50;
+                                Vida_Player_2 -= 30 - manto_2;
                                 Mana_Player_1 -= 10;
-                                Console.WriteLine("Sua Bola de Fogo acerta seu inimigo em cheio! O inimigo perde 50 de vida");
+                                Console.WriteLine($"Sua Bola de Fogo acerta seu inimigo em cheio! O inimigo perde {30 - manto_2} de vida");
+                                if (runas_1 == true && manto_2 == 0)
+                                {
+                                    Console.WriteLine("Uma runa vermelha arde no seu bolso, você vê que seu inimigo ficou Queimado!");
+                                    queimadura_2 = 5;
+                                }
                             }
                         }
-                        else if (op == "2")
+                        else if (magias_p1[Convert.ToInt32(op), 1].Contains("Bola de Fogo"))
                         {
                             if (Mana_Player_1 < 5)
                             {
@@ -449,18 +986,23 @@ Se você entendeu, pressione ENTER");
                             }
                             else if (Magias >= 1 && Magias <= 4 && Mana_Player_1 >= 5)
                             {
-                                Vida_Player_2 -= 20;
+                                Vida_Player_2 -= 10 - manto_2;
                                 Mana_Player_1 -= 5;
-                                Console.WriteLine("Você acerta seu raio no inimigo. O inimigo perde 20 de vida");
+                                Console.WriteLine($"Você acerta seu raio no inimigo. O inimigo perde {10 - manto_2} de vida");
                             }
                             else if (Magias == 5 && Mana_Player_1 >= 5)
                             {
-                                Vida_Player_2 -= 40;
+                                Vida_Player_2 -= 20 - manto_2;
                                 Mana_Player_1 -= 5;
-                                Console.WriteLine("Você acerta um raio em cheio no peito do inimigo. O inimigo perde 40 de vida");
+                                Console.WriteLine($"Você acerta um raio em cheio no peito do inimigo. O inimigo perde {20 - manto_2} de vida");
+                                if (runas_1 == true && manto_2 == 0)
+                                {
+                                    Console.WriteLine("Você vê uma runa azul brilhando no seu bolso, e seu inimigo fica paralizado!");
+                                    Paralizado_2 = true;
+                                }
                             }
                         }
-                        else if (op == "3")
+                        else if (magias_p1[Convert.ToInt32(op), 1].Contains("Bola de Fogo"))
                         {
                             if (Mana_Player_1 < 5)
                             {
@@ -471,12 +1013,17 @@ Se você entendeu, pressione ENTER");
                                 Vida_Player_1 += 20;
                                 Mana_Player_1 -= 5;
                                 Console.WriteLine("Você encosta no seu peito e sua mão brilha em uma luz amarela. Você se sente revigorado");
+                                if (runas_1 == true)
+                                {
+                                    Console.WriteLine("Uma runa amarela começa a brilhar no seu bolso, você sente uma sensação de alívio. Você recuperou mais 10 de vida!");
+                                    Vida_Player_1 += 10;
+                                }
                             }
                         }
                     }
                     else if (Singleplayer == true)
                     {
-                        if (op == "1")
+                        if (magias_p1[Convert.ToInt32(op), 1].Contains("Bola de Fogo"))
                         {
                             if (Mana_Player_1 < 10)
                             {
@@ -490,18 +1037,23 @@ Se você entendeu, pressione ENTER");
                             }
                             else if (Magias >= 1 && Magias <= 4 && Mana_Player_1 >= 10)
                             {
-                                Vida_Boss -= 25;
+                                Vida_Boss -= 20;
                                 Mana_Player_1 -= 10;
-                                Console.WriteLine("Você acerta sua Bola de Fogo. O inimigo perde 25 de vida");
+                                Console.WriteLine("Você acerta sua Bola de Fogo. O inimigo perde 20 de vida");
                             }
                             else if (Magias == 5 && Mana_Player_1 >= 10)
                             {
-                                Vida_Boss -= 50;
+                                Vida_Boss -= 30;
                                 Mana_Player_1 -= 10;
-                                Console.WriteLine("Sua Bola de Fogo acerta seu inimigo em cheio! O inimigo perde 50 de vida");
+                                Console.WriteLine("Sua Bola de Fogo acerta seu inimigo em cheio! O inimigo perde 30 de vida");
+                                if (runas_1 == true)
+                                {
+                                    Console.WriteLine("Uma runa vermelha arde no seu bolso, você vê que seu inimigo ficou Queimado!");
+                                    queimadura_2 = 5;
+                                }
                             }
                         }
-                        else if (op == "2")
+                        else if (magias_p1[Convert.ToInt32(op), 1].Contains("Relâmpago"))
                         {
                             if (Mana_Player_1 < 5)
                             {
@@ -514,18 +1066,23 @@ Se você entendeu, pressione ENTER");
                             }
                             else if (Magias >= 1 && Magias <= 4 && Mana_Player_1 >= 5)
                             {
-                                Vida_Boss -= 20;
+                                Vida_Boss -= 10;
                                 Mana_Player_1 -= 5;
-                                Console.WriteLine("Você acerta seu raio no inimigo. O inimigo perde 20 de vida");
+                                Console.WriteLine("Você acerta seu raio no inimigo. O inimigo perde 10 de vida");
                             }
                             else if (Magias == 5 && Mana_Player_1 >= 5)
                             {
-                                Vida_Boss -= 40;
+                                Vida_Boss -= 20;
                                 Mana_Player_1 -= 5;
-                                Console.WriteLine("Você acerta um raio em cheio no peito do inimigo. O inimigo perde 40 de vida");
+                                Console.WriteLine("Você acerta um raio em cheio no peito do inimigo. O inimigo perde 20 de vida");
+                                if (runas_1 == true)
+                                {
+                                    Console.WriteLine("Você vê uma runa azul brilhando no seu bolso, e seu inimigo fica paralizado!");
+                                    Paralizado_2 = true;
+                                }
                             }
                         }
-                        else if (op == "3")
+                        else if (magias_p1[Convert.ToInt32(op), 1].Contains("Curar Ferimentos"))
                         {
                             if (Mana_Player_1 < 5)
                             {
@@ -539,74 +1096,9 @@ Se você entendeu, pressione ENTER");
                             }
                         }
                     }
-                    if (player == 2)
-                    {
-                        if (op == "1")
-                        {
-                            if (Mana_Player_2 < 10)
-                            {
-                                Console.WriteLine("Você não consegue lançar essa magia");
-                            }
-                            else if (Magias == 0 && Mana_Player_2 >= 10)
-                            {
-                                Vida_Player_1 -= 10;
-                                Mana_Player_2 -= 10;
-                                Console.WriteLine("Você erra, mas a explosão ainda acerta seu inimigo. O inimigo perde 10 de vida");
-                            }
-                            else if (Magias >= 1 && Magias <= 4 && Mana_Player_2 >= 10)
-                            {
-                                Vida_Player_1 -= 25;
-                                Mana_Player_2 -= 10;
-                                Console.WriteLine("Você acerta sua Bola de Fogo. O inimigo perde 25 de vida");
-                            }
-                            else if (Magias == 5 && Mana_Player_2 >= 10)
-                            {
-                                Vida_Player_1 -= 50;
-                                Mana_Player_2 -= 10;
-                                Console.WriteLine("Sua Bola de Fogo acerta seu inimigo em cheio! O inimigo perde 50 de vida");
-                            }
-                        }
-                        else if (op == "2")
-                        {
-                            if (Mana_Player_2 < 5)
-                            {
-                                Console.WriteLine("Você não consegue lançar essa magia");
-                            }
-                            else if (Magias == 0 && Mana_Player_2 >= 5)
-                            {
-                                Mana_Player_2 -= 5;
-                                Console.WriteLine("Você lança um raio e erra");
-                            }
-                            else if (Magias >= 1 && Magias <= 4 && Mana_Player_2 >= 5)
-                            {
-                                Vida_Player_1 -= 20;
-                                Mana_Player_2 -= 5;
-                                Console.WriteLine("Você acerta seu raio no inimigo. O inimigo perde 20 de vida");
-                            }
-                            else if (Magias == 5 && Mana_Player_2 >= 5)
-                            {
-                                Vida_Player_1 -= 40;
-                                Mana_Player_2 -= 5;
-                                Console.WriteLine("Você acerta um raio em cheio no peito do inimigo. O inimigo perde 40 de vida");
-                            }
-                        }
-                        else if (op == "3")
-                        {
-                            if (Mana_Player_2 < 5)
-                            {
-                                Console.WriteLine("Você não consegue lançar essa magia");
-                            }
-                            else if (Mana_Player_2 >= 5)
-                            {
-                                Vida_Player_2 += 20;
-                                Mana_Player_2 -= 5;
-                                Console.WriteLine("Você encosta no seu peito e sua mão brilha em uma luz amarela. Você se sente revigorado");
-                            }
-                        }
-                    }
                 }
 
-                else if (op == "2" && Mana_Player_1 < 5)
+                else if (Mana_Player_1 < 5)
                 {
                     Console.WriteLine("Você não tem mana suficiênte, escolha outra opção.");
                     AçõesJogadores();
@@ -614,233 +1106,87 @@ Se você entendeu, pressione ENTER");
             }
             if (player == 2)
             {
-                if (op == "2" && Mana_Player_2 >= 5)
+                if (op == "1")
                 {
-                    //opções
-                    Random rPlayer2 = new Random();
-                    int Magias = rPlayer2.Next(6);
-
-                    Console.WriteLine("1. Bola de Fogo");
-                    Console.WriteLine("Um projétil incandescente que explode no impacto. Custa 10 de mana.");
-                    Console.WriteLine("");
-                    Console.WriteLine("2. Relâmpago");
-                    Console.WriteLine("Um raio concentrado que sai da ponta dos seus dedos na direção em que você estiver apontando. Custa 5 de mana");
-                    Console.WriteLine("");
-                    Console.WriteLine("3. Curar Ferimentos");
-                    Console.WriteLine("Um poder que restaura sua energia vital ao absorver a energia da própria terra. custa 5 de mana e recupera 20 de vida");
-                    Console.WriteLine("");
-                    Console.WriteLine("4. Voltar");
-                    Console.WriteLine("");
-
-                    op = Console.ReadLine();
-                    Console.WriteLine("");
-
-                    if (op == "4")
+                    if (Mana_Player_2 < 10)
                     {
-                        BatalhaMultiplayer();
+                        Console.WriteLine("Você não consegue lançar essa magia");
                     }
-                    if (player == 1 && Singleplayer == false)
+                    else if (Magias == 0 && Mana_Player_2 >= 10)
                     {
-                        if (op == "1")
-                        {
-                            if (Mana_Player_1 < 10)
-                            {
-                                Console.WriteLine("Você não consegue lançar essa magia");
-                                AçõesJogadores();
-                            }
-                            else if (Magias == 0 && Mana_Player_1 >= 10)
-                            {
-                                Vida_Player_2 -= 10;
-                                Mana_Player_1 -= 10;
-                                Console.WriteLine("Você erra, mas a explosão ainda acerta seu inimigo. O inimigo perde 10 de vida");
-                            }
-                            else if (Magias >= 1 && Magias <= 4 && Mana_Player_1 >= 10)
-                            {
-                                Vida_Player_2 -= 25;
-                                Mana_Player_1 -= 10;
-                                Console.WriteLine("Você acerta sua Bola de Fogo. O inimigo perde 25 de vida");
-                            }
-                            else if (Magias == 5 && Mana_Player_1 >= 10)
-                            {
-                                Vida_Player_2 -= 50;
-                                Mana_Player_1 -= 10;
-                                Console.WriteLine("Sua Bola de Fogo acerta seu inimigo em cheio! O inimigo perde 50 de vida");
-                            }
-                        }
-                        else if (op == "2")
-                        {
-                            if (Mana_Player_1 < 5)
-                            {
-                                Console.WriteLine("Você não consegue lançar essa magia");
-                            }
-                            else if (Magias == 0 && Mana_Player_1 >= 5)
-                            {
-                                Mana_Player_1 -= 5;
-                                Console.WriteLine("Você lança um raio e erra");
-                            }
-                            else if (Magias >= 1 && Magias <= 4 && Mana_Player_1 >= 5)
-                            {
-                                Vida_Player_2 -= 20;
-                                Mana_Player_1 -= 5;
-                                Console.WriteLine("Você acerta seu raio no inimigo. O inimigo perde 20 de vida");
-                            }
-                            else if (Magias == 5 && Mana_Player_1 >= 5)
-                            {
-                                Vida_Player_2 -= 40;
-                                Mana_Player_1 -= 5;
-                                Console.WriteLine("Você acerta um raio em cheio no peito do inimigo. O inimigo perde 40 de vida");
-                            }
-                        }
-                        else if (op == "3")
-                        {
-                            if (Mana_Player_1 < 5)
-                            {
-                                Console.WriteLine("Você não consegue lançar essa magia");
-                            }
-                            else if (Mana_Player_1 >= 5)
-                            {
-                                Vida_Player_1 += 20;
-                                Mana_Player_1 -= 5;
-                                Console.WriteLine("Você encosta no seu peito e sua mão brilha em uma luz amarela. Você se sente revigorado");
-                            }
-                        }
+                        Vida_Player_1 -= 10 - manto_1;
+                        Mana_Player_2 -= 10;
+                        Console.WriteLine($"Você erra, mas a explosão ainda acerta seu inimigo. O inimigo perde {10 - manto_1} de vida");
                     }
-                    else if (Singleplayer == true)
+                    else if (Magias >= 1 && Magias <= 4 && Mana_Player_2 >= 10)
                     {
-                        if (op == "1")
-                        {
-                            if (Mana_Player_1 < 10)
-                            {
-                                Console.WriteLine("Você não consegue lançar essa magia");
-                            }
-                            else if (Magias == 0 && Mana_Player_1 >= 10)
-                            {
-                                Vida_Boss -= 10;
-                                Mana_Player_1 -= 10;
-                                Console.WriteLine("Você erra, mas a explosão ainda acerta seu inimigo. O inimigo perde 10 de vida");
-                            }
-                            else if (Magias >= 1 && Magias <= 4 && Mana_Player_1 >= 10)
-                            {
-                                Vida_Boss -= 25;
-                                Mana_Player_1 -= 10;
-                                Console.WriteLine("Você acerta sua Bola de Fogo. O inimigo perde 25 de vida");
-                            }
-                            else if (Magias == 5 && Mana_Player_1 >= 10)
-                            {
-                                Vida_Boss -= 50;
-                                Mana_Player_1 -= 10;
-                                Console.WriteLine("Sua Bola de Fogo acerta seu inimigo em cheio! O inimigo perde 50 de vida");
-                            }
-                        }
-                        else if (op == "2")
-                        {
-                            if (Mana_Player_1 < 5)
-                            {
-                                Console.WriteLine("Você não consegue lançar essa magia");
-                            }
-                            else if (Magias == 0 && Mana_Player_1 >= 5)
-                            {
-                                Mana_Player_1 -= 5;
-                                Console.WriteLine("Você lança um raio e erra");
-                            }
-                            else if (Magias >= 1 && Magias <= 4 && Mana_Player_1 >= 5)
-                            {
-                                Vida_Boss -= 20;
-                                Mana_Player_1 -= 5;
-                                Console.WriteLine("Você acerta seu raio no inimigo. O inimigo perde 20 de vida");
-                            }
-                            else if (Magias == 5 && Mana_Player_1 >= 5)
-                            {
-                                Vida_Boss -= 40;
-                                Mana_Player_1 -= 5;
-                                Console.WriteLine("Você acerta um raio em cheio no peito do inimigo. O inimigo perde 40 de vida");
-                            }
-                        }
-                        else if (op == "3")
-                        {
-                            if (Mana_Player_1 < 5)
-                            {
-                                Console.WriteLine("Você não consegue lançar essa magia");
-                            }
-                            else if (Mana_Player_1 >= 5)
-                            {
-                                Vida_Player_1 += 20;
-                                Mana_Player_1 -= 5;
-                                Console.WriteLine("Você encosta no seu peito e sua mão brilha em uma luz amarela. Você se sente revigorado");
-                            }
-                        }
+                        Vida_Player_1 -= 20 - manto_1;
+                        Mana_Player_2 -= 10;
+                        Console.WriteLine($"Você acerta sua Bola de Fogo. O inimigo perde {20 - manto_1} de vida");
                     }
-                    if (player == 2)
+                    else if (Magias == 5 && Mana_Player_2 >= 10)
                     {
-                        if (op == "1")
+                        Vida_Player_1 -= 30 - manto_1;
+                        Mana_Player_2 -= 10;
+                        Console.WriteLine($"Sua Bola de Fogo acerta seu inimigo em cheio! O inimigo perde {30 - manto_1} de vida");
+                        if (runas_2 == true && manto_1 == 0)
                         {
-                            if (Mana_Player_2 < 10)
-                            {
-                                Console.WriteLine("Você não consegue lançar essa magia");
-                            }
-                            else if (Magias == 0 && Mana_Player_2 >= 10)
-                            {
-                                Vida_Player_1 -= 10;
-                                Mana_Player_2 -= 10;
-                                Console.WriteLine("Você erra, mas a explosão ainda acerta seu inimigo. O inimigo perde 10 de vida");
-                            }
-                            else if (Magias >= 1 && Magias <= 4 && Mana_Player_2 >= 10)
-                            {
-                                Vida_Player_1 -= 25;
-                                Mana_Player_2 -= 10;
-                                Console.WriteLine("Você acerta sua Bola de Fogo. O inimigo perde 25 de vida");
-                            }
-                            else if (Magias == 5 && Mana_Player_2 >= 10)
-                            {
-                                Vida_Player_1 -= 50;
-                                Mana_Player_2 -= 10;
-                                Console.WriteLine("Sua Bola de Fogo acerta seu inimigo em cheio! O inimigo perde 50 de vida");
-                            }
-                        }
-                        else if (op == "2")
-                        {
-                            if (Mana_Player_2 < 5)
-                            {
-                                Console.WriteLine("Você não consegue lançar essa magia");
-                            }
-                            else if (Magias == 0 && Mana_Player_2 >= 5)
-                            {
-                                Mana_Player_2 -= 5;
-                                Console.WriteLine("Você lança um raio e erra");
-                            }
-                            else if (Magias >= 1 && Magias <= 4 && Mana_Player_2 >= 5)
-                            {
-                                Vida_Player_1 -= 20;
-                                Mana_Player_2 -= 5;
-                                Console.WriteLine("Você acerta seu raio no inimigo. O inimigo perde 20 de vida");
-                            }
-                            else if (Magias == 5 && Mana_Player_2 >= 5)
-                            {
-                                Vida_Player_1 -= 40;
-                                Mana_Player_2 -= 5;
-                                Console.WriteLine("Você acerta um raio em cheio no peito do inimigo. O inimigo perde 40 de vida");
-                            }
-                        }
-                        else if (op == "3")
-                        {
-                            if (Mana_Player_2 < 5)
-                            {
-                                Console.WriteLine("Você não consegue lançar essa magia");
-                            }
-                            else if (Mana_Player_2 >= 5)
-                            {
-                                Vida_Player_2 += 20;
-                                Mana_Player_2 -= 5;
-                                Console.WriteLine("Você encosta no seu peito e sua mão brilha em uma luz amarela. Você se sente revigorado");
-                            }
+                            Console.WriteLine("Uma runa vermelha arde no seu bolso, você vê que seu inimigo ficou Queimado!");
+                            queimadura_1 = 5;
                         }
                     }
                 }
-
-                else if (op == "2" && Mana_Player_2 < 5)
+                else if (op == "2")
                 {
-                    Console.WriteLine("Você não tem mana suficiênte, escolha outra opção.");
-                    AçõesJogadores();
+                    if (Mana_Player_2 < 5)
+                    {
+                        Console.WriteLine("Você não consegue lançar essa magia");
+                    }
+                    else if (Magias == 0 && Mana_Player_2 >= 5)
+                    {
+                        Mana_Player_2 -= 5;
+                        Console.WriteLine("Você lança um raio e erra");
+                    }
+                    else if (Magias >= 1 && Magias <= 4 && Mana_Player_2 >= 5)
+                    {
+                        Vida_Player_1 -= 10 - manto_1;
+                        Mana_Player_2 -= 5;
+                        Console.WriteLine($"Você acerta seu raio no inimigo. O inimigo perde {10 - manto_1} de vida");
+                    }
+                    else if (Magias == 5 && Mana_Player_2 >= 5)
+                    {
+                        Vida_Player_1 -= 20 - manto_1;
+                        Mana_Player_2 -= 5;
+                        Console.WriteLine($"Você acerta um raio em cheio no peito do inimigo. O inimigo perde {20 - manto_1} de vida");
+                        if (runas_1 == true && manto_1 == 0)
+                        {
+                            Console.WriteLine("Você vê uma runa azul brilhando no seu bolso, e seu inimigo fica paralizado!");
+                            Paralizado_2 = true;
+                        }
+                    }
+                }
+                else if (op == "3")
+                {
+                    if (Mana_Player_2 < 5)
+                    {
+                        Console.WriteLine("Você não consegue lançar essa magia");
+                    }
+                    else if (Mana_Player_2 >= 5)
+                    {
+                        Vida_Player_2 += 20;
+                        Mana_Player_2 -= 5;
+                        Console.WriteLine("Você encosta no seu peito e sua mão brilha em uma luz amarela. Você se sente revigorado");
+                        if (runas_2 == true)
+                        {
+                            Console.WriteLine("Uma runa amarela começa a brilhar no seu bolso, você sente uma sensação de alívio. Você recuperou mais 10 de vida!");
+                            Vida_Player_1 += 10;
+                            if (runas_1 == true)
+                            {
+                                Console.WriteLine("Uma runa amarela começa a brilhar no seu bolso, você sente uma sensação de alívio. Você recuperou mais 10 de vida!");
+                                Vida_Player_1 += 10;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -848,31 +1194,32 @@ Se você entendeu, pressione ENTER");
 
         static void Item()
         {
+            Random rPlayer = new Random();
+            int Itens2 = rPlayer.Next(20);
+
+            //opções
+            Console.WriteLine("1. Poção de Cura");
+            Console.WriteLine("Recupera 10 de vida");
+            Console.WriteLine("Quantidade: " + Poção_de_Cura_1);
+            Console.WriteLine("");
+            Console.WriteLine("2. Poção de Mana");
+            Console.WriteLine("Recupera 5 de mana");
+            Console.WriteLine("Quantidade: " + Poção_de_Mana_1);
+            Console.WriteLine("");
+            Console.WriteLine("3. Poção Estranha");
+            Console.WriteLine("????????");
+            Console.WriteLine("Quantidade: " + Poção_Estranha_1);
+            Console.WriteLine("");
+            Console.WriteLine("4. Voltar");
+            Console.WriteLine("");
+
+            op = Console.ReadLine();
+            Console.WriteLine("");
+
             if (player == 1)
             {
-                if (op == "3" && Poções_1 > 0)
+                if (Poções_1 > 0)
                 {
-                    Random rPlayer = new Random();
-                    int Itens2 = rPlayer.Next(20);
-
-                    //opções
-                    Console.WriteLine("1. Poção de Cura");
-                    Console.WriteLine("Recupera 10 de vida");
-                    Console.WriteLine("Quantidade: " + Poção_de_Cura_1);
-                    Console.WriteLine("");
-                    Console.WriteLine("2. Poção de Mana");
-                    Console.WriteLine("Recupera 5 de mana");
-                    Console.WriteLine("Quantidade: " + Poção_de_Mana_1);
-                    Console.WriteLine("");
-                    Console.WriteLine("3. Poção Estranha");
-                    Console.WriteLine("????????");
-                    Console.WriteLine("Quantidade: " + Poção_Estranha_1);
-                    Console.WriteLine("");
-                    Console.WriteLine("4. Voltar");
-                    Console.WriteLine("");
-
-                    op = Console.ReadLine();
-                    Console.WriteLine("");
 
                     if (op == "4")
                     {
@@ -886,7 +1233,6 @@ Se você entendeu, pressione ENTER");
                             Vida_Player_1 += 10;
                             Console.WriteLine("Você bebe um líquido vermelho de um frasco e se sente revigorado");
                             Poção_de_Cura_1 -= 1;
-                            EndGame();
                         }
                         else if (op == "1" && Poção_de_Cura_1 == 0)
                         {
@@ -898,7 +1244,6 @@ Se você entendeu, pressione ENTER");
                             Mana_Player_1 += 5;
                             Console.WriteLine("Você bebe um líquido azul de um frasco e se sente energizado");
                             Poção_de_Mana_1 -= 1;
-                            EndGame();
                         }
                         else if (op == "2" && Poção_de_Mana_1 == 0)
                         {
@@ -912,7 +1257,6 @@ Se você entendeu, pressione ENTER");
                                 Console.WriteLine("Você bebe a poção e começa a se sentir tonto até cai desacordado");
                                 Console.WriteLine("");
                                 Vida_Player_1 = 0;
-                                EndGame();
                             }
                             else if (Itens2 >= 1 && Itens2 <= 5 && Poção_Estranha_1 > 0)
                             {
@@ -920,12 +1264,10 @@ Se você entendeu, pressione ENTER");
                                 Mana_Player_1 = 20;
                                 Console.WriteLine("Você bebe a poção e começa a se sentir completamente restaurado");
                                 Poção_Estranha_1 -= 1;
-                                EndGame();
                             }
                             else if (Itens2 >= 6 && Poção_Estranha_1 > 0)
                             {
                                 Console.WriteLine("Você bebe a poção e não sente nenhuma mudança");
-                                EndGame();
                             }
                             else if (op == "3" && Poção_Estranha_1 == 0)
                             {
@@ -933,94 +1275,13 @@ Se você entendeu, pressione ENTER");
                             }
                         }
                     }
-                    if (player == 2)
-                    {
-
-                        if (op == "1" && Poção_de_Cura_2 > 0)
-                        {
-                            Vida_Player_2 += 10;
-                            Console.WriteLine("Você bebe um líquido vermelho de um frasco e se sente revigorado");
-                            Poção_de_Cura_2 -= 1;
-                            EndGame();
-                        }
-                        else if (op == "1" && Poção_de_Cura_2 == 0)
-                        {
-                            Console.WriteLine("Você não tem mais nenhuma poção de cura");
-                        }
-
-                        else if (op == "2" && Poção_de_Mana_2 > 0)
-                        {
-                            Mana_Player_2 += 5;
-                            Console.WriteLine("Você bebe um líquido azul de um frasco e se sente energizado");
-                            Poção_de_Mana_2 -= 1;
-                            EndGame();
-                        }
-                        else if (op == "2" && Poção_de_Mana_2 == 0)
-                        {
-                            Console.WriteLine("Você não tem mais nenhuma poção de mana");
-                        }
-
-                        else if (op == "3")
-                        {
-                            if (Itens2 == 0 && Poção_Estranha_2 > 0)
-                            {
-                                Console.WriteLine("Você bebe a poção e começa a se sentir tonto até cai desacordado");
-                                Console.WriteLine("");
-                                Vida_Player_2 = 0;
-                                EndGame();
-                            }
-                            else if (Itens2 >= 1 && Itens2 <= 5 && Poção_Estranha_2 > 0)
-                            {
-                                Vida_Player_2 = 100;
-                                Mana_Player_2 = 20;
-                                Console.WriteLine("Você bebe a poção e começa a se sentir completamente restaurado");
-                                Poção_Estranha_2 -= 1;
-                                EndGame();
-                            }
-                            else if (Itens2 >= 6 && Poção_Estranha_2 > 0)
-                            {
-                                Console.WriteLine("Você bebe a poção e não sente nenhuma mudança");
-                                EndGame();
-                            }
-                            else if (op == "3" && Poção_Estranha_2 == 0)
-                            {
-                                Console.WriteLine("Você não tem mais nenhuma poção estranha");
-                            }
-                        }
-                    }
-                }
-                else if (op == "3" && Poções_1 == 0)
-                {
-                    Console.WriteLine("Você não tem nenhum item");
-                    AçõesJogadores();
                 }
             }
             if (player == 2)
             {
-                if (op == "3" && Poções_2 > 0)
+                if (Poções_2 > 0)
                 {
-                    Random rPlayer = new Random();
-                    int Itens2 = rPlayer.Next(20);
-
-                    //opções
-                    Console.WriteLine("1. Poção de Cura");
-                    Console.WriteLine("Recupera 10 de vida");
-                    Console.WriteLine("Quantidade: " + Poção_de_Cura_1);
-                    Console.WriteLine("");
-                    Console.WriteLine("2. Poção de Mana");
-                    Console.WriteLine("Recupera 5 de mana");
-                    Console.WriteLine("Quantidade: " + Poção_de_Mana_1);
-                    Console.WriteLine("");
-                    Console.WriteLine("3. Poção Estranha");
-                    Console.WriteLine("????????");
-                    Console.WriteLine("Quantidade: " + Poção_Estranha_1);
-                    Console.WriteLine("");
-                    Console.WriteLine("4. Voltar");
-                    Console.WriteLine("");
-
-                    op = Console.ReadLine();
-                    Console.WriteLine("");
-
+                    
                     if (op == "4")
                     {
                         BatalhaMultiplayer();
@@ -1033,7 +1294,6 @@ Se você entendeu, pressione ENTER");
                             Vida_Player_1 += 10;
                             Console.WriteLine("Você bebe um líquido vermelho de um frasco e se sente revigorado");
                             Poção_de_Cura_1 -= 1;
-                            EndGame();
                         }
                         else if (op == "1" && Poção_de_Cura_1 == 0)
                         {
@@ -1045,7 +1305,6 @@ Se você entendeu, pressione ENTER");
                             Mana_Player_1 += 5;
                             Console.WriteLine("Você bebe um líquido azul de um frasco e se sente energizado");
                             Poção_de_Mana_1 -= 1;
-                            EndGame();
                         }
                         else if (op == "2" && Poção_de_Mana_1 == 0)
                         {
@@ -1072,7 +1331,7 @@ Se você entendeu, pressione ENTER");
                             else if (Itens2 >= 6 && Poção_Estranha_1 > 0)
                             {
                                 Console.WriteLine("Você bebe a poção e não sente nenhuma mudança");
-                                EndGame();
+                                Poção_Estranha_1 -= 1;
                             }
                             else if (op == "3" && Poção_Estranha_1 == 0)
                             {
@@ -1080,63 +1339,8 @@ Se você entendeu, pressione ENTER");
                             }
                         }
                     }
-                    if (player == 2)
-                    {
-
-                        if (op == "1" && Poção_de_Cura_2 > 0)
-                        {
-                            Vida_Player_2 += 10;
-                            Console.WriteLine("Você bebe um líquido vermelho de um frasco e se sente revigorado");
-                            Poção_de_Cura_2 -= 1;
-                            EndGame();
-                        }
-                        else if (op == "1" && Poção_de_Cura_2 == 0)
-                        {
-                            Console.WriteLine("Você não tem mais nenhuma poção de cura");
-                        }
-
-                        else if (op == "2" && Poção_de_Mana_2 > 0)
-                        {
-                            Mana_Player_2 += 5;
-                            Console.WriteLine("Você bebe um líquido azul de um frasco e se sente energizado");
-                            Poção_de_Mana_2 -= 1;
-                            EndGame();
-                        }
-                        else if (op == "2" && Poção_de_Mana_2 == 0)
-                        {
-                            Console.WriteLine("Você não tem mais nenhuma poção de mana");
-                        }
-
-                        else if (op == "3")
-                        {
-                            if (Itens2 == 0 && Poção_Estranha_2 > 0)
-                            {
-                                Console.WriteLine("Você bebe a poção e começa a se sentir tonto até cai desacordado");
-                                Console.WriteLine("");
-                                Vida_Player_2 = 0;
-                                EndGame();
-                            }
-                            else if (Itens2 >= 1 && Itens2 <= 5 && Poção_Estranha_2 > 0)
-                            {
-                                Vida_Player_2 = 100;
-                                Mana_Player_2 = 20;
-                                Console.WriteLine("Você bebe a poção e começa a se sentir completamente restaurado");
-                                Poção_Estranha_2 -= 1;
-                                EndGame();
-                            }
-                            else if (Itens2 >= 6 && Poção_Estranha_2 > 0)
-                            {
-                                Console.WriteLine("Você bebe a poção e não sente nenhuma mudança");
-                                EndGame();
-                            }
-                            else if (op == "3" && Poção_Estranha_2 == 0)
-                            {
-                                Console.WriteLine("Você não tem mais nenhuma poção estranha");
-                            }
-                        }
-                    }
                 }
-                else if (op == "3" && Poções_2 == 0)
+                else if (Poções_2 == 0)
                 {
                     Console.WriteLine("Você não tem nenhum item");
                     AçõesJogadores();
@@ -1227,27 +1431,6 @@ Se você entendeu, pressione ENTER");
 ░▀▀▀░░░▀░▀░▀▀░░░▀░░▀▀▀░▀░▀░▀▀▀░▀░▀░▀░▀░▀▀▀░▀▀▀░░░▀▀▀░▀░▀░▀░▀░▀░▀░▀░▀");
                 }
             }
-            else if (Singleplayer == true)
-            {
-                Boss();
-            }
-        }
-
-
-        static void DesenharLogo()
-        {
-            Thread.Sleep(200);
-            Console.WriteLine(@"                                                                                   ██████████                       ████ 
-                                                                                  ░░███░░░░███                     ░░███ ");
-            Thread.Sleep(200);
-            Console.WriteLine(@"                                                                                   ░███   ░░███ █████ ████  ██████  ░███ 
-                                                                                   ░███    ░███░░███ ░███  ███░░███ ░███ ");
-            Thread.Sleep(200);
-            Console.WriteLine(@"                                                                                   ░███    ░███ ░███ ░███ ░███████  ░███ 
-                                                                                   ░███    ███  ░███ ░███ ░███░░░   ░███ ");
-            Thread.Sleep(200);
-            Console.WriteLine(@"                                                                                   ██████████   ░░████████░░██████  █████
-                                                                                  ░░░░░░░░░░     ░░░░░░░░  ░░░░░░  ░░░░░ ");
         }
     }
 }
