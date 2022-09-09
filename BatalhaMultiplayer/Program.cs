@@ -15,13 +15,13 @@ namespace Batalha2
         // Atributos do Jogador 1
         static int forca_1, Vida_Player_1 = 100, Mana_Player_1 = 10, Poção_de_Cura_1 = 0, Poção_de_Mana_1 = 0, Poção_Estranha_1 = 0, Poções_1 = Poção_Estranha_1 + Poção_de_Mana_1 + Poção_de_Cura_1, queimadura_1 = 0, armadura_1 = 0, manto_1 = 0, espada_1 = 0;
         static bool Paralizado_1 = false, runas_1;
-        static string[,] magias_p1 = new string[4,2];
+        static string[] magias_p1 = { "0", "0", "0" };
 
 
         // Atributos do Jogador 2
         static int forca_2, Vida_Player_2 = 100, Mana_Player_2 = 10, Poção_de_Cura_2 = 0, Poção_de_Mana_2 = 0, Poção_Estranha_2 = 0, Poções_2 = Poção_Estranha_2 + Poção_de_Mana_2 + Poção_de_Cura_2, queimadura_2 = 0, armadura_2 = 0, manto_2 = 0, espada_2 = 0;
         static bool Paralizado_2 = false, runas_2;
-        static string[,] magias_p2 = new string[4,2];
+        static string[] magias_p2 = { "0", "0", "0" };
 
         // Atributos para o Modo Singleplayer
         static bool Singleplayer = false;
@@ -116,17 +116,22 @@ Se você entendeu, pressione ENTER");
             Console.ReadLine();
             Console.Clear();
 
+            //Envia para o "Menu" de Escolha de Magias
+            EscolherMagias();
             //Envia para a Loja (Comprar os Equipamentos)
             Loja();
-            //Envia para o "Menu" de Atributos (Escolher os valores de força e 
+            //Envia para o "Menu" de Atributos (Escolher os valores de força (que afeta a mana))
             EscolherAtributos();
-            EscolherMagias();
 
+
+            //Verificação do Tipo de Partida Escolhida, Enviando para o Método Específico para que a Ordem de Turnos esteja certa
+            //Caso a Partida seja SinglePlayer
             if (Singleplayer == true)
             {
                 BatalhaSingleplayer();
             }
-            if (Singleplayer == false)
+            //Caso a Partida seja MultiPlayer
+            else if (Singleplayer == false)
             {
                 BatalhaMultiplayer();
             }
@@ -470,15 +475,15 @@ Equipamentos: Afetam suas ações de ataque e magias
 1. Poção de Cura: Restaura sua saúde. Item consumível, recupera 20 de vida, custa 10 pila 
 2. Poção de Mana: Recupera parte da sua energia mágica. Item consumível, recupera 5 de mana, custa 15 pila
 3. Poção Estranha: Um líquido preto estranho que se contorce dentro do frasco, não fazemos ideia do que pode fazer. Item consumível, ???????????, custa 1 pila");
-            if (player == 1 && armadura_1 < 0 || (player == 2 && armadura_2 < 0))
+            if (player == 1 && armadura_1 == 0 || (player == 2 && armadura_2 == 0))
             {
                 Console.WriteLine("4. Armadura de Cota de Malha: Uma armadura feita de argolas de ferro, eficiente contra ataques corpo-a-corpo. Armadura, reduz 10 de dano de todo ataque físico, custa 30 pila");
             }
-            if (player == 1 && manto_1 < 0 || (player == 2 && manto_2 < 0))
+            if (player == 1 && manto_1 == 0 || (player == 2 && manto_2 == 0))
             {
                 Console.WriteLine("5. Manto Arcano: Uma roupa marcada com diversos símbolos místicos, eficiente contra efeitos mágicos. Armadura, reduz todo dano mágico em 5, custa 40 pila");
             }
-            if (player == 1 && espada_1 < 0 || (player == 2 && espada_2 < 0))
+            if (player == 1 && espada_1 == 0 || (player == 2 && espada_2 == 0))
             {
                 Console.WriteLine("6. Espada Balanceada: Uma espada feita por um ferreiro extremamente habilidoso, feita para golpes certeiros. Equipamento, aumenta seu dano físico em 10, custa 30 pila");
             }
@@ -564,16 +569,16 @@ Equipamentos: Afetam suas ações de ataque e magias
 
         static void EscolherMagias()
         {
-            string[,] op_magias = new string[9, 2];
-            op_magias[0, 0] = "1"; op_magias[0, 1] = "Bola de Fogo";
-            op_magias[1, 0] = "2"; op_magias[1, 1] = "Relâmpago";
-            op_magias[2, 0] = "3"; op_magias[2, 1] = "Curar Ferimentos";
-            op_magias[3, 0] = "4"; op_magias[3, 1] = "Despedaçar";
-            op_magias[4, 0] = "5"; op_magias[4, 1] = "Confusão";
-            op_magias[5, 0] = "6"; op_magias[5, 1] = "Purificar";
-            op_magias[6, 0] = "7"; op_magias[6, 1] = "Raio do Enfraquecimento";
-            op_magias[7, 0] = "8"; op_magias[7, 1] = "Rogar Maldição";
-            op_magias[8, 0] = "9"; op_magias[8, 1] = "Campo de Força";
+            string[] op_magias = new string[9];
+            op_magias[0] = "Bola de Fogo";
+            op_magias[1] = "Relâmpago";
+            op_magias[2] = "Curar Ferimentos";
+            op_magias[3] = "Despedaçar";
+            op_magias[4] = "Confusão";
+            op_magias[5] = "Purificar";
+            op_magias[6] = "Raio do Enfraquecimento";
+            op_magias[7] = "Rogar Maldição";
+            op_magias[8] = "Campo de Força";
 
 
             Console.WriteLine("As magias são poderes invocados a partir da energia arcana, você pode escolher 3 para levar a batalha\n");
@@ -590,12 +595,21 @@ Equipamentos: Afetam suas ações de ataque e magias
 ");
 
             Console.WriteLine("Jogador 1, escolha suas magias");
-            for (int x = 3; x > 0; x--)
+            for (int x = 0; x < 3; x++)
             {
                 int y = int.Parse(Console.ReadLine());
-                magias_p1[x, 1] = op_magias[y-1, 1];
-                magias_p1[x, 0] = Convert.ToString(x) + ". ";
-                Console.WriteLine($"A magia escolhida foi: {magias_p1[x, 1]}");
+                magias_p1[x] = op_magias[y - 1];
+                op_magias[y - 1] = "0";
+
+                while (magias_p1[x] == "0")
+                {
+                    Console.WriteLine("\nErro! A magia selecionada é igual a alguma já escolhida, escolha outra!");
+                    y = int.Parse(Console.ReadLine());
+                    magias_p1[x] = op_magias[y - 1];
+                    op_magias[y - 1] = "0";
+                }
+
+                Console.WriteLine($"A magia escolhida foi: {magias_p1[x]}");
             }
             Console.WriteLine("\nDigite ENTER para continuar");
             Console.ReadLine();
@@ -603,6 +617,16 @@ Equipamentos: Afetam suas ações de ataque e magias
 
             if (Singleplayer == false)
             {
+                op_magias[0] = "Bola de Fogo";
+                op_magias[1] = "Relâmpago";
+                op_magias[2] = "Curar Ferimentos";
+                op_magias[3] = "Despedaçar";
+                op_magias[4] = "Confusão";
+                op_magias[5] = "Purificar";
+                op_magias[6] = "Raio do Enfraquecimento";
+                op_magias[7] = "Rogar Maldição";
+                op_magias[8] = "Campo de Força";
+
                 Console.WriteLine("As magias são poderes invocados a partir da energia arcana, você pode escolher 3 para levar a batalha\n");
 
                 Console.WriteLine(@"1. Bola de Fogo: 
@@ -617,11 +641,21 @@ Equipamentos: Afetam suas ações de ataque e magias
 ");
 
                 Console.WriteLine("Jogador 2, escolha suas magias");
-                for (int x = 3; x > 0; x--)
+                for (int x = 0; x < 3; x++)
                 {
                     int y = int.Parse(Console.ReadLine());
-                    magias_p2[x, 1] = op_magias[y - 1, 1];
-                    Console.WriteLine($"A magia escolhida foi: {magias_p1[x, 1]}");
+                    magias_p2[x] = op_magias[y - 1];
+                    op_magias[y - 1] = "0";
+
+                    while (magias_p2[x] == "0")
+                    {
+                        Console.WriteLine("\nErro! A magia selecionada é igual a alguma já escolhida, escolha outra!");
+                        y = int.Parse(Console.ReadLine());
+                        magias_p2[x] = op_magias[y - 1];
+                        op_magias[y - 1] = "0";
+                    }
+
+                    Console.WriteLine($"A magia escolhida foi: {magias_p2[x]}");
                 }
                 Console.WriteLine("\nDigite ENTER para continuar");
                 Console.ReadLine();
@@ -677,7 +711,7 @@ Equipamentos: Afetam suas ações de ataque e magias
                 Console.Clear();
             }
         }
-        
+
 
         static void BatalhaSingleplayer()
         {
@@ -832,7 +866,7 @@ Equipamentos: Afetam suas ações de ataque e magias
                         Vida_Player_2 -= 30 + forca_1 - armadura_2;
                         Console.WriteLine($"Você acerta em cheio! O inimigo perde {30 + forca_1 - armadura_2} de vida");
                     }
-                   
+
                 }
             }
 
@@ -850,7 +884,7 @@ Equipamentos: Afetam suas ações de ataque e magias
                         Vida_Player_1 -= 15 + forca_2 - armadura_1;
                         Console.WriteLine($"Você acerta! O inimigo perde {15 + forca_2 - armadura_1} de vida");
                     }
-                    
+
                 }
                 else if (Ataque >= 3)
                 {
@@ -892,7 +926,7 @@ Equipamentos: Afetam suas ações de ataque e magias
                 }
                 else if (Ataque == 5)
                 {
-                    if (espada_1  > 0)
+                    if (espada_1 > 0)
                     {
                         Vida_Boss -= 40 + forca_1;
                         Console.WriteLine($"Você acerta em cheio! O inimigo perde {40 + forca_1} de vida");
@@ -915,15 +949,15 @@ Equipamentos: Afetam suas ações de ataque e magias
 
             if (player == 1)
             {
-                Console.WriteLine($"{magias_p1[1, 0] + magias_p1[1, 1]}");
-                Console.WriteLine($"{magias_p1[2, 0] + magias_p1[2, 1]}");
-                Console.WriteLine($"{magias_p1[3, 0] + magias_p1[3, 1]}");
+                Console.WriteLine("1. " + magias_p1[0]);
+                Console.WriteLine("2. " + magias_p1[1]);
+                Console.WriteLine("3. " + magias_p1[2]);
             }
             else if (player == 2)
             {
-                Console.WriteLine($"{"1." + magias_p2[1, 1]}");
-                Console.WriteLine($"{"2." + magias_p2[2, 1]}");
-                Console.WriteLine($"{"3. " + magias_p2[3, 1]}");
+                Console.WriteLine("1. " + magias_p2[0]);
+                Console.WriteLine("2. " + magias_p2[1]);
+                Console.WriteLine("3. " + magias_p2[2]);
             }
             Console.WriteLine("4. Voltar");
             Console.WriteLine("");
@@ -935,14 +969,13 @@ Equipamentos: Afetam suas ações de ataque e magias
             {
                 if (Mana_Player_1 >= 5)
                 {
-
                     if (op == "4")
                     {
                         BatalhaMultiplayer();
                     }
                     if (player == 1 && Singleplayer == false)
                     {
-                        if (magias_p1[Convert.ToInt32 (op), 1].Contains("Bola de Fogo"))
+                        if (magias_p1[Convert.ToInt32(op) - 1].Contains("Bola de Fogo"))
                         {
                             if (Mana_Player_1 < 10)
                             {
@@ -973,7 +1006,7 @@ Equipamentos: Afetam suas ações de ataque e magias
                                 }
                             }
                         }
-                        else if (magias_p1[Convert.ToInt32(op), 1].Contains("Bola de Fogo"))
+                        else if (magias_p1[Convert.ToInt32(op) - 1].Contains("Bola de Fogo"))
                         {
                             if (Mana_Player_1 < 5)
                             {
@@ -1002,7 +1035,7 @@ Equipamentos: Afetam suas ações de ataque e magias
                                 }
                             }
                         }
-                        else if (magias_p1[Convert.ToInt32(op), 1].Contains("Bola de Fogo"))
+                        else if (magias_p1[Convert.ToInt32(op) - 1].Contains("Bola de Fogo"))
                         {
                             if (Mana_Player_1 < 5)
                             {
@@ -1023,7 +1056,7 @@ Equipamentos: Afetam suas ações de ataque e magias
                     }
                     else if (Singleplayer == true)
                     {
-                        if (magias_p1[Convert.ToInt32(op), 1].Contains("Bola de Fogo"))
+                        if (magias_p1[Convert.ToInt32(op) - 1].Contains("Bola de Fogo"))
                         {
                             if (Mana_Player_1 < 10)
                             {
@@ -1053,7 +1086,7 @@ Equipamentos: Afetam suas ações de ataque e magias
                                 }
                             }
                         }
-                        else if (magias_p1[Convert.ToInt32(op), 1].Contains("Relâmpago"))
+                        else if (magias_p1[Convert.ToInt32(op) - 1].Contains("Relâmpago"))
                         {
                             if (Mana_Player_1 < 5)
                             {
@@ -1082,7 +1115,7 @@ Equipamentos: Afetam suas ações de ataque e magias
                                 }
                             }
                         }
-                        else if (magias_p1[Convert.ToInt32(op), 1].Contains("Curar Ferimentos"))
+                        else if (magias_p1[Convert.ToInt32(op) - 1].Contains("Curar Ferimentos"))
                         {
                             if (Mana_Player_1 < 5)
                             {
@@ -1106,7 +1139,7 @@ Equipamentos: Afetam suas ações de ataque e magias
             }
             if (player == 2)
             {
-                if (op == "1")
+                if (magias_p2[Convert.ToInt32(op) - 1].Contains("Bola de Fogo"))
                 {
                     if (Mana_Player_2 < 10)
                     {
@@ -1136,7 +1169,7 @@ Equipamentos: Afetam suas ações de ataque e magias
                         }
                     }
                 }
-                else if (op == "2")
+                else if (magias_p2[Convert.ToInt32(op) - 1].Contains("Relâmpago"))
                 {
                     if (Mana_Player_2 < 5)
                     {
@@ -1165,7 +1198,7 @@ Equipamentos: Afetam suas ações de ataque e magias
                         }
                     }
                 }
-                else if (op == "3")
+                else if (magias_p2[Convert.ToInt32(op) - 1].Contains("Curar Ferimentos"))
                 {
                     if (Mana_Player_2 < 5)
                     {
@@ -1281,7 +1314,7 @@ Equipamentos: Afetam suas ações de ataque e magias
             {
                 if (Poções_2 > 0)
                 {
-                    
+
                     if (op == "4")
                     {
                         BatalhaMultiplayer();
@@ -1351,48 +1384,48 @@ Equipamentos: Afetam suas ações de ataque e magias
 
         static void Boss()
         {
-                Random rPlayer = new Random();
-                int Boss = rPlayer.Next(20);
+            Random rPlayer = new Random();
+            int Boss = rPlayer.Next(20);
 
-                while (Mana_Boss < 10 && Boss <= 10)
-                {
-                    Boss = rPlayer.Next(20);
-                }
+            while (Mana_Boss < 10 && Boss <= 10)
+            {
+                Boss = rPlayer.Next(20);
+            }
 
-                if (Boss == 0 && Mana_Boss >= 10)
-                {
-                    Paralizado_1 = true;
-                    Mana_Boss -= 10;
-                    Console.WriteLine("Seu inimigo começa a sussurrar palavras estranhas. Você se sente congelado");
-                }
-                else if (Boss >= 1 && Boss <= 5 && Mana_Boss >= 10)
-                {
-                    Mana_Boss -= 10;
-                    Console.WriteLine("Seu inimigo canaliza uma torrente de energia negativa na sua direção, mas erra");
-                }
-                else if (Boss >= 6 && Boss <= 10 && Mana_Boss >= 10)
-                {
-                    Vida_Player_1 -= 20;
-                    Mana_Boss -= 10;
-                    Console.WriteLine("Seu inimigo canaliza uma torrente de energia negativa na sua direção. Você perde 20 de vida");
-                }
-                else if (Boss >= 11 && Boss <= 14)
-                {
-                    Console.WriteLine("Seu inimigo tenta te acertar com um ataque, mas erra.");
-                }
-                else if (Boss >= 15 && Boss <= 18)
-                {
-                    Vida_Player_1 -= 15;
-                    Console.WriteLine("Seu inimigo te acerta com um ataque. Você perde 15 de vida.");
-                }
-                else
-                {
-                    Vida_Player_1 -= 30;
-                    Console.WriteLine("Seu inimigo te acerta em cheio. Você perde 30 de vida.");
-                }
-                Console.WriteLine("\nPressione Enter para continuar");
-                Console.ReadLine();
-                Console.Clear();
+            if (Boss == 0 && Mana_Boss >= 10)
+            {
+                Paralizado_1 = true;
+                Mana_Boss -= 10;
+                Console.WriteLine("Seu inimigo começa a sussurrar palavras estranhas. Você se sente congelado");
+            }
+            else if (Boss >= 1 && Boss <= 5 && Mana_Boss >= 10)
+            {
+                Mana_Boss -= 10;
+                Console.WriteLine("Seu inimigo canaliza uma torrente de energia negativa na sua direção, mas erra");
+            }
+            else if (Boss >= 6 && Boss <= 10 && Mana_Boss >= 10)
+            {
+                Vida_Player_1 -= 20;
+                Mana_Boss -= 10;
+                Console.WriteLine("Seu inimigo canaliza uma torrente de energia negativa na sua direção. Você perde 20 de vida");
+            }
+            else if (Boss >= 11 && Boss <= 14)
+            {
+                Console.WriteLine("Seu inimigo tenta te acertar com um ataque, mas erra.");
+            }
+            else if (Boss >= 15 && Boss <= 18)
+            {
+                Vida_Player_1 -= 15;
+                Console.WriteLine("Seu inimigo te acerta com um ataque. Você perde 15 de vida.");
+            }
+            else
+            {
+                Vida_Player_1 -= 30;
+                Console.WriteLine("Seu inimigo te acerta em cheio. Você perde 30 de vida.");
+            }
+            Console.WriteLine("\nPressione Enter para continuar");
+            Console.ReadLine();
+            Console.Clear();
         }
 
 
