@@ -9,26 +9,22 @@ namespace Batalha2
         static int player = 1;
         static string op = null;
 
+        
         // Atributos do Jogador 1
-        static int forca_1, Vida_Player_1 = 100, Mana_Player_1 = 10, Poção_de_Cura_1 = 0, Poção_de_Mana_1 = 0, Poção_Estranha_1 = 0, Poções_1 = Poção_Estranha_1 + Poção_de_Mana_1 + Poção_de_Cura_1, queimadura_1 = 0, armadura_1 = 0, manto_1 = 0, espada_1 = 0;
-        static bool Paralizado_1 = false, runas_1;
+        static int forca_1, Vida_Player_1 = 100, Mana_Player_1 = 10, Poção_de_Cura_1 = 0, Poção_de_Mana_1 = 0, Poção_Estranha_1 = 0, Poções_1 = Poção_Estranha_1 + Poção_de_Mana_1 + Poção_de_Cura_1, queimadura_1 = 0, armadura_1 = 0, manto_1 = 0, espada_1 = 0, enfraquecimento_p1 = 0;
+        static bool Paralizado_1 = false, runas_1, Confusão_p1 = false;
         static string[] magias_p1 = { "0", "0", "0" };
 
 
         // Atributos do Jogador 2
-        static int forca_2, Vida_Player_2 = 100, Mana_Player_2 = 10, Poção_de_Cura_2 = 0, Poção_de_Mana_2 = 0, Poção_Estranha_2 = 0, Poções_2 = Poção_Estranha_2 + Poção_de_Mana_2 + Poção_de_Cura_2, queimadura_2 = 0, armadura_2 = 0, manto_2 = 0, espada_2 = 0;
-        static bool Paralizado_2 = false, runas_2;
+        static int forca_2, Vida_Player_2 = 100, Mana_Player_2 = 10, Poção_de_Cura_2 = 0, Poção_de_Mana_2 = 0, Poção_Estranha_2 = 0, Poções_2 = Poção_Estranha_2 + Poção_de_Mana_2 + Poção_de_Cura_2, queimadura_2 = 0, armadura_2 = 0, manto_2 = 0, espada_2 = 0, enfraquecimento_p2 = 0;
+        static bool Paralizado_2 = false, runas_2, Confusão_p2 = false;
         static string[] magias_p2 = { "0", "0", "0" };
 
+        
         // Atributos para o Modo Singleplayer
         static bool Singleplayer = false;
         static int Vida_Boss = 100, Mana_Boss = 20;
-
-        //efeitos negativos
-        static int enfraquecimento_p1 = 0;
-        static bool Confusão_p1 = false;
-        static int enfraquecimento_p2 = 0;
-        static bool Confusão_p2 = false;
 
 
         static void Main()
