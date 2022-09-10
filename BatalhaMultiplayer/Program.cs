@@ -1,8 +1,5 @@
-﻿using Microsoft.VisualBasic;
-using System;
-using System.Runtime.InteropServices;
+﻿using System;
 using System.Threading;
-using System.Xml;
 
 namespace Batalha2
 {
@@ -27,6 +24,13 @@ namespace Batalha2
         static bool Singleplayer = false;
         static int Vida_Boss = 100, Mana_Boss = 20;
 
+        //efeitos negativos
+        static int enfraquecimento_p1 = 0;
+        static bool Confusão_p1 = false;
+        static int enfraquecimento_p2 = 0;
+        static bool Confusão_p2 = false;
+
+
         static void Main()
         {
             //desenha DUEL
@@ -35,13 +39,11 @@ namespace Batalha2
             //Regras
             Console.WriteLine(@"
 Bem vindo a Duel!!! O jogo funciona da seguinte forma:
-
 Para começa, você deve selecionar um modo de jogo, SinglePlayer ou MultiPlayer
 Caso você selecione SinglePlayer, você irá lutar contra um inimigo controlado pelo computador
 Se você selecionar MultiPlayer, você e outro jogador poderão se enfrentar em uma série de turnos
 Seu objetivo é levar seu adversário 0 de Vida o atacando, lançando poderosas magias, que consomem sua Mana, e usando seus itens, de um estoque limitado
 Para selecionar uma opção digite o apenas número dela
-
 Se você entendeu, pressione ENTER");
 
             //Trava
@@ -82,7 +84,6 @@ Se você entendeu, pressione ENTER");
         {
             //Estético
             Console.WriteLine(@"
-
 ░▀█▀░█▀█░▀█▀░█▀▀░▀█▀░█▀█░█▀▄░░░▀▀█░█▀█░█▀▀░█▀█
 ░░█░░█░█░░█░░█░░░░█░░█▀█░█▀▄░░░░░█░█░█░█░█░█░█
 ░▀▀▀░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░▀░▀░░░▀▀░░▀▀▀░▀▀▀░▀▀▀
@@ -470,8 +471,6 @@ Sumário
 Consumíveis: Cada unidade é perdida após o uso
 Armaduras: Afetam sua resistência contra efeitos de certo tipo, só é possível carregar uma por vez
 Equipamentos: Afetam suas ações de ataque e magias
-
-
 1. Poção de Cura: Restaura sua saúde. Item consumível, recupera 20 de vida, custa 10 pila 
 2. Poção de Mana: Recupera parte da sua energia mágica. Item consumível, recupera 5 de mana, custa 15 pila
 3. Poção Estranha: Um líquido preto estranho que se contorce dentro do frasco, não fazemos ideia do que pode fazer. Item consumível, ???????????, custa 1 pila");
@@ -666,7 +665,10 @@ Equipamentos: Afetam suas ações de ataque e magias
 
         static void BatalhaMultiplayer()
         {
+            Random r = new Random();
+            int confusão;
             player = 1;
+
             while (Vida_Player_1 > 0 && Vida_Player_2 > 0)
             {
                 if (player == 1)
@@ -674,7 +676,17 @@ Equipamentos: Afetam suas ações de ataque e magias
                     HUD();
                     if (Paralizado_1 == false)
                     {
-                        AçõesJogadores();
+                        confusão = r.Next(1, 6);
+
+                        if (Confusão_p1 == true && confusão >= 4)
+                        {
+                            Console.WriteLine("Você está confuso e acaba acertando a sí próprio, perdendo 5 de vida");
+                            Vida_Player_1 -= 5;
+                        }
+                        else
+                        {
+                            AçõesJogadores();
+                        }
                     }
                     else
                     {
@@ -686,6 +698,7 @@ Equipamentos: Afetam suas ações de ataque e magias
                         Vida_Player_1 -= 2;
                         queimadura_1--;
                     }
+                    enfraquecimento_p1 = 0;
                     EndGame();
                     player = 2;
                 }
@@ -704,6 +717,7 @@ Equipamentos: Afetam suas ações de ataque e magias
                     Vida_Player_2 -= 2;
                     queimadura_2--;
                 }
+                enfraquecimento_p2 = 0;
                 EndGame();
                 player = 1;
                 Console.WriteLine("\nPressione ENTER para continuar");
@@ -840,13 +854,13 @@ Equipamentos: Afetam suas ações de ataque e magias
                 {
                     if (espada_1 > 0)
                     {
-                        Vida_Player_2 -= 25 + forca_1 - armadura_2;
-                        Console.WriteLine($"Você acerta! O inimigo perde {25 + forca_1 - armadura_2} de vida");
+                        Vida_Player_2 -= 25 + forca_1 - armadura_2 - enfraquecimento_p1;
+                        Console.WriteLine($"Você acerta! O inimigo perde {25 + forca_1 - armadura_2 - enfraquecimento_p1} de vida");
                     }
                     else
                     {
-                        Vida_Player_2 -= 15 + forca_1 - armadura_2;
-                        Console.WriteLine($"Você acerta! O inimigo perde {15 + forca_1 - armadura_2} de vida");
+                        Vida_Player_2 -= 15 + forca_1 - armadura_2 - enfraquecimento_p1;
+                        Console.WriteLine($"Você acerta! O inimigo perde {15 + forca_1 - armadura_2 - enfraquecimento_p1} de vida");
                     }
                 }
                 else if (Ataque >= 3)
@@ -858,13 +872,13 @@ Equipamentos: Afetam suas ações de ataque e magias
                 {
                     if (espada_1 > 0)
                     {
-                        Vida_Player_2 -= 40 + forca_1 - armadura_2;
-                        Console.WriteLine($"Você acerta em cheio! O inimigo perde {40 + forca_1 - armadura_2} de vida");
+                        Vida_Player_2 -= 40 + forca_1 - armadura_2 - enfraquecimento_p1;
+                        Console.WriteLine($"Você acerta em cheio! O inimigo perde {40 + forca_1 - armadura_2 - enfraquecimento_p1} de vida");
                     }
                     else
                     {
-                        Vida_Player_2 -= 30 + forca_1 - armadura_2;
-                        Console.WriteLine($"Você acerta em cheio! O inimigo perde {30 + forca_1 - armadura_2} de vida");
+                        Vida_Player_2 -= 30 + forca_1 - armadura_2 - enfraquecimento_p1;
+                        Console.WriteLine($"Você acerta em cheio! O inimigo perde {30 + forca_1 - armadura_2 - enfraquecimento_p1} de vida");
                     }
 
                 }
@@ -876,13 +890,13 @@ Equipamentos: Afetam suas ações de ataque e magias
                 {
                     if (espada_2 > 0)
                     {
-                        Vida_Player_1 -= 25 + forca_2 - armadura_1;
-                        Console.WriteLine($"Você acerta! O inimigo perde {25 + forca_2 - armadura_1} de vida");
+                        Vida_Player_1 -= 25 + forca_2 - armadura_1 - enfraquecimento_p2;
+                        Console.WriteLine($"Você acerta! O inimigo perde {25 + forca_2 - armadura_1 - enfraquecimento_p2} de vida");
                     }
                     else
                     {
-                        Vida_Player_1 -= 15 + forca_2 - armadura_1;
-                        Console.WriteLine($"Você acerta! O inimigo perde {15 + forca_2 - armadura_1} de vida");
+                        Vida_Player_1 -= 15 + forca_2 - armadura_1 - enfraquecimento_p2;
+                        Console.WriteLine($"Você acerta! O inimigo perde {15 + forca_2 - armadura_1 - enfraquecimento_p2} de vida");
                     }
 
                 }
@@ -894,13 +908,13 @@ Equipamentos: Afetam suas ações de ataque e magias
                 {
                     if (espada_2 > 0)
                     {
-                        Vida_Player_1 -= 40 + forca_2 - armadura_1;
-                        Console.WriteLine($"Você acerta em cheio! O inimigo perde {40 + forca_2 - armadura_1} de vida");
+                        Vida_Player_1 -= 40 + forca_2 - armadura_1 - enfraquecimento_p2;
+                        Console.WriteLine($"Você acerta em cheio! O inimigo perde {40 + forca_2 - armadura_1 - enfraquecimento_p2} de vida");
                     }
                     else
                     {
-                        Vida_Player_1 -= 30 + forca_2 - armadura_1;
-                        Console.WriteLine($"Você acerta em cheio! O inimigo perde {30 + forca_2 - armadura_1} de vida");
+                        Vida_Player_1 -= 30 + forca_2 - armadura_1 - enfraquecimento_p2;
+                        Console.WriteLine($"Você acerta em cheio! O inimigo perde {30 + forca_2 - armadura_1 - enfraquecimento_p2} de vida");
                     }
                 }
             }
@@ -973,7 +987,8 @@ Equipamentos: Afetam suas ações de ataque e magias
                     {
                         BatalhaMultiplayer();
                     }
-                    if (player == 1 && Singleplayer == false)
+                    //opções de magia caso esteja no MultiPla
+                    if (Singleplayer == false)
                     {
                         if (magias_p1[Convert.ToInt32(op) - 1].Contains("Bola de Fogo"))
                         {
@@ -1006,7 +1021,7 @@ Equipamentos: Afetam suas ações de ataque e magias
                                 }
                             }
                         }
-                        else if (magias_p1[Convert.ToInt32(op) - 1].Contains("Bola de Fogo"))
+                        else if (magias_p1[Convert.ToInt32(op) - 1].Contains("Relâmpago"))
                         {
                             if (Mana_Player_1 < 5)
                             {
@@ -1035,7 +1050,7 @@ Equipamentos: Afetam suas ações de ataque e magias
                                 }
                             }
                         }
-                        else if (magias_p1[Convert.ToInt32(op) - 1].Contains("Bola de Fogo"))
+                        else if (magias_p1[Convert.ToInt32(op) - 1].Contains("Curar Ferimentos"))
                         {
                             if (Mana_Player_1 < 5)
                             {
@@ -1053,69 +1068,7 @@ Equipamentos: Afetam suas ações de ataque e magias
                                 }
                             }
                         }
-                    }
-                    else if (Singleplayer == true)
-                    {
-                        if (magias_p1[Convert.ToInt32(op) - 1].Contains("Bola de Fogo"))
-                        {
-                            if (Mana_Player_1 < 10)
-                            {
-                                Console.WriteLine("Você não consegue lançar essa magia");
-                            }
-                            else if (Magias == 0 && Mana_Player_1 >= 10)
-                            {
-                                Vida_Boss -= 10;
-                                Mana_Player_1 -= 10;
-                                Console.WriteLine("Você erra, mas a explosão ainda acerta seu inimigo. O inimigo perde 10 de vida");
-                            }
-                            else if (Magias >= 1 && Magias <= 4 && Mana_Player_1 >= 10)
-                            {
-                                Vida_Boss -= 20;
-                                Mana_Player_1 -= 10;
-                                Console.WriteLine("Você acerta sua Bola de Fogo. O inimigo perde 20 de vida");
-                            }
-                            else if (Magias == 5 && Mana_Player_1 >= 10)
-                            {
-                                Vida_Boss -= 30;
-                                Mana_Player_1 -= 10;
-                                Console.WriteLine("Sua Bola de Fogo acerta seu inimigo em cheio! O inimigo perde 30 de vida");
-                                if (runas_1 == true)
-                                {
-                                    Console.WriteLine("Uma runa vermelha arde no seu bolso, você vê que seu inimigo ficou Queimado!");
-                                    queimadura_2 = 5;
-                                }
-                            }
-                        }
-                        else if (magias_p1[Convert.ToInt32(op) - 1].Contains("Relâmpago"))
-                        {
-                            if (Mana_Player_1 < 5)
-                            {
-                                Console.WriteLine("Você não consegue lançar essa magia");
-                            }
-                            else if (Magias == 0 && Mana_Player_1 >= 5)
-                            {
-                                Mana_Player_1 -= 5;
-                                Console.WriteLine("Você lança um raio e erra");
-                            }
-                            else if (Magias >= 1 && Magias <= 4 && Mana_Player_1 >= 5)
-                            {
-                                Vida_Boss -= 10;
-                                Mana_Player_1 -= 5;
-                                Console.WriteLine("Você acerta seu raio no inimigo. O inimigo perde 10 de vida");
-                            }
-                            else if (Magias == 5 && Mana_Player_1 >= 5)
-                            {
-                                Vida_Boss -= 20;
-                                Mana_Player_1 -= 5;
-                                Console.WriteLine("Você acerta um raio em cheio no peito do inimigo. O inimigo perde 20 de vida");
-                                if (runas_1 == true)
-                                {
-                                    Console.WriteLine("Você vê uma runa azul brilhando no seu bolso, e seu inimigo fica paralizado!");
-                                    Paralizado_2 = true;
-                                }
-                            }
-                        }
-                        else if (magias_p1[Convert.ToInt32(op) - 1].Contains("Curar Ferimentos"))
+                        else if (magias_p1[Convert.ToInt32(op) - 1].Contains("Despedaçar"))
                         {
                             if (Mana_Player_1 < 5)
                             {
@@ -1123,12 +1076,189 @@ Equipamentos: Afetam suas ações de ataque e magias
                             }
                             else if (Mana_Player_1 >= 5)
                             {
-                                Vida_Player_1 += 20;
+                                Random r = new Random();
+                                int destruir = r.Next(1, 12);
                                 Mana_Player_1 -= 5;
-                                Console.WriteLine("Você encosta no seu peito e sua mão brilha em uma luz amarela. Você se sente revigorado");
+                                Console.WriteLine(destruir);
+                                Console.WriteLine("Esta magia emite um som alto e agudo, com a tentativa de destruir uma armadura do seu oponente.");
+                                Console.ReadLine();
+
+                                if (destruir == 4 && manto_2 > 0)
+                                {
+                                    manto_2 = 0;
+                                    Console.WriteLine("Você destruiu o manto do inimigo");
+                                }
+                                else if (destruir == 8 && armadura_2 > 0)
+                                {
+                                    armadura_2 = 0;
+                                    Console.WriteLine("Você destruiu a armadura do inimigo");
+                                }
+                                else if (destruir == 12 && espada_2 > 0)
+                                {
+                                    espada_2 = 0;
+                                    Console.WriteLine("Voce destruiu a espada do inimigo");
+                                }
+                                else if (destruir == 4 && manto_2 == 0 || destruir == 8 && armadura_2 == 0 || destruir == 12 && espada_2 == 0)
+                                {
+                                    Console.WriteLine("causou 20 de dano ao seu inimigo");
+                                    Vida_Player_2 -= 20;
+                                }
+                            }
+
+                        }
+                        else if (magias_p1[Convert.ToInt32(op) - 1].Contains("Confusão"))
+                        {
+                            if (Mana_Player_1 < 10)
+                            {
+                                Console.WriteLine("Você não consegue lançar essa magia");
+                            }
+                            else if (Mana_Player_1 >= 10)
+                            {
+                                Mana_Player_1 -= 10;
+                                Random r = new Random();
+                                int confusão = r.Next(1, 6);
+                                Console.WriteLine(confusão);
+
+                                if (confusão == 5)
+                                {
+                                    Console.WriteLine("Você conjura a magia confusão, e deixa o seu inimigo se comportando de modo aleatorio");
+                                    Confusão_p2 = 1;
+                                }
+                                else if (confusão < 5)
+                                {
+                                    Console.WriteLine("Você conjura a magia confusão, e falha, e deixa seu comportamento em modo aleatorio");
+                                    Confusão_p1 = 1;
+                                }
+                            }
+                        }
+                        else if (magias_p1[Convert.ToInt32(op) - 1].Contains("Purificar"))
+                        {
+                            if (Mana_Player_1 < 5)
+                            {
+                                Console.WriteLine("Você não consegue lançar essa magia");
+                            }
+                            else if (Mana_Player_1 >= 5)
+                            {
+                                Mana_Player_1 -= 5;
+                                Console.WriteLine("Com a ajuda dos espiritos você pede a benção deles, capaz de tirar os seus efeitos negativos");
+                            }
+                        }
+                        else if (magias_p1[Convert.ToInt32(op) - 1].Contains("Raio do Enfraquecimento"))
+                        {
+                            if (Mana_Player_1 < 10)
+                            {
+                                Console.WriteLine("Você não consegue lançar essa magia");
+                            }
+                            else if (Mana_Player_1 >= 10)
+                            {
+                                Mana_Player_1 -= 10;
+                                Console.WriteLine("Você concentra sua magia, e solta um raio que enfraqueçe o dano do seu adversario.");
+                                enfraquecimento_p2 = 10;
+                            }
+                        }
+                        else if (magias_p1[Convert.ToInt32(op) - 1].Contains("Rogar Maldição"))
+                        {
+
+                            if (Mana_Player_1 < 10)
+                            {
+                                Console.WriteLine("Você não consegue lançar essa magia");
+                            }
+                            else if (Mana_Player_1 >= 10)
+                            {
+                                Mana_Player_1 -= 10;
+                                Console.WriteLine("Você toca em seu adversario, e roga uma maldição\n 1- Maldição do rompimento: Você faz com que o seu adversario tenha uma chance enquanto te ataca de quebrar uma armadura");
+                            }
+                        }
+                        else if (magias_p1[Convert.ToInt32(op) - 1].Contains("Campo de Força"))
+                        {
+                            if (Mana_Player_1 < 15)
+                            {
+                                Console.WriteLine("Você não consegue lançar essa magia");
+                            }
+                            else if (Mana_Player_1 >= 15)
+                            {
+                                Mana_Player_1 -= 15;
+                                Console.WriteLine("Você concentra sua energia magica em sua volta, e cria um campo de força, reduzindo todos os danos ao seu redor em 20");
                             }
                         }
                     }
+                    else if (Singleplayer == true)
+                        {
+                            if (magias_p1[Convert.ToInt32(op) - 1].Contains("Bola de Fogo"))
+                            {
+                                if (Mana_Player_1 < 10)
+                                {
+                                    Console.WriteLine("Você não consegue lançar essa magia");
+                                }
+                                else if (Magias == 0 && Mana_Player_1 >= 10)
+                                {
+                                    Vida_Boss -= 10;
+                                    Mana_Player_1 -= 10;
+                                    Console.WriteLine("Você erra, mas a explosão ainda acerta seu inimigo. O inimigo perde 10 de vida");
+                                }
+                                else if (Magias >= 1 && Magias <= 4 && Mana_Player_1 >= 10)
+                                {
+                                    Vida_Boss -= 20;
+                                    Mana_Player_1 -= 10;
+                                    Console.WriteLine("Você acerta sua Bola de Fogo. O inimigo perde 20 de vida");
+                                }
+                                else if (Magias == 5 && Mana_Player_1 >= 10)
+                                {
+                                    Vida_Boss -= 30;
+                                    Mana_Player_1 -= 10;
+                                    Console.WriteLine("Sua Bola de Fogo acerta seu inimigo em cheio! O inimigo perde 30 de vida");
+                                    if (runas_1 == true)
+                                    {
+                                        Console.WriteLine("Uma runa vermelha arde no seu bolso, você vê que seu inimigo ficou Queimado!");
+                                        queimadura_2 = 5;
+                                    }
+                                }
+                            }
+                            else if (magias_p1[Convert.ToInt32(op) - 1].Contains("Relâmpago"))
+                            {
+                                if (Mana_Player_1 < 5)
+                                {
+                                    Console.WriteLine("Você não consegue lançar essa magia");
+                                }
+                                else if (Magias == 0 && Mana_Player_1 >= 5)
+                                {
+                                    Mana_Player_1 -= 5;
+                                    Console.WriteLine("Você lança um raio e erra");
+                                }
+                                else if (Magias >= 1 && Magias <= 4 && Mana_Player_1 >= 5)
+                                {
+                                    Vida_Boss -= 10;
+                                    Mana_Player_1 -= 5;
+                                    Console.WriteLine("Você acerta seu raio no inimigo. O inimigo perde 10 de vida");
+                                }
+                                else if (Magias == 5 && Mana_Player_1 >= 5)
+                                {
+                                    Vida_Boss -= 20;
+                                    Mana_Player_1 -= 5;
+                                    Console.WriteLine("Você acerta um raio em cheio no peito do inimigo. O inimigo perde 20 de vida");
+                                    if (runas_1 == true)
+                                    {
+                                        Console.WriteLine("Você vê uma runa azul brilhando no seu bolso, e seu inimigo fica paralizado!");
+                                        Paralizado_2 = true;
+                                    }
+                                }
+                            }
+                            else if (magias_p1[Convert.ToInt32(op) - 1].Contains("Curar Ferimentos"))
+                            {
+                                if (Mana_Player_1 < 5)
+                                {
+                                    Console.WriteLine("Você não consegue lançar essa magia");
+                                }
+                                else if (Mana_Player_1 >= 5)
+                                {
+                                    Vida_Player_1 += 20;
+                                    Mana_Player_1 -= 5;
+                                    Console.WriteLine("Você encosta no seu peito e sua mão brilha em uma luz amarela. Você se sente revigorado");
+                                }
+
+                            }
+
+                        }
                 }
 
                 else if (Mana_Player_1 < 5)
@@ -1139,6 +1269,10 @@ Equipamentos: Afetam suas ações de ataque e magias
             }
             if (player == 2)
             {
+                if (op == "4")
+                {
+                    BatalhaMultiplayer();
+                }
                 if (magias_p2[Convert.ToInt32(op) - 1].Contains("Bola de Fogo"))
                 {
                     if (Mana_Player_2 < 10)
@@ -1219,6 +1353,130 @@ Equipamentos: Afetam suas ações de ataque e magias
                                 Vida_Player_1 += 10;
                             }
                         }
+                    }
+                }
+                else if (magias_p2[Convert.ToInt32(op) - 1].Contains("Despedaçar"))
+                {
+                    if(Mana_Player_2 < 5)
+                    {
+                        Console.WriteLine("Você não consegue lançar essa magia");
+                    }
+                    else if (Mana_Player_2 >= 5)
+                    {
+                       Random r = new Random();
+                        int destruir = r.Next(1, 12);      
+                        Mana_Player_2 -= 5;
+                        Console.WriteLine(destruir);
+                        Console.WriteLine("Esta magia emite um som alto e agudo, com a tentativa de destruir uma armadura do seu oponente.");
+
+                         if (destruir == 4 && manto_1 > 0)
+                        {
+                            manto_1 = 0;
+                            Console.WriteLine("Você destruiu o manto do inimigo");
+                        }
+                        else if (destruir == 8 && armadura_1 > 0)
+                        {
+                            armadura_1 = 0;
+                            Console.WriteLine("Você destruiu a armadura do inimigo");
+                        }
+                        else if (destruir == 12 && espada_1 > 0)
+                        {
+                            espada_1 = 0;
+                            Console.WriteLine("Voce destruiu a espada do inimigo");
+                        }
+                        else if (manto_1 == 0 || armadura_1 == 0 || espada_1 == 0)
+                        {
+                           if (destruir == 4 && manto_1 == 0)
+                            {
+                                Console.WriteLine("causou 20 de dano ao seu inimigo");
+                                Vida_Player_1 -= 20;
+                            }
+                           if (destruir == 8 && armadura_1 == 0)
+                            {
+                                Console.WriteLine("causou 20 de dano ao seu inimigo");
+                                Vida_Player_1 -= 20;
+                            }
+                           if (destruir == 12 && espada_1 == 0)
+                            {
+                                Console.WriteLine("causou 20 de dano ao seu inimigo");
+                                Vida_Player_1 -= 20;
+                            }
+                        }
+                   }
+                }
+                else if (magias_p2[Convert.ToInt32(op) - 1].Contains("Confusão"))
+                {
+                    if (Mana_Player_2 < 10)
+                    {
+                        Console.WriteLine("Você não consegue lançar essa magia");
+                    }
+                    else if (Mana_Player_2 >= 10)
+                    {
+                        Mana_Player_2 -= 10;
+                        Random r = new Random();
+                        int confusão = r.Next(1, 6);
+                        Console.WriteLine(confusão);
+
+                        if (confusão == 5)
+                        {
+                            Console.WriteLine("Você conjura a magia confusão, e deixa o seu inimigo se comportando de modo aleatorio");
+                            Confusão_p1 = 1;
+                        }
+                        else if(confusão < 5)
+                        {
+                            Console.WriteLine("Você conjura a magia confusão, e falha, e deixa seu comportamento em modo aleatorio");
+                            Confusão_p2 = 1;
+                        }
+                    }
+                }
+                else if (magias_p2[Convert.ToInt32(op) - 1].Contains("Purificar"))
+                {
+                    if (Mana_Player_2 < 5)
+                    {
+                        Console.WriteLine("Você não consegue lançar essa magia");
+                    }
+                    else if (Mana_Player_2 >= 5)
+                    {
+                        Mana_Player_2 -= 5;
+                        Console.WriteLine("Com a ajuda dos espiritos você pede a benção deles, capaz de tirar os seus efeitos negativos");
+                    }
+                }
+                else if (magias_p2[Convert.ToInt32(op) - 1].Contains("Raio do Enfraquecimento"))
+                {
+                    if (Mana_Player_2 < 10)
+                    {
+                        Console.WriteLine("Você não consegue lançar essa magia");
+                    }
+                    else if (Mana_Player_2 >= 10)
+                    {
+                        Mana_Player_2 -= 10;
+                        Console.WriteLine("Você concentra sua magia, e solta um raio que enfraqueçe o dano do seu adversario.");
+                        enfraquecimento_p1 = 10;
+                    }
+                }
+                else if (magias_p2[Convert.ToInt32(op) - 1].Contains("Rogar Maldição"))
+                {
+
+                    if (Mana_Player_2 < 10)
+                    {
+                        Console.WriteLine("Você não consegue lançar essa magia");
+                    }
+                    else if (Mana_Player_2 >= 10)
+                    {
+                        Mana_Player_2 -= 10;
+                        Console.WriteLine("Você toca em seu adversario, e roga uma maldição\n 1- Maldição do rompimento: Você faz com que o seu adversario tenha uma chance enquanto te ataca de quebrar uma armadura");
+                    }
+                }
+                else if (magias_p2[Convert.ToInt32(op) - 1].Contains("Campo de Força"))
+                {
+                    if (Mana_Player_2 < 15)
+                    {
+                        Console.WriteLine("Você não consegue lançar essa magia");
+                    }
+                    else if (Mana_Player_2 >= 15)
+                    {
+                        Mana_Player_2 -= 15;
+                        Console.WriteLine("Você concentra sua energia magica em sua volta, e cria um campo de força, reduzindo todos os danos ao seu redor em 20");
                     }
                 }
             }
