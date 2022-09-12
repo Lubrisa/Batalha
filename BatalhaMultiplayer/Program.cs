@@ -816,7 +816,6 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                     //Desenha o HUD
                     HUD();
 
-
                     //Verifica se os status paralizado ou confusão estão aplicados
                     if (Paralizado_1 == true || Confusão_p1 == true)
                     {
@@ -853,6 +852,11 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                     {
                         fraco1--;
                     }
+                    else
+                    {
+                        enfraquecimento_p1 = 0;
+                    }
+
                     //Verifica se o jogador está com o status queimado, se ele estiver ele receberá 2 de dano no final de todos os seus turnos durante 5 turnos
                     if (queimadura_1 > 0)
                     {
@@ -860,12 +864,15 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                         Vida_Player_1 -= 2;
                         queimadura_1--;
                     }
+
                     EndGame();
                     campo_forca2 = 0;
                     //Zera a confusão para ela não interferir nas ações do player 2
                     confusão = 0;
                     //Define o player como 2 para que as opções dele sejam mostradas de acordo
                     player = 2;
+
+                    fragil1 = false; cego1 = false; mudo1 = false;
                 }
 
 
@@ -906,6 +913,10 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                 {
                     fraco2--;
                 }
+                else
+                {
+                    enfraquecimento_p2 = 0;
+                }
 
                 if (queimadura_2 > 0)
                 {
@@ -913,11 +924,13 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                     Vida_Player_2 -= 2;
                     queimadura_2--;
                 }
-                campo_forca1 = 0;
+
                 EndGame();
+                campo_forca1 = 0;
                 confusão = 0;
                 player = 1;
 
+                fragil2 = false; cego2 = false; mudo2 = false;
 
                 //Trava
                 Console.WriteLine("\nPressione ENTER para continuar");
@@ -940,41 +953,15 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                 HUD();
 
                 //Verifica se os status paralizado ou confusão estão aplicados
-                if (Paralizado_1 == true || Confusão_p1 == true)
+                if (Paralizado_1 == true)
                 {
-                    //Caso paralizado esteja ativo, o jogador não joga e paralizado é desativado, permitindo que ele jogue próximo turno
-                    if (Paralizado_1 == true)
-                    {
-                        Paralizado_1 = false;
-                    }
-
-                    //Caso confusão esteja ativo, ele gera um número de 1 a 6 e, caso o resultado de 4 ou mais, o jogador se acerta e perde sua vez
-                    else if (Confusão_p1 == true)
-                    {
-                        confusão = r.Next(1, 6);
-
-                        if (confusão >= 4)
-                        {
-                            Console.WriteLine("Você está confuso e acaba acertando a sí próprio, perdendo 5 de vida");
-                            Vida_Player_1 -= 5;
-                        }
-                        else
-                        {
-                            AçõesJogadores();
-                        }
-                    }
+                    Paralizado_1 = false;
                 }
 
                 //Caso nada da situação anterior aconteça, o jogador pode jogar normalmente
                 else
                 {
                     AçõesJogadores();
-                }
-
-                //
-                if (fraco1 > 0)
-                {
-                    fraco1--;
                 }
 
                 //Verifica se o jogador está com o status queimado, se ele estiver ele receberá 2 de dano no final de todos os seus turnos durante 5 turnos
@@ -985,7 +972,6 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                     queimadura_1--;
                 }
 
-                enfraquecimento_p1 = 0;
                 EndGame();
 
 
@@ -1018,21 +1004,25 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                     Boss();
                 }
 
-
                 if (queimadura_2 > 0)
                 {
                     Console.WriteLine("As chamas consomem o corpo do seu inimigo lentamente, fazendo ele receber 2 de dano");
                     Vida_Player_1 -= 2;
                     queimadura_1--;
                 }
+
                 EndGame();
 
                 if (fraco2 > 0)
                 {
                     fraco2--;
                 }
+                else
+                {
+                    enfraquecimento_p2 = 0;
+                }
 
-                fragil2 = false;
+                fragil2 = false; cego2 = false; mudo2 = false;
                 campo_forca1 = 0;
             }
         }
