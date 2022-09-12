@@ -21,13 +21,13 @@ namespace Batalha2
 
         // Atributos do Jogador 1
         static int forca_1, Vida_Player_1 = 100, Mana_Player_1 = 10, Poção_de_Cura_1 = 0, Poção_de_Mana_1 = 0, Poção_Estranha_1 = 0, Poções_1 = Poção_Estranha_1 + Poção_de_Mana_1 + Poção_de_Cura_1, queimadura_1 = 0, armadura_1 = 0, manto_1 = 0, espada_1 = 0, enfraquecimento_p1 = 0, campo_forca1 = 0, fraco1 = 0;
-        static bool Paralizado_1 = false, runas_1, Confusão_p1 = false, fragil1 = false;
+        static bool Paralizado_1 = false, runas_1, Confusão_p1 = false, fragil1 = false, cego1 = false, mudo1 = false;
         static string[] magias_p1 = { "0", "0", "0" };
 
 
         // Atributos do Jogador 2
         static int forca_2, Vida_Player_2 = 100, Mana_Player_2 = 10, Poção_de_Cura_2 = 0, Poção_de_Mana_2 = 0, Poção_Estranha_2 = 0, Poções_2 = Poção_Estranha_2 + Poção_de_Mana_2 + Poção_de_Cura_2, queimadura_2 = 0, armadura_2 = 0, manto_2 = 0, espada_2 = 0, enfraquecimento_p2 = 0, campo_forca2 = 0, fraco2 = 0;
-        static bool Paralizado_2 = false, runas_2, Confusão_p2 = false, fragil2 = false;
+        static bool Paralizado_2 = false, runas_2, Confusão_p2 = false, fragil2 = false, cego2 = false, mudo2 = false;
         static string[] magias_p2 = { "0", "0", "0" };
 
 
@@ -914,7 +914,6 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                     queimadura_2--;
                 }
                 campo_forca1 = 0;
-                enfraquecimento_p2 = 0;
                 EndGame();
                 confusão = 0;
                 player = 1;
@@ -985,6 +984,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                     Vida_Player_1 -= 2;
                     queimadura_1--;
                 }
+
                 enfraquecimento_p1 = 0;
                 EndGame();
 
@@ -1026,6 +1026,13 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                     queimadura_1--;
                 }
                 EndGame();
+
+                if (fraco2 > 0)
+                {
+                    fraco2--;
+                }
+
+                fragil2 = false;
                 campo_forca1 = 0;
             }
         }
@@ -1120,7 +1127,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
             {
                 Ataque();
             }
-            else if (op == "2") //Caso a opção seja lançar uma magia
+            else if (op == "2" && (mudo1 == false || mudo2 == false)) //Caso a opção seja lançar uma magia
             {
 
                 if (player == 1) //Caso o jogador atual seja o player 1, mostra suas magias
@@ -1145,6 +1152,11 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                 Console.WriteLine("");
 
                 Magia();
+            }
+            else if (op == "2")
+            {
+                Console.WriteLine("Você tenta proferir as palavras mágicas para lançar magias, escolha outra opção");
+                AçõesJogadores();
             }
             else if (op == "3") //Caso a opção seja usar um item
             {
@@ -1197,137 +1209,90 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
             Random rPlayer = new Random();
             int Ataque = rPlayer.Next(6);
 
-
-            //Caso o modo MultiPlayer tenha sido escolhido e o player atyal seja o player 1
-
-            if (Ataque <= 2) //Caso o random tenha dado 2 ou menos, ele dá o dano padrão (15) + os modificadores no jogador 2
+            if ((player == 1 && cego1 == true || player == 2 && cego2 == true) && Ataque == 5)
             {
-                if (Singleplayer == true) //Caso o modo SinglePlayer tenha sido escolhido (o dano é direcionado ao Boss)
-                {
-                    dano = 15 + forca_1 + espada_1 - armadura_2 - enfraquecimento_p1;
-                    if (dano < 0)
-                    {
-                        dano = 0;
-                    }
-                    Vida_Boss -= 0;
-                    Console.WriteLine($"Você acerta! O inimigo perde {dano} de vida");
-                }
-                else if (player == 1) //Caso o modo MultiPlayer tenha sido escolhido e o player = 1 (o dano é direcionado ao player 2)
-                {
-                    dano = 15 + forca_1 + espada_1 - armadura_2 - enfraquecimento_p1 - campo_forca2;
-                    if (dano < 0)
-                    {
-                        dano = 0;
-                    }
-                    Vida_Player_2 -= dano;
-                    Console.WriteLine($"Você acerta! O inimigo perde {dano} de vida");
-                }
-                else //Caso o modo MultiPlayer tenha sido escolhido e o player = 2 (o dano é direcionado ao player 1)
-                {
-                    dano = 15 + forca_2 + espada_2 - armadura_1 - enfraquecimento_p2 - campo_forca1;
-                    if (dano < 0)
-                    {
-                        dano = 0;
-                    }
-                    Vida_Player_1 -= dano;
-                    Console.WriteLine($"Você acerta! O inimigo perde {dano} de vida");
-                }
-
+                Console.WriteLine("Você não consegue enxergar direito e erra");
             }
-            else if (Ataque >= 3 && Ataque <= 4) //Caso o random esteja entre 3 e 4 é um golpe crítico, onde o dano base é dobrado (valendo 30)
-            {
-                if (Singleplayer == true)
-                {
-                    dano = 30 + forca_1 + espada_1 - armadura_2;
-                    if (dano < 0)
-                    {
-                        dano = 0;
-                    }
-                    Vida_Boss -= dano;
-                    Console.WriteLine($"Você acerta em cheio! O inimigo perde {dano} de vida");
-                }
-                else if (player == 1)
-                {
-                    dano = 30 + forca_1 + espada_1 - armadura_2 - enfraquecimento_p1 - campo_forca2;
-                    if (dano < 0)
-                    {
-                        dano = 0;
-                    }
-                    Vida_Player_2 -= dano;
-                    Console.WriteLine($"Você acerta em cheio! O inimigo perde {dano} de vida");
-                }
-                else
-                {
-                    dano = 30 + forca_2 + espada_2 - armadura_1 - enfraquecimento_p2 - campo_forca1;
-                    if (dano < 0)
-                    {
-                        dano = 0;
-                    }
-                    Vida_Player_1 -= dano;
-                    Console.WriteLine($"Você acerta em cheio! O inimigo perde {dano} de vida");
-                }
 
-            }
-            else if (Ataque == 5) //Caso o random tenha dado 5, o jogador erra
+            else
             {
-                Console.WriteLine("Você errou!");
+                if (Ataque <= 2) //Caso o random tenha dado 2 ou menos, ele dá o dano padrão (15) + os modificadores no jogador 2
+                {
+                    if (Singleplayer == true) //Caso o modo SinglePlayer tenha sido escolhido (o dano é direcionado ao Boss)
+                    {
+                        dano = 15 + forca_1 + espada_1 - armadura_2 - enfraquecimento_p1;
+                        if (dano < 0)
+                        {
+                            dano = 0;
+                        }
+                        Vida_Boss -= 0;
+                        Console.WriteLine($"Você acerta! O inimigo perde {dano} de vida");
+                    }
+                    else if (player == 1) //Caso o modo MultiPlayer tenha sido escolhido e o player = 1 (o dano é direcionado ao player 2)
+                    {
+                        dano = 15 + forca_1 + espada_1 - armadura_2 - enfraquecimento_p1 - campo_forca2;
+                        if (dano < 0)
+                        {
+                            dano = 0;
+                        }
+                        Vida_Player_2 -= dano;
+                        Console.WriteLine($"Você acerta! O inimigo perde {dano} de vida");
+                    }
+                    else //Caso o modo MultiPlayer tenha sido escolhido e o player = 2 (o dano é direcionado ao player 1)
+                    {
+                        dano = 15 + forca_2 + espada_2 - armadura_1 - enfraquecimento_p2 - campo_forca1;
+                        if (dano < 0)
+                        {
+                            dano = 0;
+                        }
+                        Vida_Player_1 -= dano;
+                        Console.WriteLine($"Você acerta! O inimigo perde {dano} de vida");
+                    }
+
+                }
+                else if (Ataque >= 3 && Ataque <= 4) //Caso o random esteja entre 3 e 4 é um golpe crítico, onde o dano base é dobrado (valendo 30)
+                {
+                    if (Singleplayer == true)
+                    {
+                        dano = 30 + forca_1 + espada_1 - armadura_2;
+                        if (dano < 0)
+                        {
+                            dano = 0;
+                        }
+                        Vida_Boss -= dano;
+                        Console.WriteLine($"Você acerta em cheio! O inimigo perde {dano} de vida");
+                    }
+                    else if (player == 1)
+                    {
+                        dano = 30 + forca_1 + espada_1 - armadura_2 - enfraquecimento_p1 - campo_forca2;
+                        if (dano < 0)
+                        {
+                            dano = 0;
+                        }
+                        Vida_Player_2 -= dano;
+                        Console.WriteLine($"Você acerta em cheio! O inimigo perde {dano} de vida");
+                    }
+                    else
+                    {
+                        dano = 30 + forca_2 + espada_2 - armadura_1 - enfraquecimento_p2 - campo_forca1;
+                        if (dano < 0)
+                        {
+                            dano = 0;
+                        }
+                        Vida_Player_1 -= dano;
+                        Console.WriteLine($"Você acerta em cheio! O inimigo perde {dano} de vida");
+                    }
+
+                }
+                else if (Ataque == 5) //Caso o random tenha dado 5, o jogador erra
+                {
+                    Console.WriteLine("Você errou!");
+                }
             }
 
             if (player == 1 && fragil1 == true || player == 2 && fragil2 == true)
             {
-                int quebrar = rPlayer.Next(1, 13);
-
-                if (quebrar == 4 && (manto_2 > 0 || manto_1 > 0))
-                {
-                    if (Singleplayer == true)
-                    {
-                        manto_2 = 10;
-                    }
-                    else if (player == 1)
-                    {
-                        manto_2 = 0;
-                    }
-                    else
-                    {
-                        manto_1 = 0;
-                    }
-
-                    Console.WriteLine("\nVocê destruiu o manto do inimigo!");
-                }
-                else if (quebrar == 8 && (armadura_2 > 0 || armadura_1 > 0))
-                {
-                    if (Singleplayer == true)
-                    {
-                        armadura_2 = 10;
-                    }
-                    else if (player == 1)
-                    {
-                        armadura_2 = 0;
-                    }
-                    else
-                    {
-                        armadura_1 = 0;
-                    }
-
-                    Console.WriteLine("Você destruiu a armadura do inimigo");
-                }
-                else if (quebrar == 12 && (espada_2 > 0 || espada_1 > 0))
-                {
-                    if (Singleplayer == true)
-                    {
-                        espada_2 = 10;
-                    }
-                    else if (player == 1)
-                    {
-                        espada_2 = 0;
-                    }
-                    else
-                    {
-                        espada_1 = 0;
-                    }
-
-                    Console.WriteLine("Voce destruiu a espada do inimigo");
-                }
+                Fragil();
             }
         }
 
@@ -1803,7 +1768,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                         Mana_Player_2 -= 10;
                     }
 
-                    Console.WriteLine("Você toca em seu adversario, e roga uma maldição\n1. Maldição da Fragilidade: Você faz com que o seu inimigo tenha uma chance enquanto te ataca de quebrar uma armadura\n2. Maldição da Cegueira: Aumenta a chance do seu inimigo de errar ataques\n3. Maldição do Silêncio: Gera uma área que torna tudo dentro dela silêncioso, fazendo com que seu inimigo não possa lançar magias\n");
+                    Console.WriteLine("Você sussurra palavras e roga uma maldição em seu adversário\n1. Maldição da Fragilidade: Você faz com que o seu inimigo tenha uma chance enquanto te ataca de quebrar uma armadura\n2. Maldição da Cegueira: Aumenta a chance do seu inimigo de errar ataques\n3. Maldição do Silêncio: Gera uma área que torna tudo dentro dela silêncioso, fazendo com que seu inimigo não possa lançar magias\n");
                     Console.Write("Digite sua opção:");
                     op = Console.ReadLine();
 
@@ -1811,45 +1776,45 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                     {
                         if (Singleplayer == true)
                         {
-
+                            fragil2 = true;
                         }
                         else if (player == 1)
                         {
-
+                            fragil2 = true;
                         }
                         else
                         {
-
+                            fragil1 = true;
                         }
                     }
                     else if (op == "2")
                     {
                         if (Singleplayer == true)
                         {
-
+                            cego2 = true;
                         }
                         else if (player == 1)
                         {
-
+                            cego2 = true;
                         }
                         else
                         {
-
+                            cego1 = true;
                         }
                     }
                     else
                     {
                         if (Singleplayer == true)
                         {
-
+                            mudo2 = true;
                         }
                         else if (player == 1)
                         {
-
+                            mudo2 = true;
                         }
                         else
                         {
-
+                            mudo1 = true;
                         }
                     }
                 }
@@ -1888,6 +1853,70 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                         campo_forca2 = 20;
                     }
                 }
+            }
+
+            if (player == 1 && fragil1 == true || player == 2 && fragil2 == true)
+            {
+                Fragil();
+            }
+        }
+
+
+        static void Fragil()
+        {
+            Random r = new Random();
+            int quebrar = r.Next(1, 13);
+
+            if (quebrar == 4 && (manto_2 > 0 || manto_1 > 0))
+            {
+                if (Singleplayer == true)
+                {
+                    manto_2 = 10;
+                }
+                else if (player == 1)
+                {
+                    manto_2 = 0;
+                }
+                else
+                {
+                    manto_1 = 0;
+                }
+
+                Console.WriteLine("\nVocê destruiu o manto do inimigo!");
+            }
+            else if (quebrar == 8 && (armadura_2 > 0 || armadura_1 > 0))
+            {
+                if (Singleplayer == true)
+                {
+                    armadura_2 = 10;
+                }
+                else if (player == 1)
+                {
+                    armadura_2 = 0;
+                }
+                else
+                {
+                    armadura_1 = 0;
+                }
+
+                Console.WriteLine("Você destruiu a armadura do inimigo");
+            }
+            else if (quebrar == 12 && (espada_2 > 0 || espada_1 > 0))
+            {
+                if (Singleplayer == true)
+                {
+                    espada_2 = 10;
+                }
+                else if (player == 1)
+                {
+                    espada_2 = 0;
+                }
+                else
+                {
+                    espada_1 = 0;
+                }
+
+                Console.WriteLine("Voce destruiu a espada do inimigo");
             }
         }
 
@@ -1997,67 +2026,86 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
             Random rPlayer = new Random();
             int Boss = rPlayer.Next(20);
 
-            while (Mana_Boss < 10 && Boss <= 10)
+            while (Mana_Boss < 10 && Boss <= 10 && mudo2 == false)
             {
                 Boss = rPlayer.Next(20);
             }
 
-            if (Boss == 0)
+            if (cego2 == true && Boss >= 15)
             {
-                if (manto_1 > 0)
+                Console.WriteLine("Seu adversário tenta te acertar, mas parece não conseguir te enxergar direito");
+            }
+
+            else
+            {
+                if (Boss == 0)
                 {
-                    Console.WriteLine("Seu inimigo começa a sussurar palavras estranhas, mas algo que você possui te protege");
+                    if (manto_1 > 0)
+                    {
+                        Console.WriteLine("Seu inimigo começa a sussurar palavras estranhas, mas algo que você possui te protege");
+                    }
+                    else
+                    {
+                        Paralizado_1 = true;
+                        Mana_Boss -= 10;
+                        Console.WriteLine("Seu inimigo começa a sussurrar palavras estranhas. Você se sente congelado");
+                    }
+                }
+                else if (Boss >= 1 && Boss <= 5)
+                {
+                    Mana_Boss -= 10;
+                    Console.WriteLine("Seu inimigo canaliza uma torrente de energia negativa na sua direção, mas erra");
+                }
+                else if (Boss >= 6 && Boss <= 10)
+                {
+                    Vida_Player_1 -= 20 - manto_1;
+                    Mana_Boss -= 10;
+                    Console.Write($"Seu inimigo canaliza uma torrente de energia negativa na sua direção. Você perde {20 - manto_1} de vida");
+                    if (manto_1 > 0)
+                    {
+                        Console.WriteLine(" e você começa a pegar fogo");
+                        queimadura_1 = 3;
+                    }
+                }
+                else if (Boss >= 11 && Boss <= 14)
+                {
+                    Console.WriteLine("Seu inimigo tenta te acertar com um ataque, mas erra.");
+                }
+                else if (Boss >= 15 && Boss <= 18)
+                {
+                    dano = 15 - armadura_1 - fraco2 - campo_forca1;
+                    if (dano < 0)
+                    {
+                        dano = 0;
+                    }
+                    Vida_Player_1 -= dano;
+                    Console.WriteLine($"Seu inimigo te acerta com um ataque. Você perde {dano} de vida.");
                 }
                 else
                 {
-                    Paralizado_1 = true;
-                    Mana_Boss -= 10;
-                    Console.WriteLine("Seu inimigo começa a sussurrar palavras estranhas. Você se sente congelado");
+                    dano = 30 - armadura_1 - fraco2 - campo_forca1;
+                    if (dano < 0)
+                    {
+                        dano = 0;
+                    }
+                    Vida_Player_1 -= dano;
+                    Console.WriteLine($"Seu inimigo te acerta em cheio. Você perde {dano} de vida.");
                 }
             }
-            else if (Boss >= 1 && Boss <= 5)
-            {
-                Mana_Boss -= 10;
-                Console.WriteLine("Seu inimigo canaliza uma torrente de energia negativa na sua direção, mas erra");
-            }
-            else if (Boss >= 6 && Boss <= 10)
-            {
-                Vida_Player_1 -= 20 - manto_1;
-                Mana_Boss -= 10;
-                Console.Write($"Seu inimigo canaliza uma torrente de energia negativa na sua direção. Você perde {20 - manto_1} de vida");
-                if (manto_1 > 0)
-                {
-                    Console.WriteLine(" e você começa a pegar fogo");
-                    queimadura_1 = 3;
-                }
-            }
-            else if (Boss >= 11 && Boss <= 14)
-            {
-                Console.WriteLine("Seu inimigo tenta te acertar com um ataque, mas erra.");
-            }
-            else if (Boss >= 15 && Boss <= 18)
-            {
-                dano = 15 - armadura_1 - fraco2 - campo_forca1;
-                if (dano < 0)
-                {
-                    dano = 0;
-                }
-                Vida_Player_1 -= dano;
-                Console.WriteLine($"Seu inimigo te acerta com um ataque. Você perde {dano} de vida.");
-            }
-            else
-            {
-                dano = 30 - armadura_1 - fraco2 - campo_forca1;
-                if (dano < 0)
-                {
-                    dano = 0;
-                }
-                Vida_Player_1 -= dano;
-                Console.WriteLine($"Seu inimigo te acerta em cheio. Você perde {dano} de vida.");
-            }
+
             Console.WriteLine("\nPressione Enter para continuar");
             Console.ReadLine();
             Console.Clear();
+
+            if (fraco2 > 0)
+            {
+                fraco2--;
+            }
+
+            if (fragil2 == true)
+            {
+                Fragil();
+            }
         }
 
 
