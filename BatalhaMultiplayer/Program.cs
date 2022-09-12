@@ -21,13 +21,13 @@ namespace Batalha2
 
         // Atributos do Jogador 1
         static int forca_1, Vida_Player_1 = 100, Mana_Player_1 = 10, Poção_de_Cura_1 = 0, Poção_de_Mana_1 = 0, Poção_Estranha_1 = 0, Poções_1 = Poção_Estranha_1 + Poção_de_Mana_1 + Poção_de_Cura_1, queimadura_1 = 0, armadura_1 = 0, manto_1 = 0, espada_1 = 0, enfraquecimento_p1 = 0, campo_forca1 = 0, fraco1 = 0;
-        static bool Paralizado_1 = false, runas_1, Confusão_p1 = false;
+        static bool Paralizado_1 = false, runas_1, Confusão_p1 = false, fragil1 = false;
         static string[] magias_p1 = { "0", "0", "0" };
 
 
         // Atributos do Jogador 2
         static int forca_2, Vida_Player_2 = 100, Mana_Player_2 = 10, Poção_de_Cura_2 = 0, Poção_de_Mana_2 = 0, Poção_Estranha_2 = 0, Poções_2 = Poção_Estranha_2 + Poção_de_Mana_2 + Poção_de_Cura_2, queimadura_2 = 0, armadura_2 = 0, manto_2 = 0, espada_2 = 0, enfraquecimento_p2 = 0, campo_forca2 = 0, fraco2 = 0;
-        static bool Paralizado_2 = false, runas_2, Confusão_p2 = false;
+        static bool Paralizado_2 = false, runas_2, Confusão_p2 = false, fragil2 = false;
         static string[] magias_p2 = { "0", "0", "0" };
 
 
@@ -559,14 +559,14 @@ Se você entendeu, pressione ENTER");
                         }
                     }
                     Console.Clear();
+
+                    //Trava
+                    Console.WriteLine("Obrigado pela preferência! Volte sempre");
+                    Console.WriteLine("\n\nDigite ENTER para continuar");
+                    Console.ReadLine();
+                    Console.Clear();
                 }
             }
-
-            //Trava
-            Console.WriteLine("Obrigado pela preferência! Volte sempre");
-            Console.WriteLine("\n\nDigite ENTER para continuar");
-            Console.ReadLine();
-            Console.Clear();
         }
 
 
@@ -861,6 +861,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                         queimadura_1--;
                     }
                     EndGame();
+                    campo_forca2 = 0;
                     //Zera a confusão para ela não interferir nas ações do player 2
                     confusão = 0;
                     //Define o player como 2 para que as opções dele sejam mostradas de acordo
@@ -912,6 +913,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                     Vida_Player_2 -= 2;
                     queimadura_2--;
                 }
+                campo_forca1 = 0;
                 enfraquecimento_p2 = 0;
                 EndGame();
                 confusão = 0;
@@ -1024,6 +1026,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                     queimadura_1--;
                 }
                 EndGame();
+                campo_forca1 = 0;
             }
         }
 
@@ -1270,6 +1273,62 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                 Console.WriteLine("Você errou!");
             }
 
+            if (player == 1 && fragil1 == true || player == 2 && fragil2 == true)
+            {
+                int quebrar = rPlayer.Next(1, 13);
+
+                if (quebrar == 4 && (manto_2 > 0 || manto_1 > 0))
+                {
+                    if (Singleplayer == true)
+                    {
+                        manto_2 = 10;
+                    }
+                    else if (player == 1)
+                    {
+                        manto_2 = 0;
+                    }
+                    else
+                    {
+                        manto_1 = 0;
+                    }
+
+                    Console.WriteLine("\nVocê destruiu o manto do inimigo!");
+                }
+                else if (quebrar == 8 && (armadura_2 > 0 || armadura_1 > 0))
+                {
+                    if (Singleplayer == true)
+                    {
+                        armadura_2 = 10;
+                    }
+                    else if (player == 1)
+                    {
+                        armadura_2 = 0;
+                    }
+                    else
+                    {
+                        armadura_1 = 0;
+                    }
+
+                    Console.WriteLine("Você destruiu a armadura do inimigo");
+                }
+                else if (quebrar == 12 && (espada_2 > 0 || espada_1 > 0))
+                {
+                    if (Singleplayer == true)
+                    {
+                        espada_2 = 10;
+                    }
+                    else if (player == 1)
+                    {
+                        espada_2 = 0;
+                    }
+                    else
+                    {
+                        espada_1 = 0;
+                    }
+
+                    Console.WriteLine("Voce destruiu a espada do inimigo");
+                }
+            }
         }
 
 
@@ -1509,10 +1568,10 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                     }
 
                     int destruir = rPlayer2.Next(1, 12);
-                    
+
                     Console.WriteLine("Esta magia emite um som alto e agudo, com a tentativa de destruir uma armadura do seu oponente.");
 
-                    if (destruir == 4 && manto_2 > 0)
+                    if (destruir == 4 && (manto_2 > 0 || manto_1 > 0))
                     {
                         if (Singleplayer == true)
                         {
@@ -1529,7 +1588,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
 
                         Console.WriteLine("\nVocê destruiu o manto do inimigo!");
                     }
-                    else if (destruir == 8 && armadura_2 > 0)
+                    else if (destruir == 8 && (armadura_2 > 0 || armadura_1 > 0))
                     {
                         if (Singleplayer == true)
                         {
@@ -1546,7 +1605,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
 
                         Console.WriteLine("Você destruiu a armadura do inimigo");
                     }
-                    else if (destruir == 12 && espada_2 > 0)
+                    else if (destruir == 12 && (espada_2 > 0 || espada_1 > 0))
                     {
                         if (Singleplayer == true)
                         {
@@ -1642,13 +1701,13 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                         }
                         else if (player == 2 && manto_2 == 0)
                         {
-                            Confusão_p2 = true;    
+                            Confusão_p2 = true;
                         }
-                        Console.WriteLine("Você conjura a magia confusão, e falha, e deixa seu comportamento em modo aleatorio");   
+                        Console.WriteLine("Você conjura a magia confusão, e falha, e deixa seu comportamento em modo aleatorio");
                     }
                     else
                     {
-                            Console.WriteLine("Você não consegue lançar a magia, mas algo impede o efeito de confusão de te afetar");
+                        Console.WriteLine("Você não consegue lançar a magia, mas algo impede o efeito de confusão de te afetar");
                     }
                 }
             }
@@ -1744,18 +1803,54 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                         Mana_Player_2 -= 10;
                     }
 
-                    Console.WriteLine("Você toca em seu adversario, e roga uma maldição\n1. Maldição da Fragilidade: Você faz com que o seu inimigo tenha uma chance enquanto te ataca de quebrar uma armadura\n2. Maldição da Cegueira: Aumenta a chance do seu inimigo de errar ataques\n3. Maldição do Silêncio: Gera uma área que torna tudo dentro dela silêncioso, fazendo com que seu inimigo não possa lançar magias");
-                    if (Singleplayer == true)
+                    Console.WriteLine("Você toca em seu adversario, e roga uma maldição\n1. Maldição da Fragilidade: Você faz com que o seu inimigo tenha uma chance enquanto te ataca de quebrar uma armadura\n2. Maldição da Cegueira: Aumenta a chance do seu inimigo de errar ataques\n3. Maldição do Silêncio: Gera uma área que torna tudo dentro dela silêncioso, fazendo com que seu inimigo não possa lançar magias\n");
+                    Console.Write("Digite sua opção:");
+                    op = Console.ReadLine();
+
+                    if (op == "1")
                     {
-                        
+                        if (Singleplayer == true)
+                        {
+
+                        }
+                        else if (player == 1)
+                        {
+
+                        }
+                        else
+                        {
+
+                        }
                     }
-                    else if (player == 1)
+                    else if (op == "2")
                     {
-                        
+                        if (Singleplayer == true)
+                        {
+
+                        }
+                        else if (player == 1)
+                        {
+
+                        }
+                        else
+                        {
+
+                        }
                     }
                     else
                     {
-                        
+                        if (Singleplayer == true)
+                        {
+
+                        }
+                        else if (player == 1)
+                        {
+
+                        }
+                        else
+                        {
+
+                        }
                     }
                 }
             }
@@ -1835,7 +1930,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                     Console.WriteLine("Você não tem nenhuma poção de cura");
                 }
 
-                if (op == "2" && Poção_de_Mana_1 > 0 || op == "2" && Poção_de_Mana_2 > 0 )
+                if (op == "2" && Poção_de_Mana_1 > 0 || op == "2" && Poção_de_Mana_2 > 0)
                 {
                     if (player == 1)
                     {
@@ -1934,7 +2029,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                 {
                     Console.WriteLine(" e você começa a pegar fogo");
                     queimadura_1 = 3;
-                } 
+                }
             }
             else if (Boss >= 11 && Boss <= 14)
             {
@@ -1942,7 +2037,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
             }
             else if (Boss >= 15 && Boss <= 18)
             {
-                dano = 15 - armadura_1 - fraco2;
+                dano = 15 - armadura_1 - fraco2 - campo_forca1;
                 if (dano < 0)
                 {
                     dano = 0;
@@ -1952,7 +2047,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
             }
             else
             {
-                dano = 30 - armadura_1 - fraco2;
+                dano = 30 - armadura_1 - fraco2 - campo_forca1;
                 if (dano < 0)
                 {
                     dano = 0;
