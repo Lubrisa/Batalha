@@ -363,6 +363,7 @@ Se você entendeu, pressione ENTER");
                 Console.Clear();
             }
 
+            Poções_1 = Poção_Estranha_1 + Poção_de_Mana_1 + Poção_de_Cura_1;
             op = "";
             //Trava
             Console.WriteLine("Obrigado pela preferência! Volte sempre");
@@ -557,6 +558,7 @@ Se você entendeu, pressione ENTER");
                                 Console.ReadLine();
                             }
                         }
+                        Poções_2 = Poção_Estranha_2 + Poção_de_Mana_2 + Poção_de_Cura_2;
                     }
                     Console.Clear();
 
@@ -868,13 +870,13 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                     EndGame();
                     campo_forca2 = 0;
                     //Zera a confusão para ela não interferir nas ações do player 2
+                    Confusão_p1 = false;
                     confusão = 0;
                     //Define o player como 2 para que as opções dele sejam mostradas de acordo
-                    player = 2;
 
                     fragil1 = false; cego1 = false; mudo1 = false;
                 }
-
+                player = 2;
 
                 //Começa a jogada do player 2
                 HUD();
@@ -927,6 +929,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
 
                 EndGame();
                 campo_forca1 = 0;
+                Confusão_p2 = false;
                 confusão = 0;
                 player = 1;
 
@@ -1465,7 +1468,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                 }
             }
 
-            else if (magias_p1[Convert.ToInt32(op) - 1].Contains("Curar Ferimentos") || magias_p2[Convert.ToInt32(op) - 1].Contains("Curar Ferimentos")) //Caso o texto armazenado no array (magias_p1) no índice [op (que acabou de ser digitada) - 1] seja igual a "Curar Ferimentos"
+            else if (player == 1 && magias_p1[Convert.ToInt32(op) - 1].Contains("Curar Ferimentos") || player == 2 && magias_p2[Convert.ToInt32(op) - 1].Contains("Curar Ferimentos")) //Caso o texto armazenado no array (magias_p1) no índice [op (que acabou de ser digitada) - 1] seja igual a "Curar Ferimentos"
             {
                 if (player == 1 && Mana_Player_1 < 5 || player == 2 && Mana_Player_2 < 5) //Verificação se a Mana do player é insuficiênte
                 {
@@ -1504,7 +1507,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                 }
             }
 
-            else if (magias_p1[Convert.ToInt32(op) - 1].Contains("Despedaçar") || magias_p2[Convert.ToInt32(op) - 1].Contains("Despedaçar")) //Caso o texto armazenado no array (magias_p1) no índice [op (que acabou de ser digitada) - 1] seja igual a "Despedaçar"
+            else if (player == 1 && magias_p1[Convert.ToInt32(op) - 1].Contains("Despedaçar") || player == 2 && magias_p2[Convert.ToInt32(op) - 1].Contains("Despedaçar")) //Caso o texto armazenado no array (magias_p1) no índice [op (que acabou de ser digitada) - 1] seja igual a "Despedaçar"
             {
                 if (player == 1 && Mana_Player_1 < 5 || player == 2 && Mana_Player_2 < 5) //Verificação se a Mana do player é insuficiênte
                 {
@@ -1610,7 +1613,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                 }
             }
 
-            else if (magias_p1[Convert.ToInt32(op) - 1].Contains("Confusão") || magias_p2[Convert.ToInt32(op) - 1].Contains("Confusão")) //Caso o texto armazenado no array (magias_p1) no índice [op (que acabou de ser digitada) - 1] seja igual a "Confusão"
+            else if (player == 1 && magias_p1[Convert.ToInt32(op) - 1].Contains("Confusão") || player == 2 && magias_p2[Convert.ToInt32(op) - 1].Contains("Confusão")) //Caso o texto armazenado no array (magias_p1) no índice [op (que acabou de ser digitada) - 1] seja igual a "Confusão"
             {
                 if (player == 1 && Mana_Player_1 < 10 || player == 2 && Mana_Player_2 < 10) //Verificação se a Mana do player é insuficiênte
                 {
@@ -1667,7 +1670,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                 }
             }
 
-            else if (magias_p1[Convert.ToInt32(op) - 1].Contains("Purificar") || magias_p2[Convert.ToInt32(op) - 1].Contains("Purificar")) //Caso o texto armazenado no array (magias_p1) no índice [op (que acabou de ser digitada) - 1] seja igual a "Purificar"
+            else if (player == 1 && magias_p1[Convert.ToInt32(op) - 1].Contains("Purificar") || player == 2 && magias_p2[Convert.ToInt32(op) - 1].Contains("Purificar")) //Caso o texto armazenado no array (magias_p1) no índice [op (que acabou de ser digitada) - 1] seja igual a "Purificar"
             {
                 if (player == 1 && Mana_Player_1 < 5 || player == 2 && Mana_Player_2 < 5) //Verificação se a Mana do player é insuficiênte
                 {
@@ -1701,7 +1704,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                 }
             }
 
-            else if (magias_p1[Convert.ToInt32(op) - 1].Contains("Raio do Enfraquecimento") || magias_p2[Convert.ToInt32(op) - 1].Contains("Raio do Enfraquecimento")) //Caso o texto armazenado no array (magias_p1) no índice [op (que acabou de ser digitada) - 1] seja igual a "Raio do Enfraquecimento"
+            else if (player == 1 && magias_p1[Convert.ToInt32(op) - 1].Contains("Raio do Enfraquecimento") || player == 2 && magias_p2[Convert.ToInt32(op) - 1].Contains("Raio do Enfraquecimento")) //Caso o texto armazenado no array (magias_p1) no índice [op (que acabou de ser digitada) - 1] seja igual a "Raio do Enfraquecimento"
             {
                 if (player == 1 && Mana_Player_1 < 10 || player == 2 && Mana_Player_2 < 10) //Verificação se a Mana do player é insuficiênte
                 {
@@ -1739,7 +1742,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                 }
             }
 
-            else if (magias_p1[Convert.ToInt32(op) - 1].Contains("Rogar Maldição") || magias_p2[Convert.ToInt32(op) - 1].Contains("Rogar Maldição")) //Caso o texto armazenado no array (magias_p1) no índice [op (que acabou de ser digitada) - 1] seja igual a "Rogar Maldição"
+            else if (player == 1 && magias_p1[Convert.ToInt32(op) - 1].Contains("Rogar Maldição") || player == 2 && magias_p2[Convert.ToInt32(op) - 1].Contains("Rogar Maldição")) //Caso o texto armazenado no array (magias_p1) no índice [op (que acabou de ser digitada) - 1] seja igual a "Rogar Maldição"
             {
                 if (player == 1 && Mana_Player_1 < 10 || player == 2 && Mana_Player_2 < 10) //Verificação se a Mana do player é insuficiênte
                 {
@@ -1810,7 +1813,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                 }
             }
 
-            else if (magias_p1[Convert.ToInt32(op) - 1].Contains("Campo de Força") || magias_p2[Convert.ToInt32(op) - 1].Contains("Campo de Força"))
+            else if (player == 1 && magias_p1[Convert.ToInt32(op) - 1].Contains("Campo de Força") || player == 2 && magias_p2[Convert.ToInt32(op) - 1].Contains("Campo de Força"))
             {
                 if (player == 1 && Mana_Player_1 < 15 || player == 2 && Mana_Player_2 < 15) //Verificação se a Mana do player é insuficiênte
                 {
@@ -1944,7 +1947,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                     }
                     Console.WriteLine("Você bebe um líquido vermelho de um frasco e se sente revigorado");
                 }
-                else
+                else if (op == "1" && Poção_de_Cura_1 < 0 || op == "1" && Poção_de_Cura_2 < 0)
                 {
                     Console.WriteLine("Você não tem nenhuma poção de cura");
                 }
@@ -1963,7 +1966,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                     }
                     Console.WriteLine("Você bebe um líquido azul de um frasco e se sente energizado");
                 }
-                else
+                else if (op == "2" && Poção_de_Mana_1 < 0 || op == "2" && Poção_de_Mana_2 < 0)
                 {
                     Console.WriteLine("Você não tem nenhuma poção de mana");
                 }
@@ -2003,10 +2006,14 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                         Console.WriteLine("Você bebe a poção e não sente nenhuma mudança");
                     }
                 }
-                else
+                else if (op == "3" && Poção_Estranha_1 < 0 || op == "3" && Poção_Estranha_2 < 0)
                 {
                     Console.WriteLine("Você não tem nenhuma poção estranha");
                 }
+            }
+            else
+            {
+                Console.WriteLine("Você não tem nenhum item consumível");
             }
         }
 
