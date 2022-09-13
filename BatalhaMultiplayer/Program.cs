@@ -1037,8 +1037,6 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
 
         static void BatalhaSingleplayer()
         {
-            //Cria uma variável confusão (que será usada caso o jogador esteja confuso) e um novo random
-            int confusão = 0;
             Random r = new Random();
 
             forca_2 = r.Next(11);
