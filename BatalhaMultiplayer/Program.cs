@@ -123,8 +123,16 @@ Se você entendeu, pressione ENTER");
             Console.Write("\nDigite sua escolha: ");
             op = Console.ReadLine();
 
-            //Verificação da escolha
-            if (op == "1") //Caso o jogador decida jogar SinglePlayer, bool (SinglePlayer) = true
+            while (op != "1" && op != "2")
+            {
+                Console.WriteLine("\nERRO! O valor digitado não corresponde a nenhuma opção, tente novamente");
+                Console.Write("\nDigite sua escolha: ");
+                op = Console.ReadLine();
+                Console.WriteLine("");
+            }
+
+                //Verificação da escolha
+                if (op == "1") //Caso o jogador decida jogar SinglePlayer, bool (SinglePlayer) = true
             {
                 Singleplayer = true;
                 Console.WriteLine("\nVocê escolheu o modo SinglePlayer");
@@ -169,8 +177,16 @@ Se você entendeu, pressione ENTER");
                 op = Console.ReadLine();
                 Console.WriteLine("");
 
-                //Opções de compra
-                if (op == "1") //Caso o jogador queira comprar poções de vida
+                while (op != "1" && op != "2" && op != "3" && op != "4" && op != "5" && op != "6" && op != "7" && op != "8")
+                {
+                    Console.WriteLine("\nERRO! O valor digitado não corresponde a nenhuma opção, tente novamente");
+                    Console.Write("\nDigite sua escolha: ");
+                    op = Console.ReadLine();
+                    Console.WriteLine("");
+                }
+
+                    //Opções de compra
+                    if (op == "1") //Caso o jogador queira comprar poções de vida
                 {
                     //Definir quantas unidades o jogador quer
                     Console.WriteLine("Quantas unidades você gostaria de comprar?");
@@ -228,8 +244,16 @@ Se você entendeu, pressione ENTER");
                     Console.WriteLine("Você tem certeza que quer continuar essa compra?\n1. Sim\n2. Não");
                     op = Console.ReadLine();
 
-                    //Caso o jogador confirme a compra
-                    if (op == "1")
+                    while (op != "1" && op != "2")
+                    {
+                        Console.WriteLine("\nERRO! O valor digitado não corresponde a nenhuma opção, tente novamente");
+                        Console.Write("\nDigite sua escolha: ");
+                        op = Console.ReadLine();
+                        Console.WriteLine("");
+                    }
+
+                        //Caso o jogador confirme a compra
+                        if (op == "1")
                     {
                         saldo_1 -= 1;
                         Poção_Estranha_1 = 1;
@@ -256,6 +280,14 @@ Se você entendeu, pressione ENTER");
                         //Confirmação da compra
                         Console.WriteLine("Você tem certeza que quer continuar essa compra?\n1. Sim\n2. Não");
                         op = Console.ReadLine();
+
+                        while (op != "1" && op != "2")
+                        {
+                            Console.WriteLine("\nERRO! O valor digitado não corresponde a nenhuma opção, tente novamente");
+                            Console.Write("\nDigite sua escolha: ");
+                            op = Console.ReadLine();
+                            Console.WriteLine("");
+                        }
 
                         //Caso o jogador confirme a compra
                         if (op == "1")
@@ -287,6 +319,14 @@ Se você entendeu, pressione ENTER");
                         Console.WriteLine("Você tem certeza que quer continuar essa compra?\n1. Sim\n2. Não");
                         op = Console.ReadLine();
 
+                        while (op != "1" && op != "2")
+                        {
+                            Console.WriteLine("\nERRO! O valor digitado não corresponde a nenhuma opção, tente novamente");
+                            Console.Write("\nDigite sua escolha: ");
+                            op = Console.ReadLine();
+                            Console.WriteLine("");
+                        }
+
                         //Caso o jogador confirme a compra
                         if (op == "1")
                         {
@@ -316,6 +356,14 @@ Se você entendeu, pressione ENTER");
                         //Confirmação da compra
                         Console.WriteLine("Você tem certeza que quer continuar essa compra?\n1. Sim\n2. Não");
                         op = Console.ReadLine();
+
+                        while (op != "1" && op != "2")
+                        {
+                            Console.WriteLine("\nERRO! O valor digitado não corresponde a nenhuma opção, tente novamente");
+                            Console.Write("\nDigite sua escolha: ");
+                            op = Console.ReadLine();
+                            Console.WriteLine("");
+                        }
 
                         //Caso o jogador confirme a compra
                         if (op == "1")
@@ -347,6 +395,14 @@ Se você entendeu, pressione ENTER");
                         Console.WriteLine("Você tem certeza que quer continuar essa compra?\n1. Sim\n2. Não");
                         op = Console.ReadLine();
 
+                        while (op != "1" && op != "2")
+                        {
+                            Console.WriteLine("\nERRO! O valor digitado não corresponde a nenhuma opção, tente novamente");
+                            Console.Write("\nDigite sua escolha: ");
+                            op = Console.ReadLine();
+                            Console.WriteLine("");
+                        }
+
                         //Caso o jogador confirme a compra
                         if (op == "1")
                         {
@@ -365,11 +421,6 @@ Se você entendeu, pressione ENTER");
 
             Poções_1 = Poção_Estranha_1 + Poção_de_Mana_1 + Poção_de_Cura_1;
             op = "";
-            //Trava
-            Console.WriteLine("Obrigado pela preferência! Volte sempre");
-            Console.WriteLine("\n\nDigite ENTER para continuar");
-            Console.ReadLine();
-            Console.Clear();
 
             //Caso o modo escolhido seja o MultiPlayer, o player 2 poderá comprar seus itens
             if (Singleplayer == false)
@@ -390,6 +441,14 @@ Se você entendeu, pressione ENTER");
                     Console.Write("Digite sua escolha: ");
                     op = Console.ReadLine();
                     Console.WriteLine("");
+
+                    while (op != "1" && op != "2" && op != "3" && op != "4" && op != "5" && op != "6" && op != "7" && op != "8")
+                    {
+                        Console.WriteLine("\nERRO! O valor digitado não corresponde a nenhuma opção, tente novamente");
+                        Console.Write("\nDigite sua escolha: ");
+                        op = Console.ReadLine();
+                        Console.WriteLine("");
+                    }
 
                     if (op == "1") //Caso o jogador queira comprar poções de vida
                     {
@@ -437,6 +496,14 @@ Se você entendeu, pressione ENTER");
                         Console.WriteLine("Você tem certeza que quer continuar essa compra?\n1. Sim\n2. Não");
                         op = Console.ReadLine();
 
+                        while (op != "1" && op != "2")
+                        {
+                            Console.WriteLine("\nERRO! O valor digitado não corresponde a nenhuma opção, tente novamente");
+                            Console.Write("\nDigite sua escolha: ");
+                            op = Console.ReadLine();
+                            Console.WriteLine("");
+                        }
+
                         if (op == "1")
                         {
                             saldo_2 -= 1;
@@ -462,6 +529,14 @@ Se você entendeu, pressione ENTER");
                         {
                             Console.WriteLine("Você tem certeza que quer continuar essa compra?\n1. Sim\n2. Não");
                             op = Console.ReadLine();
+
+                            while (op != "1" && op != "2")
+                            {
+                                Console.WriteLine("\nERRO! O valor digitado não corresponde a nenhuma opção, tente novamente");
+                                Console.Write("\nDigite sua escolha: ");
+                                op = Console.ReadLine();
+                                Console.WriteLine("");
+                            }
 
                             if (op == "1")
                             {
@@ -491,6 +566,14 @@ Se você entendeu, pressione ENTER");
                             Console.WriteLine("Você tem certeza que quer continuar essa compra?\n1. Sim\n2. Não");
                             op = Console.ReadLine();
 
+                            while (op != "1" && op != "2")
+                            {
+                                Console.WriteLine("\nERRO! O valor digitado não corresponde a nenhuma opção, tente novamente");
+                                Console.Write("\nDigite sua escolha: ");
+                                op = Console.ReadLine();
+                                Console.WriteLine("");
+                            }
+
                             if (op == "1")
                             {
                                 manto_2 = 5;
@@ -518,6 +601,14 @@ Se você entendeu, pressione ENTER");
                         {
                             Console.WriteLine("Você tem certeza que quer continuar essa compra?\n1. Sim\n2. Não");
                             op = Console.ReadLine();
+
+                            while (op != "1" && op != "2")
+                            {
+                                Console.WriteLine("\nERRO! O valor digitado não corresponde a nenhuma opção, tente novamente");
+                                Console.Write("\nDigite sua escolha: ");
+                                op = Console.ReadLine();
+                                Console.WriteLine("");
+                            }
 
                             if (op == "1")
                             {
@@ -547,6 +638,14 @@ Se você entendeu, pressione ENTER");
                             Console.WriteLine("Você tem certeza que quer continuar essa compra?\n1. Sim\n2. Não");
                             op = Console.ReadLine();
 
+                            while (op != "1" && op != "2")
+                            {
+                                Console.WriteLine("\nERRO! O valor digitado não corresponde a nenhuma opção, tente novamente");
+                                Console.Write("\nDigite sua escolha: ");
+                                op = Console.ReadLine();
+                                Console.WriteLine("");
+                            }
+
                             if (op == "1")
                             {
                                 runas_2 = true;
@@ -561,13 +660,13 @@ Se você entendeu, pressione ENTER");
                         Poções_2 = Poção_Estranha_2 + Poção_de_Mana_2 + Poção_de_Cura_2;
                     }
                     Console.Clear();
-
-                    //Trava
-                    Console.WriteLine("Obrigado pela preferência! Volte sempre");
-                    Console.WriteLine("\n\nDigite ENTER para continuar");
-                    Console.ReadLine();
-                    Console.Clear();
+   
                 }
+                //Trava
+                Console.WriteLine("Obrigado pela preferência! Volte sempre");
+                Console.WriteLine("\n\nDigite ENTER para continuar");
+                Console.ReadLine();
+                Console.Clear();
             }
         }
 
@@ -655,7 +754,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                 while (forca_2 < 0 || forca_2 > 10)
                 {
                     Console.WriteLine("\nERRO! O valor do seu modificador de Força deve estar entre 0 e 10, digite um valor nesse intervalo");
-                    forca_1 = int.Parse(Console.ReadLine());
+                    forca_2 = int.Parse(Console.ReadLine());
                 }
 
                 Console.WriteLine("Sua força é: " + forca_2);
@@ -710,6 +809,15 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
             {
                 //Entrando a opção
                 int y = int.Parse(Console.ReadLine());
+
+                while (y != 1 && y != 2 && y != 3 && y != 4 && y != 5 && y != 6 && y != 7 && y != 8 && y != 9)
+                {
+                    Console.WriteLine("\nERRO! O valor digitado não corresponde a nenhuma opção, tente novamente");
+                    Console.Write("\nDigite sua escolha: ");
+                    op = Console.ReadLine();
+                    Console.WriteLine("");
+                }
+
                 //O array (magias_p1) no índice do valor de x armazena o o nome da magia escrita no array (op_magias) no índice y - 1 (a opção do jogador menos 1)
                 magias_p1[x] = op_magias[y - 1];
                 //Iguala a "0" o texto do array (op_magias) que acabou de ser copiado
@@ -723,6 +831,15 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                     Console.WriteLine("\nERRO! A magia selecionada é igual a alguma já escolhida, escolha outra!");
                     //Entrar opção
                     y = int.Parse(Console.ReadLine());
+
+                    while (op != "1" && op != "2" && op != "3" && op != "4" && op != "5" && op != "6" && op != "7" && op != "8" && op != "9")
+                    {
+                        Console.WriteLine("\nERRO! O valor digitado não corresponde a nenhuma opção, tente novamente");
+                        Console.Write("\nDigite sua escolha: ");
+                        y = int.Parse(Console.ReadLine());
+                        Console.WriteLine("");
+                    }
+
                     magias_p1[x] = op_magias[y - 1];
                     op_magias[y - 1] = "0";
                 }
@@ -776,6 +893,15 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                 for (int x = 0; x < 3; x++)
                 {
                     int y = int.Parse(Console.ReadLine());
+
+                    while (y != 1 && y != 2 && y != 3 && y != 4 && y != 5 && y != 6 && y != 7 && y != 8 && y != 9)
+                    {
+                        Console.WriteLine("\nERRO! O valor digitado não corresponde a nenhuma opção, tente novamente");
+                        Console.Write("\nDigite sua escolha: ");
+                        y = int.Parse(Console.ReadLine());
+                        Console.WriteLine("");
+                    }
+
                     magias_p2[x] = op_magias[y - 1];
                     op_magias[y - 1] = "0";
 
@@ -785,6 +911,15 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                         Console.WriteLine("\nErro! A magia selecionada é igual a alguma já escolhida, escolha outra!");
 
                         y = int.Parse(Console.ReadLine());
+
+                        while (op != "1" && op != "2" && op != "3" && op != "4" && op != "5" && op != "6" && op != "7" && op != "8" && op != "9")
+                        {
+                            Console.WriteLine("\nERRO! O valor digitado não corresponde a nenhuma opção, tente novamente");
+                            Console.Write("\nDigite sua escolha: ");
+                            op = Console.ReadLine();
+                            Console.WriteLine("");
+                        }
+
                         magias_p2[x] = op_magias[y - 1];
                         op_magias[y - 1] = "0";
                     }
@@ -1115,6 +1250,13 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
             op = Console.ReadLine();
             Console.WriteLine("");
 
+            while (op != "1" && op != "2" && op != "3" && op != "4")
+            {
+                Console.WriteLine("\nERRO! O valor digitado não corresponde a nenhuma opção, tente novamente");
+                Console.Write("\nDigite sua escolha: ");
+                op = Console.ReadLine();
+                Console.WriteLine("");
+            }
 
             if (op == "1") //Caso a opção seja atacar
             {
@@ -1144,6 +1286,14 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                 op = Console.ReadLine();
                 Console.WriteLine("");
 
+                while (op != "1" && op != "2" && op != "3" && op != "4")
+                {
+                    Console.WriteLine("\nERRO! O valor digitado não corresponde a nenhuma opção, tente novamente");
+                    Console.Write("\nDigite sua escolha: ");
+                    op = Console.ReadLine();
+                    Console.WriteLine("");
+                }
+
                 Magia();
             }
             else if (op == "2")
@@ -1153,45 +1303,61 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
             }
             else if (op == "3") //Caso a opção seja usar um item
             {
-                //Opções
-                Console.WriteLine("1. Poção de Cura");
-                Console.WriteLine("Recupera 10 de vida");
-                if (player == 1)
+                if (player == 1 && Poções_1 == 0 || player == 2 && Poções_2 == 0)
                 {
-                    Console.WriteLine($"Quantidade: {Poção_de_Cura_1}");
+                    Console.WriteLine("Você não tem nenhum item consumível");
+                    AçõesJogadores();
                 }
                 else
                 {
-                    Console.WriteLine($"Quantidade: {Poção_de_Cura_2}");
-                }
-                Console.WriteLine("2. Poção de Mana");
-                Console.WriteLine("Recupera 5 de mana");
-                if (player == 1)
-                {
-                    Console.WriteLine($"Quantidade: {Poção_de_Mana_1}");
-                }
-                else
-                {
-                    Console.WriteLine($"Quantidade: {Poção_de_Mana_2}");
-                }
-                Console.WriteLine("3. Poção Estranha");
-                Console.WriteLine("????????");
-                if (player == 1)
-                {
-                    Console.WriteLine($"Quantidade: {Poção_Estranha_1}");
-                }
-                else
-                {
-                    Console.WriteLine($"Quantidade: {Poção_Estranha_2}");
-                }
-                Console.WriteLine("4. Voltar");
-                Console.WriteLine("");
+                    //Opções
+                    Console.WriteLine("1. Poção de Cura");
+                    Console.WriteLine("Recupera 10 de vida");
+                    if (player == 1)
+                    {
+                        Console.WriteLine($"Quantidade: {Poção_de_Cura_1}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Quantidade: {Poção_de_Cura_2}");
+                    }
+                    Console.WriteLine("2. Poção de Mana");
+                    Console.WriteLine("Recupera 5 de mana");
+                    if (player == 1)
+                    {
+                        Console.WriteLine($"Quantidade: {Poção_de_Mana_1}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Quantidade: {Poção_de_Mana_2}");
+                    }
+                    Console.WriteLine("3. Poção Estranha");
+                    Console.WriteLine("????????");
+                    if (player == 1)
+                    {
+                        Console.WriteLine($"Quantidade: {Poção_Estranha_1}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Quantidade: {Poção_Estranha_2}");
+                    }
+                    Console.WriteLine("4. Voltar");
+                    Console.WriteLine("");
 
-                //Entrando a opção
-                op = Console.ReadLine();
-                Console.WriteLine("");
+                    //Entrando a opção
+                    op = Console.ReadLine();
+                    Console.WriteLine("");
 
-                Item();
+                    while (op != "1" && op != "2" && op != "3" && op != "4")
+                    {
+                        Console.WriteLine("\nERRO! O valor digitado não corresponde a nenhuma opção, tente novamente");
+                        Console.Write("\nDigite sua escolha: ");
+                        op = Console.ReadLine();
+                        Console.WriteLine("");
+                    }
+
+                    Item();
+                }
             }
         }
 
@@ -1765,6 +1931,14 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                     Console.Write("Digite sua opção:");
                     op = Console.ReadLine();
 
+                    while (op != "1" && op != "2" && op != "3")
+                    {
+                        Console.WriteLine("\nERRO! O valor digitado não corresponde a nenhuma opção, tente novamente");
+                        Console.Write("\nDigite sua escolha: ");
+                        op = Console.ReadLine();
+                        Console.WriteLine("");
+                    }
+
                     if (op == "1")
                     {
                         if (Singleplayer == true)
@@ -1950,6 +2124,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                 else if (op == "1" && Poção_de_Cura_1 < 0 || op == "1" && Poção_de_Cura_2 < 0)
                 {
                     Console.WriteLine("Você não tem nenhuma poção de cura");
+                    Item();
                 }
 
                 if (op == "2" && Poção_de_Mana_1 > 0 || op == "2" && Poção_de_Mana_2 > 0)
@@ -1969,6 +2144,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                 else if (op == "2" && Poção_de_Mana_1 < 0 || op == "2" && Poção_de_Mana_2 < 0)
                 {
                     Console.WriteLine("Você não tem nenhuma poção de mana");
+                    Item();
                 }
 
                 if (op == "3" && Poção_Estranha_1 > 0 || op == "3" && Poção_Estranha_2 > 0)
@@ -2009,11 +2185,8 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                 else if (op == "3" && Poção_Estranha_1 < 0 || op == "3" && Poção_Estranha_2 < 0)
                 {
                     Console.WriteLine("Você não tem nenhuma poção estranha");
+                    Item();
                 }
-            }
-            else
-            {
-                Console.WriteLine("Você não tem nenhum item consumível");
             }
         }
 
