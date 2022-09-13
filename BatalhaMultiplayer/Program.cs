@@ -20,13 +20,13 @@ namespace Batalha2
 
 
         // Atributos do Jogador 1
-        static int forca_1, velocidade1 = 0, Vida_Player_1 = 100, Mana_Player_1 = 20, Poção_de_Cura_1 = 0, Poção_de_Mana_1 = 0, Poção_Estranha_1 = 0, Poções_1 = Poção_Estranha_1 + Poção_de_Mana_1 + Poção_de_Cura_1, queimadura_1 = 0, armadura_1 = 0, manto_1 = 0, espada_1 = 0, enfraquecimento_p1 = 0, campo_forca1 = 0, fraco1 = 0;
+        static int forca_1, Vida_Player_1 = 100, Mana_Player_1 = 10, Poção_de_Cura_1 = 0, Poção_de_Mana_1 = 0, Poção_Estranha_1 = 0, Poções_1 = Poção_Estranha_1 + Poção_de_Mana_1 + Poção_de_Cura_1, queimadura_1 = 0, armadura_1 = 0, manto_1 = 0, espada_1 = 0, enfraquecimento_p1 = 0, campo_forca1 = 0, fraco1 = 0;
         static bool Paralizado_1 = false, runas_1, Confusão_p1 = false, fragil1 = false, cego1 = false, mudo1 = false;
         static string[] magias_p1 = { "0", "0", "0" };
 
 
         // Atributos do Jogador 2
-        static int forca_2, velocidade2 = 0, Vida_Player_2 = 100, Mana_Player_2 = 20, Poção_de_Cura_2 = 0, Poção_de_Mana_2 = 0, Poção_Estranha_2 = 0, Poções_2 = Poção_Estranha_2 + Poção_de_Mana_2 + Poção_de_Cura_2, queimadura_2 = 0, armadura_2 = 0, manto_2 = 0, espada_2 = 0, enfraquecimento_p2 = 0, campo_forca2 = 0, fraco2 = 0;
+        static int forca_2, Vida_Player_2 = 100, Mana_Player_2 = 10, Poção_de_Cura_2 = 0, Poção_de_Mana_2 = 0, Poção_Estranha_2 = 0, Poções_2 = Poção_Estranha_2 + Poção_de_Mana_2 + Poção_de_Cura_2, queimadura_2 = 0, armadura_2 = 0, manto_2 = 0, espada_2 = 0, enfraquecimento_p2 = 0, campo_forca2 = 0, fraco2 = 0;
         static bool Paralizado_2 = false, runas_2, Confusão_p2 = false, fragil2 = false, cego2 = false, mudo2 = false;
         static string[] magias_p2 = { "0", "0", "0" };
 
@@ -620,9 +620,10 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
         static void EscolherAtributos()
         {
             //Definindo Força do jogador 1
-            Console.WriteLine("Jogador 1, escolha seu modificador de Força. Você dará mais dano em ataques corpo a corpo");
+            Console.WriteLine("Jogador 1, escolha seu modificador de Força. Você dará mais dano em ataques corpo a corpo, mas terá menos mana");
             Console.Write("\nForça (0 - 10): ");
             forca_1 = int.Parse(Console.ReadLine());
+
 
             //Trava para Força não ser menor ou maior que o estipulado
             while (forca_1 < 0 || forca_1 > 10)
@@ -631,25 +632,12 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                 forca_1 = int.Parse(Console.ReadLine());
             }
 
-            //Definindo o modificador de mana
-            Console.WriteLine("\nJogador 1, escolha seu modificador de Mana. Você poderá lançar mais magias");
-            Console.Write("\nMana (0 - 10): ");
-            Mana_Player_1 += int.Parse(Console.ReadLine());
 
-            //Trava para Mana não ser menor ou maior que o estipulado
-            while (Mana_Player_1 > 30 || Mana_Player_1 < 10)
-            {
-                Console.WriteLine("\nERRO! O valor do seu modificador de Mana deve estar entre 0 e 10, digite um valor nesse intervalo");
-                Mana_Player_1 = 20;
-                Mana_Player_1 += int.Parse(Console.ReadLine());
-            }
+            //Mostrar Força e Mana do player 1 (a Mana é 10 + (20 - força selecionada))
+            Console.WriteLine("\nSua Força é: " + forca_1);
+            Mana_Player_1 += 20 - forca_1;
+            Console.WriteLine("Sua Mana é: " + Mana_Player_1);
 
-            //Definindo o valor de velocidade
-            velocidade1 = 30 - (Mana_Player_1 + forca_1 + armadura_1 + manto_1);
-
-            Console.WriteLine("Sua força é: " + forca_1);
-            Console.WriteLine("Sua mana é: " + Mana_Player_1);
-            Console.WriteLine("Sua velocidade é: " + velocidade1);
 
             //Caso o modo MultiPlayer tenha sido escolhido, começa a vez do player 2 de definir sua Força
             if (Singleplayer == false)
@@ -659,31 +647,18 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                 Console.Clear();
 
                 Console.WriteLine("Jogador 2, escolha seu modificador de Força. Você dará mais dano em ataques corpo a corpo, mas terá menos mana");
-                Console.Write("Força (0 - 10): ");
+                Console.Write("Força (1 - 10): ");
                 forca_2 = int.Parse(Console.ReadLine());
 
                 while (forca_2 < 0 || forca_2 > 10)
                 {
                     Console.WriteLine("\nERRO! O valor do seu modificador de Força deve estar entre 0 e 10, digite um valor nesse intervalo");
-                    forca_2 = int.Parse(Console.ReadLine());
+                    forca_1 = int.Parse(Console.ReadLine());
                 }
-
-                Console.WriteLine("\nJogador 2, escolha seu modificador de Mana. Você poderá lançar mais magias");
-                Console.Write("\nMana (0 - 10): ");
-                Mana_Player_2 += int.Parse(Console.ReadLine());
-
-                while (Mana_Player_1 > 30 || Mana_Player_1 < 10)
-                {
-                    Console.WriteLine("\nERRO! O valor do seu modificador de Mana deve estar entre 0 e 10, digite um valor nesse intervalo");
-                    Mana_Player_1 = 20;
-                    Mana_Player_1 += int.Parse(Console.ReadLine());
-                }
-
-                velocidade2 = 30 - (Mana_Player_2 + forca_2 - (armadura_2 + manto_2));
 
                 Console.WriteLine("Sua força é: " + forca_2);
+                Mana_Player_2 += 20 - forca_2;
                 Console.WriteLine("Sua mana é: " + Mana_Player_2);
-                Console.WriteLine("Sua velocidade é: " + velocidade2);
             }
 
 
