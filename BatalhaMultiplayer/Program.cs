@@ -33,7 +33,7 @@ namespace Batalha2
 
         // Atributos para o Modo Singleplayer
         static bool Singleplayer = false;
-        static int Vida_Boss = 100, Mana_Boss = 20, dano, confusão = 0;
+        static int Vida_Boss = 100, Mana_Boss = 20, dano;
 
 
         static void Main()
@@ -826,6 +826,9 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
 
         static void BatalhaMultiplayer()
         {
+            //Gera um novo random
+            Random r = new Random();
+            int confusão = 0;
             player = 1;
 
 
@@ -833,234 +836,219 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
             while (Vida_Player_1 > 0 && Vida_Player_2 > 0)
             {
                 //Caso o player seja o player 1 irá executar esse primeiro trecho
-                if (velocidade1 >= velocidade2)
+                if (player == 1)
                 {
-                    Player1();
-                    Player2();
+                    //Desenha o HUD
+                    HUD();
+
+                    //Verifica se os status paralizado ou confusão estão aplicados
+                    if (Paralizado_1 == true || Confusão_p1 == true)
+                    {
+                        //Caso paralizado esteja ativo, o jogador não joga e paralizado é desativado, permitindo que ele jogue próximo turno
+                        if (Paralizado_1 == true)
+                        {
+                            Paralizado_1 = false;
+                        }
+
+                        //Caso confusão esteja ativo, ele gera um número de 1 a 6 e, caso o resultado de 4 ou mais, o jogador se acerta e perde sua vez
+                        else if (Confusão_p1 == true)
+                        {
+                            confusão = r.Next(1, 6);
+
+                            if (confusão >= 4)
+                            {
+                                Console.WriteLine("Você está confuso e acaba acertando a sí próprio, perdendo 5 de vida");
+                                Vida_Player_1 -= 5;
+                            }
+                            //Caso o número seja 3 ou menos, o jogador joga normalmente
+                            else
+                            {
+                                AçõesJogadores();
+                            }
+                        }
+                    }
+                    //Caso nada da situação anterior aconteça, o jogador pode jogar normalmente
+                    else
+                    {
+                        AçõesJogadores();
+                    }
+
+                    if (fraco1 > 0)
+                    {
+                        fraco1--;
+                    }
+                    else
+                    {
+                        enfraquecimento_p1 = 0;
+                    }
+
+                    //Verifica se o jogador está com o status queimado, se ele estiver ele receberá 2 de dano no final de todos os seus turnos durante 5 turnos
+                    if (queimadura_1 > 0)
+                    {
+                        Console.WriteLine("As chamas consomem seu corpo lentamente, fazendo você receber 2 de dano");
+                        Vida_Player_1 -= 2;
+                        queimadura_1--;
+                    }
+
+                    EndGame();
+                    campo_forca2 = 0;
+                    //Zera a confusão para ela não interferir nas ações do player 2
+                    confusão = 0;
+                    //Define o player como 2 para que as opções dele sejam mostradas de acordo
+                    player = 2;
+
+                    fragil1 = false; cego1 = false; mudo1 = false;
                 }
-                else
-                {
-                    Player2();
-                    Player1();
-                }
+
 
                 //Começa a jogada do player 2
                 HUD();
+
+
+                if (Paralizado_2 == true || Confusão_p2 == true)
+                {
+                    if (Paralizado_2 == true)
+                    {
+                        Paralizado_2 = false;
+                    }
+
+                    else if (Confusão_p2 == true)
+                    {
+                        confusão = r.Next(1, 6);
+
+                        if (confusão >= 4)
+                        {
+                            Console.WriteLine("Você está confuso e acaba acertando a sí próprio, perdendo 5 de vida");
+                            Vida_Player_2 -= 5;
+
+                        }
+                        else
+                        {
+                            AçõesJogadores();
+                        }
+                    }
+                }
+
+                else
+                {
+                    AçõesJogadores();
+                }
+
+                if (fraco2 > 0)
+                {
+                    fraco2--;
+                }
+                else
+                {
+                    enfraquecimento_p2 = 0;
+                }
+
+                if (queimadura_2 > 0)
+                {
+                    Console.WriteLine("As chamas consomem seu corpo lentamente, fazendo você receber 2 de dano");
+                    Vida_Player_2 -= 2;
+                    queimadura_2--;
+                }
+
+                EndGame();
+                campo_forca1 = 0;
+                confusão = 0;
+                player = 1;
+
+                fragil2 = false; cego2 = false; mudo2 = false;
 
                 //Trava
                 Console.WriteLine("\nPressione ENTER para continuar");
                 Console.ReadLine();
                 Console.Clear();
             }
-        }
-
-
-        static void Player1()
-        {
-            //Gera um novo random
-            Random r = new Random();
-
-            //Desenha o HUD
-            HUD();
-
-            //Verifica se os status paralizado ou confusão estão aplicados
-            if (Paralizado_1 == true || Confusão_p1 == true)
-            {
-                //Caso paralizado esteja ativo, o jogador não joga e paralizado é desativado, permitindo que ele jogue próximo turno
-                if (Paralizado_1 == true)
-                {
-                    Paralizado_1 = false;
-                }
-
-                //Caso confusão esteja ativo, ele gera um número de 1 a 6 e, caso o resultado de 4 ou mais, o jogador se acerta e perde sua vez
-                else if (Confusão_p1 == true)
-                {
-                    confusão = r.Next(1, 6);
-
-                    if (confusão >= 4)
-                    {
-                        Console.WriteLine("Você está confuso e acaba acertando a sí próprio, perdendo 5 de vida");
-                        Vida_Player_1 -= 5;
-                    }
-                    //Caso o número seja 3 ou menos, o jogador joga normalmente
-                    else
-                    {
-                        AçõesJogadores();
-                    }
-                }
-            }
-            //Caso nada da situação anterior aconteça, o jogador pode jogar normalmente
-            else
-            {
-                AçõesJogadores();
-            }
-
-            if (fraco1 > 0)
-            {
-                fraco1--;
-            }
-            else
-            {
-                enfraquecimento_p1 = 0;
-            }
-
-            //Verifica se o jogador está com o status queimado, se ele estiver ele receberá 2 de dano no final de todos os seus turnos durante 5 turnos
-            if (queimadura_1 > 0)
-            {
-                Console.WriteLine("As chamas consomem seu corpo lentamente, fazendo você receber 2 de dano");
-                Vida_Player_1 -= 2;
-                queimadura_1--;
-            }
-
-            EndGame();
-            campo_forca2 = 0;
-            //Zera a confusão para ela não interferir nas ações do player 2
-            confusão = 0;
-            //Define o player como 2 para que as opções dele sejam mostradas de acordo
-            player = 2;
-
-            fragil1 = false; cego1 = false; mudo1 = false;
-        }
-
-
-        static void Player2()
-        {
-            //Gera um novo random
-            Random r = new Random();
-
-            if (Paralizado_2 == true || Confusão_p2 == true)
-            {
-                if (Paralizado_2 == true)
-                {
-                    Paralizado_2 = false;
-                }
-
-                else if (Confusão_p2 == true)
-                {
-                    confusão = r.Next(1, 6);
-
-                    if (confusão >= 4)
-                    {
-                        Console.WriteLine("Você está confuso e acaba acertando a sí próprio, perdendo 5 de vida");
-                        Vida_Player_2 -= 5;
-
-                    }
-                    else
-                    {
-                        AçõesJogadores();
-                    }
-                }
-            }
-            else
-            {
-                AçõesJogadores();
-            }
-
-            if (fraco2 > 0)
-            {
-                fraco2--;
-            }
-            else
-            {
-                enfraquecimento_p2 = 0;
-            }
-
-            if (queimadura_2 > 0)
-            {
-                Console.WriteLine("As chamas consomem seu corpo lentamente, fazendo você receber 2 de dano");
-                Vida_Player_2 -= 2;
-                queimadura_2--;
-            }
-
-            EndGame();
-            campo_forca1 = 0;
-            confusão = 0;
-            player = 1;
-
-            fragil2 = false; cego2 = false; mudo2 = false;
-        }
-
-
-        static void PlayerBoss()
-        {
-            Random r = new Random();
-
-            if (Paralizado_2 == true || Confusão_p2 == true)
-            {
-                if (Paralizado_2 == true)
-                {
-                    Paralizado_2 = false;
-                }
-
-                else if (Confusão_p1 == true)
-                {
-                    confusão = r.Next(1, 6);
-
-                    if (confusão >= 4)
-                    {
-                        Console.WriteLine("Você vê seu inimigo confuso e acertando a sí próprio, perdendo 5 de vida");
-                        Vida_Boss -= 5;
-                    }
-                    else
-                    {
-                        Boss();
-                    }
-                }
-            }
-            else
-            {
-                Boss();
-            }
-
-            if (queimadura_2 > 0)
-            {
-                Console.WriteLine("As chamas consomem o corpo do seu inimigo lentamente, fazendo ele receber 2 de dano");
-                Vida_Player_1 -= 2;
-                queimadura_1--;
-            }
-
-            EndGame();
-
-            if (fraco2 > 0)
-            {
-                fraco2--;
-            }
-            else
-            {
-                enfraquecimento_p2 = 0;
-            }
-
-            fragil2 = false; cego2 = false; mudo2 = false;
-            campo_forca1 = 0;
         }
 
 
         static void BatalhaSingleplayer()
         {
+            //Cria uma variável confusão (que será usada caso o jogador esteja confuso) e um novo random
+            int confusão = 0;
             Random r = new Random();
-
-            forca_2 = r.Next(11);
-            Mana_Boss += r.Next(11);
-            velocidade2 = 30 - (forca_2 + Mana_Boss);
 
             //Enquanto a a vida do player e a vida do Boss forem maiores que 0 esse script continuará sendo executado
             while (Vida_Player_1 > 0 && Vida_Boss > 0)
             {
-                if (velocidade1 >= velocidade2)
+                //Desenha o HUD
+                HUD();
+
+                //Verifica se os status paralizado ou confusão estão aplicados
+                if (Paralizado_1 == true)
                 {
-                    Player1();
-                    PlayerBoss();
+                    Paralizado_1 = false;
+                }
+
+                //Caso nada da situação anterior aconteça, o jogador pode jogar normalmente
+                else
+                {
+                    AçõesJogadores();
+                }
+
+                //Verifica se o jogador está com o status queimado, se ele estiver ele receberá 2 de dano no final de todos os seus turnos durante 5 turnos
+                if (queimadura_1 > 0)
+                {
+                    Console.WriteLine("As chamas consomem seu corpo lentamente, fazendo você receber 2 de dano");
+                    Vida_Player_1 -= 2;
+                    queimadura_1--;
+                }
+
+                EndGame();
+
+
+                //Começa o turno do Boss
+
+                if (Paralizado_2 == true || Confusão_p2 == true)
+                {
+                    if (Paralizado_2 == true)
+                    {
+                        Paralizado_2 = false;
+                    }
+
+                    else if (Confusão_p1 == true)
+                    {
+                        confusão = r.Next(1, 6);
+
+                        if (confusão >= 4)
+                        {
+                            Console.WriteLine("Você vê seu inimigo confuso e acertando a sí próprio, perdendo 5 de vida");
+                            Vida_Boss -= 5;
+                        }
+                        else
+                        {
+                            Boss();
+                        }
+                    }
                 }
                 else
                 {
-                    PlayerBoss();
-                    Player1();
+                    Boss();
                 }
 
-                //Trava
-                Console.WriteLine("\nPressione ENTER para continuar");
-                Console.ReadLine();
-                Console.Clear();
+                if (queimadura_2 > 0)
+                {
+                    Console.WriteLine("As chamas consomem o corpo do seu inimigo lentamente, fazendo ele receber 2 de dano");
+                    Vida_Player_1 -= 2;
+                    queimadura_1--;
+                }
+
+                EndGame();
+
+                if (fraco2 > 0)
+                {
+                    fraco2--;
+                }
+                else
+                {
+                    enfraquecimento_p2 = 0;
+                }
+
+                fragil2 = false; cego2 = false; mudo2 = false;
+                campo_forca1 = 0;
             }
         }
 
@@ -2119,6 +2107,10 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                     Console.WriteLine($"Seu inimigo te acerta em cheio. Você perde {dano} de vida.");
                 }
             }
+
+            Console.WriteLine("\nPressione Enter para continuar");
+            Console.ReadLine();
+            Console.Clear();
 
             if (fraco2 > 0)
             {
