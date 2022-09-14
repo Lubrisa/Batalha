@@ -131,8 +131,8 @@ Se você entendeu, pressione ENTER");
                 Console.WriteLine("");
             }
 
-                //Verificação da escolha
-                if (op == "1") //Caso o jogador decida jogar SinglePlayer, bool (SinglePlayer) = true
+            //Verificação da escolha
+            if (op == "1") //Caso o jogador decida jogar SinglePlayer, bool (SinglePlayer) = true
             {
                 Singleplayer = true;
                 Console.WriteLine("\nVocê escolheu o modo SinglePlayer");
@@ -185,8 +185,8 @@ Se você entendeu, pressione ENTER");
                     Console.WriteLine("");
                 }
 
-                    //Opções de compra
-                    if (op == "1") //Caso o jogador queira comprar poções de vida
+                //Opções de compra
+                if (op == "1") //Caso o jogador queira comprar poções de vida
                 {
                     //Definir quantas unidades o jogador quer
                     Console.WriteLine("Quantas unidades você gostaria de comprar?");
@@ -252,8 +252,8 @@ Se você entendeu, pressione ENTER");
                         Console.WriteLine("");
                     }
 
-                        //Caso o jogador confirme a compra
-                        if (op == "1")
+                    //Caso o jogador confirme a compra
+                    if (op == "1")
                     {
                         saldo_1 -= 1;
                         Poção_Estranha_1 = 1;
@@ -657,10 +657,9 @@ Se você entendeu, pressione ENTER");
                                 Console.ReadLine();
                             }
                         }
-                        Poções_2 = Poção_Estranha_2 + Poção_de_Mana_2 + Poção_de_Cura_2;
                     }
+                    Poções_2 = Poção_Estranha_2 + Poção_de_Mana_2 + Poção_de_Cura_2;
                     Console.Clear();
-   
                 }
                 //Trava
                 Console.WriteLine("Obrigado pela preferência! Volte sempre");
@@ -748,7 +747,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                 Console.Clear();
 
                 Console.WriteLine("Jogador 2, escolha seu modificador de Força. Você dará mais dano em ataques corpo a corpo, mas terá menos mana");
-                Console.Write("Força (1 - 10): ");
+                Console.Write("Força (0 - 10): ");
                 forca_2 = int.Parse(Console.ReadLine());
 
                 while (forca_2 < 0 || forca_2 > 10)
@@ -1112,9 +1111,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
 
                 EndGame();
 
-
                 //Começa o turno do Boss
-
                 if (Paralizado_2 == true || Confusão_p2 == true)
                 {
                     if (Paralizado_2 == true)
@@ -1122,7 +1119,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                         Paralizado_2 = false;
                     }
 
-                    else if (Confusão_p1 == true)
+                    else if (Confusão_p2 == true)
                     {
                         confusão = r.Next(1, 6);
 
@@ -1151,6 +1148,10 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
 
                 EndGame();
 
+                Console.WriteLine("\nPressione Enter para continuar");
+                Console.ReadLine();
+                Console.Clear();
+
                 if (fraco2 > 0)
                 {
                     fraco2--;
@@ -1162,6 +1163,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
 
                 fragil2 = false; cego2 = false; mudo2 = false;
                 campo_forca1 = 0;
+                Confusão_p2 = false;
             }
         }
 
@@ -1262,7 +1264,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
             {
                 Ataque();
             }
-            else if (op == "2" && (mudo1 == false || mudo2 == false)) //Caso a opção seja lançar uma magia
+            else if (op == "2" && player == 1 && mudo1 == false || op == "2" && player == 2 && mudo2 == false) //Caso a opção seja lançar uma magia
             {
 
                 if (player == 1) //Caso o jogador atual seja o player 1, mostra suas magias
@@ -1282,6 +1284,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                 Console.WriteLine("4. Voltar");
                 Console.WriteLine("");
 
+
                 //Entrando a opção
                 op = Console.ReadLine();
                 Console.WriteLine("");
@@ -1298,7 +1301,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
             }
             else if (op == "2")
             {
-                Console.WriteLine("Você tenta proferir as palavras mágicas para lançar magias, escolha outra opção");
+                Console.WriteLine("Você tenta proferir as palavras mágicas para lançar magias, mas está silênciado magicamente, escolha outra opção");
                 AçõesJogadores();
             }
             else if (op == "3") //Caso a opção seja usar um item
@@ -1465,13 +1468,14 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
 
             if (op == "4") //Caso a opção seja igual a "4" retorna para o menu de ações
             {
-                if (Singleplayer == true)
+                if (player == 1)
                 {
-                    BatalhaSingleplayer();
+                    AçõesJogadores();
                 }
                 else
                 {
-                    BatalhaMultiplayer();
+                    player = 2; 
+                    AçõesJogadores();
                 }
             }
 
@@ -2097,17 +2101,10 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
             {
                 if (op == "4")
                 {
-                    if (Singleplayer == true)
-                    {
-                        BatalhaSingleplayer();
-                    }
-                    else
-                    {
-                        BatalhaMultiplayer();
-                    }
+                    AçõesJogadores();
                 }
 
-                if (op == "1" && Poção_de_Cura_1 > 0 || op == "1" && Poção_de_Cura_2 > 0)
+                else if (op == "1" && Poção_de_Cura_1 > 0 || op == "1" && Poção_de_Cura_2 > 0)
                 {
                     if (player == 1)
                     {
@@ -2121,10 +2118,10 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                     }
                     Console.WriteLine("Você bebe um líquido vermelho de um frasco e se sente revigorado");
                 }
-                else if (op == "1" && Poção_de_Cura_1 < 0 || op == "1" && Poção_de_Cura_2 < 0)
+                else if (op == "1" && Poção_de_Cura_1 == 0 || op == "1" && Poção_de_Cura_2 == 0)
                 {
                     Console.WriteLine("Você não tem nenhuma poção de cura");
-                    Item();
+                    AçõesJogadores();
                 }
 
                 if (op == "2" && Poção_de_Mana_1 > 0 || op == "2" && Poção_de_Mana_2 > 0)
@@ -2141,10 +2138,10 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                     }
                     Console.WriteLine("Você bebe um líquido azul de um frasco e se sente energizado");
                 }
-                else if (op == "2" && Poção_de_Mana_1 < 0 || op == "2" && Poção_de_Mana_2 < 0)
+                else if (op == "2" && Poção_de_Mana_1 == 0 || op == "2" && Poção_de_Mana_2 == 0)
                 {
                     Console.WriteLine("Você não tem nenhuma poção de mana");
-                    Item();
+                    AçõesJogadores();
                 }
 
                 if (op == "3" && Poção_Estranha_1 > 0 || op == "3" && Poção_Estranha_2 > 0)
@@ -2161,7 +2158,7 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                         }
                         Console.WriteLine("Você bebe a poção e começa a se sentir tonto até cai desacordado");
                     }
-                    else if (Itens2 >= 1 && Itens2 <= 5 && Poção_Estranha_1 > 0)
+                    else if (Itens2 >= 1 && Itens2 <= 5)
                     {
                         if (player == 1)
                         {
@@ -2177,15 +2174,15 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                         }
                         Console.WriteLine("Você bebe a poção e começa a se sentir completamente restaurado");
                     }
-                    else if (Itens2 >= 6 && Poção_Estranha_1 > 0)
+                    else if (Itens2 >= 6)
                     {
                         Console.WriteLine("Você bebe a poção e não sente nenhuma mudança");
                     }
                 }
-                else if (op == "3" && Poção_Estranha_1 < 0 || op == "3" && Poção_Estranha_2 < 0)
+                else if (op == "3" && Poção_Estranha_1 == 0 || op == "3" && Poção_Estranha_2 == 0)
                 {
                     Console.WriteLine("Você não tem nenhuma poção estranha");
-                    Item();
+                    AçõesJogadores();
                 }
             }
         }
@@ -2262,10 +2259,6 @@ Consumível, recupera 5 de mana, custa 15 pila cada unidade");
                     Console.WriteLine($"Seu inimigo te acerta em cheio. Você perde {dano} de vida.");
                 }
             }
-
-            Console.WriteLine("\nPressione Enter para continuar");
-            Console.ReadLine();
-            Console.Clear();
 
             if (fraco2 > 0)
             {
