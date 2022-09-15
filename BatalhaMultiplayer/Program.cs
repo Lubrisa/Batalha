@@ -3,7 +3,6 @@ using System.Threading;
 
 namespace Batalha2
 {
-    //Must Fix (quando volta do menu de itens e usa magia vc usa a poção de mesmo id), (poção estranha pode ser comprada mais de uma vez)
     //Trava caso o jogador coloque uma opção não válida
     /*while (op != "1" && op != "2" && op != "3" && op != "4" && op != "5" && op != "6" && op != "7" && op != "8")
     {
